@@ -1151,10 +1151,36 @@
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=33.5904&longitude=130.4017&current_weather=true');
                 const d = await res.json();
-                const temp = Math.round(d.current_weather.temperature);
-                document.getElementById('weather-display').innerHTML = `<i class="fas fa-sun mr-1.5 text-amber-500"></i>후쿠오카 ${temp}°C 쾌적`;
+                const cur = d.current_weather;
+                const temp = Math.round(cur.temperature);
+                const code = cur.weathercode;
+        
+                let statusText = "맑음";
+                let iconClass = "fas fa-sun text-amber-500";
+        
+                // WMO 표준 날씨 코드 파싱
+                if (code === 0) {
+                    statusText = "맑음";
+                    iconClass = "fas fa-sun text-amber-500";
+                } else if (code >= 1 && code <= 3) {
+                    statusText = "구름/흐림";
+                    iconClass = "fas fa-cloud-sun text-amber-600";
+                } else if (code === 45 || code === 48) {
+                    statusText = "안개";
+                    iconClass = "fas fa-smog text-slate-400";
+                } else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
+                    statusText = "비/소나기";
+                    iconClass = "fas fa-cloud-showers-heavy text-blue-500";
+                } else if (code >= 95) {
+                    statusText = "뇌우/폭우";
+                    iconClass = "fas fa-bolt text-rose-500";
+                }
+        
+                document.getElementById('weather-display').innerHTML = 
+                    `<i class="${iconClass} mr-1.5"></i>후쿠오카 ${temp}°C ${statusText}`;
             } catch(e) {
-                document.getElementById('weather-display').innerHTML = `<i class="fas fa-map-marker-alt mr-1.5 text-amber-500"></i>후쿠오카`;
+                document.getElementById('weather-display').innerHTML = 
+                    `<i class="fas fa-map-marker-alt mr-1.5 text-amber-500"></i>후쿠오카 날씨`;
             }
         }
 
