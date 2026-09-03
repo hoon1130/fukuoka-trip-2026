@@ -67,8 +67,8 @@
             <div class="bg-gradient-to-br from-amber-600 to-amber-700 text-white p-6 rounded-[2.2rem] shadow-lg">
                 <div class="flex justify-between items-start">
                     <div>
-                        <span class="text-xs font-black tracking-wider uppercase bg-white/20 px-3 py-1 rounded-full">38개월 아이와 함께하는 미식 투어</span>
-                        <h2 class="text-2xl font-black mt-2 tracking-tight">후쿠오카 3박 4일 일정</h2>
+                        <span class="text-xs font-black tracking-wider uppercase bg-white/20 px-3 py-1 rounded-full">38개월 아이와 함께하는 쇼핑 & 미식 투어</span>
+                        <h2 class="text-2xl font-black mt-2 tracking-tight">후쿠오카 3박 4일 최적 일정</h2>
                         <p class="text-sm font-medium text-amber-100 mt-1">10.10(금) RS0727 ~ 10.13(월) RS0728</p>
                     </div>
                 </div>
@@ -104,11 +104,11 @@
             <div id="spot-list" class="space-y-3.5"></div>
         </div>
 
-        <!-- 3. 쇼핑 가이드 탭 (Shopping) -->
+        <!-- 3. 쇼핑 & 명소 탭 (Shopping & Sights) -->
         <div id="shopping" class="tab-content space-y-4">
             <div class="px-1">
-                <h2 class="text-xl font-black tracking-tight text-slate-800 dark:text-white">추천 쇼핑 스팟 & 꿀템</h2>
-                <p class="text-xs text-slate-500 mt-0.5">38개월 아이 육아템부터 백화점 5% 할인/캐널시티</p>
+                <h2 class="text-xl font-black tracking-tight text-slate-800 dark:text-white">단톤·패션 쇼핑 & 추천 관광지</h2>
+                <p class="text-xs text-slate-500 mt-0.5">단톤 단독매장/편집숍부터 아이와 함께 가기 좋은 관광 명소</p>
             </div>
             <div id="shopping-list" class="space-y-4"></div>
         </div>
@@ -143,7 +143,7 @@
             <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
                 <h3 class="font-black text-sm text-slate-500 uppercase tracking-widest mb-3">지출 기록</h3>
                 <div class="flex gap-2 mb-4">
-                    <input type="text" id="exp-desc" placeholder="항목 (예: 빵스톡 명란바게트)" class="flex-1 p-3 text-sm font-bold rounded-xl border dark:bg-slate-800 dark:border-slate-700">
+                    <input type="text" id="exp-desc" placeholder="항목 (예: 단톤 경량패딩)" class="flex-1 p-3 text-sm font-bold rounded-xl border dark:bg-slate-800 dark:border-slate-700">
                     <input type="number" id="exp-amt" placeholder="¥" class="w-24 p-3 text-sm font-bold rounded-xl border text-center dark:bg-slate-800 dark:border-slate-700">
                     <button onclick="addExpense()" class="px-5 bg-slate-900 dark:bg-amber-600 text-white text-sm font-black rounded-xl active:scale-95">저장</button>
                 </div>
@@ -159,7 +159,7 @@
         <div id="phrases" class="tab-content space-y-4">
             <div class="bg-slate-900 text-white p-5 rounded-[2rem] shadow-lg flex justify-between items-center">
                 <div>
-                    <h3 class="font-black text-lg"><i class="fas fa-child mr-2 text-amber-400"></i>아이 동반 & 필수 회화</h3>
+                    <h3 class="font-black text-lg"><i class="fas fa-child mr-2 text-amber-400"></i>아이 동반 & 쇼핑 회화</h3>
                     <p class="text-xs text-slate-400 mt-0.5">카드를 누르면 발음(TTS)이 재생됩니다.</p>
                 </div>
                 <button onclick="window.open('https://papago.naver.com/?sk=ko&tk=ja', '_blank')" class="bg-white/10 text-xs px-3.5 py-2 rounded-xl font-bold">파파고 <i class="fas fa-external-link-alt ml-1"></i></button>
@@ -177,7 +177,7 @@
             <i class="fas fa-utensils text-[22px] mb-1"></i><span class="text-[10px]">맛집</span>
         </button>
         <button onclick="showTab('shopping')" id="nav-shopping" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-shopping-bag text-[22px] mb-1"></i><span class="text-[10px]">쇼핑</span>
+            <i class="fas fa-tshirt text-[22px] mb-1"></i><span class="text-[10px]">쇼핑/관광</span>
         </button>
         <button onclick="showTab('ledger')" id="nav-ledger" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
             <i class="fas fa-coins text-[22px] mb-1"></i><span class="text-[10px]">환율/가계부</span>
@@ -187,7 +187,7 @@
         </button>
     </nav>
 
-    <!-- 후쿠오카 지하철 노선도 모달 -->
+    <!-- 지하철 노선도 모달 -->
     <div id="subway-modal" class="fixed inset-0 bg-black/80 z-[400] hidden flex items-center justify-center p-4 backdrop-blur-md" onclick="closeSubwayModal()">
         <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-4 max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center border-b pb-3 dark:border-slate-800">
@@ -195,11 +195,10 @@
                     <h3 class="font-black text-xl text-slate-900 dark:text-white flex items-center">
                         <span class="w-3 h-3 rounded-full bg-orange-500 mr-2"></span>후쿠오카 지하철 안내
                     </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">후쿠오카는 '공항선(주황색)' 하나면 거의 끝납니다.</p>
+                    <p class="text-xs text-slate-400 mt-0.5">후쿠오카는 '공항선(주황색)' 하나면 도심 이동 끝!</p>
                 </div>
                 <button onclick="closeSubwayModal()" class="text-slate-400 text-2xl">&times;</button>
             </div>
-            
             <div class="space-y-3 text-xs">
                 <div class="p-3.5 bg-orange-50 dark:bg-orange-950/30 rounded-2xl border border-orange-200 dark:border-orange-900">
                     <p class="font-black text-orange-800 dark:text-orange-300 text-sm mb-1">🟠 공항선 주요 역 순서</p>
@@ -207,20 +206,18 @@
                         후쿠오카공항 ↔ <span class="text-orange-600 font-black">하카타(비아인)</span> ↔ <span class="text-orange-600 font-black">기온(크룸기온)</span> ↔ 나카스카와바타 ↔ 텐진 ↔ <span class="text-orange-600 font-black">오호리공원</span> ↔ 니시진(모모치방면)
                     </p>
                 </div>
-
                 <div class="p-3.5 bg-slate-50 dark:bg-slate-800 rounded-2xl">
                     <p class="font-black text-slate-800 dark:text-white mb-1">💡 베테랑 가이드 지하철 팁</p>
                     <ul class="list-disc pl-4 space-y-1 text-slate-600 dark:text-slate-300">
                         <li>하카타 ↔ 기온은 딱 1정거장(2분)입니다.</li>
-                        <li>모든 역 개찰구에서 한국 신용카드(트래블로그/컨택리스) 직접 태그 탑승 가능!</li>
-                        <li>38개월 영유아는 지하철 요금이 완전 무료입니다.</li>
+                        <li>모든 개찰구에서 한국 컨택리스 신용카드(트래블로그/월렛) 직접 태그 탑승 가능!</li>
+                        <li>38개월 영유아는 지하철 요금이 전액 무료입니다.</li>
                     </ul>
                 </div>
             </div>
-
             <div class="flex gap-2 pt-2">
                 <button onclick="window.open('https://subway.city.fukuoka.lg.jp/kor/route/', '_blank')" class="flex-1 py-3 bg-orange-500 text-white rounded-xl text-xs font-black shadow-md flex items-center justify-center">
-                    <i class="fas fa-external-link-alt mr-1.5"></i>공식 한국어 노선도 웹 열기
+                    <i class="fas fa-external-link-alt mr-1.5"></i>공식 한국어 노선도 열기
                 </button>
                 <button onclick="closeSubwayModal()" class="px-5 py-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold text-slate-500">닫기</button>
             </div>
@@ -283,11 +280,11 @@
 
         let jpyPerKrw = 9.15;
 
-        // 3박 4일 일정 (지하철 동선 & 예비 코스 완벽 탑재)
+        // 3박 4일 일정
         const itinerary = [
             {
                 date: "10-10",
-                dateLabel: "10월 10일 (금) - 1일차 [입국 & 하카타 안착]",
+                dateLabel: "10월 10일 (금) - 1일차 [입국 & 하카타/단톤 탐색]",
                 hotel: "비아인 하카타구치 에키마에 (1박)",
                 items: [
                     { 
@@ -305,23 +302,23 @@
                         subwayRoute: "🚖 국제선 직통 택시 15분 (지하철은 국내선 셔틀 환승 필요)"
                     },
                     { 
-                        time: "17:30~18:00", 
-                        title: "하카타역 간식: 일 포르노 델 미뇽", 
-                        desc: "하카타역 중앙 통로 갓 구운 미니 크루아상(플레인/초코/고구마). 겉바속촉이라 아이도 한입에 부드럽게 잘 먹습니다.", 
-                        mapQuery: "il FORNO del MIGNON Hakata",
-                        subwayRoute: "🚶 하카타역 개찰구 앞 도보 1분"
+                        time: "17:20~18:15", 
+                        title: "하카타 아뮤플라자: 단톤 공식 직영점 & 미뇽", 
+                        desc: "★단톤 1차 공략★ 아뮤플라자 4층 단톤 공식 단독 매장(DANTON FUKUOKA)에서 신상 및 경량패딩, 모자 체크! 1층 중앙 통로에서 '일 포르노 델 미뇽' 미니 크루아상 갓 구운 간식 테이크아웃.", 
+                        mapQuery: "DANTON FUKUOKA アミュプラザ博多",
+                        subwayRoute: "🚶 하카타역 직결 (아뮤플라자 4층)"
                     },
                     { 
                         time: "18:30~20:00", 
                         title: "저녁: 함바그 요시 (텐진) or 규센닌", 
-                        desc: "💡가이드 팁: 키와미야는 2시간 넘는 계단 웨이팅과 기름 튐으로 영유아 동반 시 위험합니다. 쾌적한 테이블의 '함바그 요시' 추천!", 
+                        desc: "💡가이드 팁: 키와미야는 2시간 넘는 계단 대기와 기름 튐으로 아이 동반 시 위험합니다. 쾌적한 테이블의 '함바그 요시'나 부드러운 와규집 추천!", 
                         mapQuery: "ハンバーグ よし 福岡",
                         subwayRoute: "🟠 공항선 [하카타역] 탑승 → [텐진역] 하차 (3정거장, 6분)"
                     },
                     { 
                         time: "20:30~21:30", 
                         title: "야식 포장: 멘야 타이슨 or 편의점", 
-                        desc: "아이가 피곤할 시간이므로 숙소 근처 편의점과 라멘 한 그릇으로 깔끔하게 1일차 마무리.", 
+                        desc: "아이가 피곤할 시간이므로 숙소 근처 편의점(푸딩, 계란샌드위치)과 톤코츠 라멘 한 그릇으로 깔끔하게 1일차 마무리.", 
                         mapQuery: "비아인 하카타구치 에키마에",
                         subwayRoute: "🚶 숙소 도보권"
                     }
@@ -329,7 +326,7 @@
             },
             {
                 date: "10-11",
-                dateLabel: "10월 11일 (토) - 2일차 [숙소 이동 & 다이묘 감성]",
+                dateLabel: "10월 11일 (토) - 2일차 [숙소 이동 & 다이묘 패션 쇼핑]",
                 hotel: "니시테츠 크룸 하카타 기온 (체크인)",
                 items: [
                     { 
@@ -342,7 +339,7 @@
                     { 
                         time: "10:30~11:30", 
                         title: "빵스톡 (Pain Stock) 텐진점", 
-                        desc: "명란바게트와 아이용 시오빵 구입. 강변 잔디 데크에서 아이와 사진 찍기 좋습니다.", 
+                        desc: "명란바게트와 아이용 시오빵 구입. 하레노가든 강변 잔디 데크에서 아이와 사진 찍기 좋습니다.", 
                         mapQuery: "pain stock tenjin",
                         subwayRoute: "🟠 공항선 [기온역] → [나카스카와바타역] 하차 후 도보 5분"
                     },
@@ -354,14 +351,14 @@
                         subwayRoute: "🚖 택시 추천 (하카타역 남쪽 방면, 약 800엔)"
                     },
                     { 
-                        time: "13:30~15:30", 
-                        title: "텐진 다이묘 쇼핑 & 신선산도", 
-                        desc: "이와타야 백화점 및 다이묘 골목 산책. 생과일 샌드위치 '신선산도'로 당 충전!", 
-                        mapQuery: "新鮮サンド 福岡",
-                        subwayRoute: "🟠 공항선 [텐진역] 2번 출구"
+                        time: "13:30~16:00", 
+                        title: "텐진 솔라리아 비샵(Bshop) & 다이묘 쇼핑", 
+                        desc: "★단톤 2차 공략★ 솔라리아 플라자 3층 Bshop(비샵) & 빔즈(BEAMS)에서 단톤 의류 비교 쇼핑! 다이묘 골목에서 과일산도 '신선산도'와 휴먼메이드/슈프림 거리 산책.", 
+                        mapQuery: "솔라리아 플라자 비샵",
+                        subwayRoute: "🟠 공항선 [텐진역] 2번 출구 직결"
                     },
                     { 
-                        time: "16:00~17:30", 
+                        time: "16:30~17:30", 
                         title: "기온 호텔 입실 & 아이 낮잠/온천 휴식", 
                         desc: "아이 컨디션을 위해 호텔 체크인 후 1시간 휴식. 니시테츠 크룸 1층 천연온천 대욕장 이용.", 
                         mapQuery: "西鉄ホテル クルーム 博多祇園",
@@ -390,15 +387,15 @@
                     },
                     { 
                         time: "12:30~14:30", 
-                        title: "오호리 공원 산책 & 디저트: 이몬네", 
-                        desc: "탁 트인 호수와 오리배 구경. 평지라 유모차 산책 최고이며 고구마 디저트 '이몬네' 맛보기.", 
-                        mapQuery: "いもんね 福岡",
-                        subwayRoute: "🟠 공항선 [나카스카와바타역] → [오호리공원역] 3번 출구 직결 (4정거장, 7분)"
+                        title: "오호리 공원 백조 보트 & 디저트: 이몬네", 
+                        desc: "호수 위에서 아이와 페달 백조 보트 체험! 평지라 유모차 산책 최고이며 고구마 디저트 '이몬네' 맛보기.", 
+                        mapQuery: "이몬네 후쿠오카",
+                        subwayRoute: "🟠 공항선 [나카스카와바타역] → [오호리공원역] 3번 출구 (4정거장, 7분)"
                     },
                     { 
-                        time: "★ 예비 코스", 
-                        title: "[선택] 후쿠오카 타워 & 모모치 해변", 
-                        desc: "💡예비 일정 안내: 오호리공원 대신 탁 트인 바다와 일몰을 보고 싶다면 이 코스로 대체하세요! 타워 전망대 관람 및 마리존 해변 산책. (바닷바람이 있으니 아이 겉옷 필수)", 
+                        time: "★ 예비 명소", 
+                        title: "[선택] 후쿠오카 타워 & 모모치 해변 (팀랩 포레스트)", 
+                        desc: "💡바다 & 실내 미디어아트 코스: 탁 트인 바다와 타워 전망대, 바로 옆 페이페이돔의 '팀랩 포레스트(화려한 빛의 동물 터치 체험)'까지 묶어서 다녀오기 좋습니다. (바닷바람 대비 겉옷 필수)", 
                         mapQuery: "후쿠오카 타워",
                         subwayRoute: "🚌 오호리공원 또는 텐진에서 버스 W1/302번 탑승 (20분, 타워 바로 앞 하차) or 택시 1,800엔"
                     },
@@ -462,7 +459,7 @@
             }
         ];
 
-        // 맛집 3단 분류
+        // 맛집 리스트
         const spots = [
             { cat: "한국인유명", nameKo: "키와미야 함바그 하카타점", nameJp: "極味や 博多店", desc: "돌판에 직접 구워먹는 원조 함바그. 맛은 보장되나 2시간 안팎의 대기와 좁은 좌석, 기름 튐으로 영유아 동반 시 비추천.", badge: "성지", addr: "博多バスターミナル1F" },
             { cat: "웨이팅적음", nameKo: "함바그 요시 (텐진)", nameJp: "ハンバーグ よし", desc: "★강추★ 숯불에 구워 육즙이 가득하며 좌석이 쾌적하고 유아 동반 식사에 적합한 대안 맛집.", badge: "쾌적", addr: "福岡市中央区大名" },
@@ -481,33 +478,50 @@
             { cat: "디저트", nameKo: "일 포르노 델 미뇽", nameJp: "ミニヨン 博多駅店", desc: "하카타역 개찰구 앞 줄서서 사먹는 따끈따끈 한입 미니 크루아상.", badge: "국민간식", addr: "JR博多駅構内" }
         ];
 
-        // 쇼핑 가이드
+        // 쇼핑 & 관광 통합 데이터
         const shoppingGuides = [
             {
-                place: "한큐 백화점 (하카타역 직결)",
-                desc: "1층 안내데스크에서 여권 제시 시 5% 게스트 쿠폰 즉시 지급 (면세 중복 가능)",
+                place: "단톤(DANTON) 전문 쇼핑 스팟",
+                desc: "프랑스 감성 캐주얼 워크웨어 브랜드 단톤 후쿠오카 핵심 매장 2곳",
                 items: [
-                    { name: "갸또러스크 (Gateau Festa Harada)", desc: "바삭하고 달콤한 버터 풍미의 프리미엄 러스크 (선물용 1순위)" },
-                    { name: "꼼데가르송 / 바오바오", desc: "국내보다 30~40% 저렴한 의류 및 가방" },
-                    { name: "미키하우스 (Miki House)", desc: "38개월 아이 신발(더블비, 발 편한 유아 운동화) 강력 추천" }
+                    { name: "DANTON FUKUOKA (아뮤플라자 4층)", desc: "★단독 직영점★ 편집숍보다 컬러·사이즈 재고가 가장 넉넉하며 키즈 라인 및 가방/모자 완비" },
+                    { name: "Bshop (텐진 솔라리아 플라자 3층)", desc: "단톤의 공식 전개 편집숍. 빔즈(BEAMS)와 함께 단톤 아우터/셔츠/가디건 집중 비교 가능" }
                 ]
             },
             {
-                place: "캐널시티 하카타 (기온 숙소 도보 5분)",
-                desc: "아이 동반 쇼핑 및 산리오, 지브리 캐릭터 쇼핑의 천국",
+                place: "텐진 다이묘 감성 패션 거리",
+                desc: "일본 스트릿 및 캐주얼 브랜드가 집결된 쇼핑 골목",
                 items: [
-                    { name: "동구리공화국 (지하 1층)", desc: "이웃집 토토로, 마녀배달부 키키 공식 굿즈샵 (포토존 완비)" },
-                    { name: "산리오 갤러리 (Sanrio)", desc: "헬로키티, 시나모롤, 쿠로미 유아 학용품 및 스티커" },
-                    { name: "알펜 후쿠오카 (Alpen)", desc: "나이키, 노스페이스, 아웃도어 의류 및 스포츠 용품 대형 매장" }
+                    { name: "휴먼메이드 (HUMAN MADE)", desc: "니고(NIGO)의 인기 브랜드. 귀여운 오리/하트 그래픽 티셔츠와 악세서리" },
+                    { name: "포터 스탠드 (PORTER STAND)", desc: "일본 필수 국민 가방 요시다 포터 탱커 시리즈 쇼핑" },
+                    { name: "슈프림 / 스투시 / 나이키", desc: "국내 리셀가보다 합리적인 텐진 다이묘 매장 라인업" }
                 ]
             },
             {
-                place: "드럭스토어 & 돈키호테 (나카스점 or 텐진점)",
-                desc: "5,500엔 이상 구입 시 즉시 10% 면세 적용",
+                place: "38개월 아이 추천 관광 명소",
+                desc: "유모차 동선이 완벽하고 아이가 마음껏 체험할 수 있는 베테랑 픽",
                 items: [
-                    { name: "호빵맨 감기시럽 & 모기패치", desc: "38개월 아이 필수 상비약 (딸기맛 시럽, 피카츄/호빵맨 열냉각시트)" },
-                    { name: "오타이산 & 카베진 소화제", desc: "과식하기 쉬운 일본 여행 필수 상비 소화제" },
-                    { name: "샤론파스 & 동전파스", desc: "하루 1만보 이상 걸었을 때 부모님 종아리/어깨 케어용" }
+                    { name: "팀랩 포레스트 (teamLab Forest)", desc: "페이페이돔 옆 위치. 어두운 공간에서 빛의 동물을 스마트폰/손으로 잡는 신비한 실내 미디어아트 (강추)" },
+                    { name: "오호리 공원 보트하우스", desc: "호수 위 백조 페달보트 탑승 & 오리 먹이주기 체험" },
+                    { name: "라라포트 후쿠오카 (실물대 건담)", desc: "움직이는 24m 초대형 건담 로봇과 아카짱혼포(육아용품 대형마트) 완비" }
+                ]
+            },
+            {
+                place: "백화점 & 캐릭터 쇼핑",
+                desc: "한큐 백화점 5% 할인쿠폰 및 캐릭터 굿즈샵",
+                items: [
+                    { name: "하카타 한큐 백화점 1층", desc: "여권 제시 시 5% 게스트 쿠폰 지급. 갸또러스크 및 미키하우스(유아 신발)" },
+                    { name: "캐널시티 동구리공화국 (B1F)", desc: "이웃집 토토로 실물 크기 인형 포토존 & 지브리 공식 굿즈샵" },
+                    { name: "캐널시티 산리오 갤러리", desc: "헬로키티, 시나모롤, 쿠로미 유아 학용품 및 스티커" }
+                ]
+            },
+            {
+                place: "드럭스토어 & 돈키호테 필수템",
+                desc: "5,500엔 이상 구입 시 10% 면세 즉시 할인",
+                items: [
+                    { name: "호빵맨 감기시럽 & 모기패치", desc: "아이 필수 상비약 (딸기맛 시럽, 피카츄 열냉각시트)" },
+                    { name: "오타이산 & 카베진", desc: "과식하기 쉬운 일본 미식 여행 필수 소화제" },
+                    { name: "샤론파스 & 동전파스", desc: "하루 1만보 이상 걸었을 때 부모님 종아리/발바닥 피로 회복" }
                 ]
             }
         ];
@@ -524,6 +538,15 @@
                 ]
             },
             {
+                cat: "쇼핑 필수 (Shopping)",
+                items: [
+                    { ko: "단톤 제품은 어디에 있나요?", jp: "ダントンの商品はどこですか？", ro: "단톤노 쇼-힌와 도코데스카?" },
+                    { ko: "새 제품(재고)으로 있나요?", jp: "新しい在庫はありますか？", ro: "아타라시이 자이코와 아리마스카?" },
+                    { ko: "입어봐도 되나요?", jp: "試着してもいいですか？", ro: "시챠쿠 시테모 이이데스카?" },
+                    { ko: "면세(Tax Free) 되나요?", jp: "免税できますか？", ro: "멘제이 데키마스카?" }
+                ]
+            },
+            {
                 cat: "식당 주문 (Order)",
                 items: [
                     { ko: "저기요! (주문할 때)", jp: "すみません！", ro: "스미마센!" },
@@ -536,7 +559,7 @@
                 cat: "택시 & 길찾기 (Move)",
                 items: [
                     { ko: "여기까지 가주세요 (택시)", jp: "ここまでお願いします", ro: "코코마데 오네가이시마스" },
-                    { ko: "트렁크 열어주세요 (유모차용)", jp: "トランクを開けてください", ro: "토란쿠오 아케테 쿠다사이" }
+                    { ko: "트렁크 열어주세요 (유모차)", jp: "トランクを開けてください", ro: "토란쿠오 아케테 쿠다사이" }
                 ]
             }
         ];
@@ -651,9 +674,9 @@
                     <p class="text-xs text-amber-700 dark:text-amber-400 font-bold mb-3.5">${s.desc}</p>
                     <div class="space-y-2 bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/50">
                         ${s.items.map(item => `
-                            <div class="pb-2 border-b border-slate-200/60 dark:border-slate-700 last:border-none last:pb-0">
-                                <p class="text-sm font-black text-slate-800 dark:text-slate-100">🛍️ ${item.name}</p>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${item.desc}</p>
+                            <div class="pb-2.5 border-b border-slate-200/60 dark:border-slate-700 last:border-none last:pb-0">
+                                <p class="text-sm font-black text-slate-800 dark:text-slate-100">${item.name}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">${item.desc}</p>
                             </div>
                         `).join('')}
                     </div>
