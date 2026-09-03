@@ -23,145 +23,145 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; word-break: keep-all; user-select: none; letter-spacing: -0.02em; }
+        body { font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; word-break: keep-all; user-select: none; letter-spacing: -0.01em; font-size: 18px; line-height: 1.6; }
         .tab-content { display: none; } .tab-content.active { display: block; animation: fadeIn 0.25s ease-out; }
         .glass-header { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); border-bottom: 1px solid #f1f5f9; }
         .dark .glass-header { background: rgba(15, 23, 42, 0.96); border-bottom: 1px solid #1e293b; }
-        .bottom-nav { height: 66px; border-top: 1px solid #e2e8f0; box-shadow: 0 -10px 30px rgba(0,0,0,0.06); }
+        .bottom-nav { height: 72px; border-top: 1px solid #e2e8f0; box-shadow: 0 -10px 30px rgba(0,0,0,0.06); }
         .dark .bottom-nav { border-top: 1px solid #1e293b; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         ::-webkit-scrollbar { display: none; }
-        .category-chip { transition: all 0.2s; white-space: nowrap; cursor: pointer; border: 1px solid #e2e8f0; }
+        .category-chip { transition: all 0.2s; white-space: nowrap; cursor: pointer; border: 1px solid #cbd5e1; }
         .dark .category-chip { border-color: #334155; }
         .category-chip.active { background-color: #f59e0b !important; color: white !important; border-color: #f59e0b !important; }
     </style>
 </head>
-<body class="bg-slate-100 dark:bg-slate-950 pb-28 transition-colors duration-300 text-slate-900 dark:text-slate-100 text-base">
+<body class="bg-slate-100 dark:bg-slate-950 pb-32 transition-colors duration-300 text-slate-900 dark:text-slate-100">
 
     <!-- Header -->
     <header class="glass-header sticky top-0 z-50 px-4 py-3.5">
         <div class="flex justify-between items-center max-w-lg mx-auto">
-            <button onclick="window.open('https://search.naver.com/search.naver?query=후쿠오카+날씨', '_blank')" id="weather-display" class="bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 px-3 py-2 rounded-2xl text-xs font-bold flex items-center shadow-sm border border-amber-200 dark:border-amber-900/50">
-                <i class="fas fa-spinner fa-spin mr-1.5"></i>날씨 로딩 중...
+            <button onclick="window.open('https://search.naver.com/search.naver?query=후쿠오카+날씨', '_blank')" id="weather-display" class="bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 px-3.5 py-2.5 rounded-2xl text-sm font-extrabold flex items-center shadow-sm border border-amber-200 dark:border-amber-900/50">
+                <i class="fas fa-spinner fa-spin mr-2"></i>날씨 확인 중...
             </button>
-            <div class="flex items-center space-x-1.5">
-                <button onclick="openSubwayModal()" class="px-3 py-2 rounded-2xl bg-orange-500 text-white text-xs font-black shadow-md active:scale-95 transition-transform flex items-center">
-                    <i class="fas fa-subway mr-1"></i>노선도
+            <div class="flex items-center space-x-2">
+                <button onclick="openSubwayModal()" class="px-3.5 py-2.5 rounded-2xl bg-orange-500 text-white text-sm font-black shadow-md active:scale-95 transition-transform flex items-center">
+                    <i class="fas fa-subway mr-1.5"></i>노선도
                 </button>
-                <button onclick="openHotelCardSelector()" class="px-3 py-2 rounded-2xl bg-slate-900 text-white dark:bg-slate-800 text-xs font-bold shadow-md active:scale-95 transition-transform">
+                <button onclick="openHotelCardSelector()" class="px-3.5 py-2.5 rounded-2xl bg-slate-900 text-white dark:bg-slate-800 text-sm font-bold shadow-md active:scale-95 transition-transform">
                     🏨 숙소
                 </button>
-                <button onclick="openSOSModal()" class="w-9 h-9 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform">
-                    <span class="animate-pulse text-sm">🚨</span>
+                <button onclick="openSOSModal()" class="w-11 h-11 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform">
+                    <span class="animate-pulse text-lg">🚨</span>
                 </button>
-                <button onclick="toggleTheme()" class="w-9 h-9 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 shadow-sm border border-slate-200 dark:border-slate-700">
-                    <i id="theme-icon" class="fas fa-moon text-sm"></i>
+                <button onclick="toggleTheme()" class="w-11 h-11 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 shadow-sm border border-slate-200 dark:border-slate-700">
+                    <i id="theme-icon" class="fas fa-moon text-base"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="p-4 max-w-lg mx-auto space-y-5">
+    <main class="p-4 max-w-lg mx-auto space-y-6">
         <!-- 1. 일정 탭 (Schedule) -->
-        <div id="schedule" class="tab-content active space-y-4">
+        <div id="schedule" class="tab-content active space-y-5">
             <div class="bg-gradient-to-br from-amber-600 to-amber-700 text-white p-6 rounded-[2.2rem] shadow-lg">
                 <div class="flex justify-between items-start">
                     <div>
-                        <span class="text-xs font-black tracking-wider uppercase bg-white/20 px-3 py-1 rounded-full">38개월 유아 동반 동선 최적화</span>
-                        <h2 class="text-2xl font-black mt-2 tracking-tight">후쿠오카 3박 4일 일정</h2>
-                        <p class="text-sm font-medium text-amber-100 mt-1">10.10(금) RS0727 ~ 10.13(월) RS0728</p>
+                        <span class="text-xs font-black tracking-wider uppercase bg-white/20 px-3 py-1 rounded-full">38개월 유아 동반 맞춤 투어</span>
+                        <h2 class="text-2xl font-black mt-2.5 tracking-tight">후쿠오카 3박 4일 일정</h2>
+                        <p class="text-base font-medium text-amber-100 mt-1">10.10(금) RS0727 ~ 10.13(월) RS0728</p>
                     </div>
                 </div>
             </div>
 
             <!-- 날짜 필터 -->
-            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-sm font-black">
-                <button onclick="filterDay('all')" class="day-chip active px-4 py-2 rounded-xl bg-amber-500 text-white shadow-sm" data-day="all">전체</button>
-                <button onclick="filterDay('10-10')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-10">1일차</button>
-                <button onclick="filterDay('10-11')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-11">2일차</button>
-                <button onclick="filterDay('10-12')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-12">3일차</button>
-                <button onclick="filterDay('10-13')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-13">4일차</button>
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-base font-black">
+                <button onclick="filterDay('all')" class="day-chip active px-4 py-3 rounded-2xl bg-amber-500 text-white shadow-sm" data-day="all">전체</button>
+                <button onclick="filterDay('10-10')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-10">1일차</button>
+                <button onclick="filterDay('10-11')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-11">2일차</button>
+                <button onclick="filterDay('10-12')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-12">3일차</button>
+                <button onclick="filterDay('10-13')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-13">4일차</button>
             </div>
 
             <div id="itinerary-list" class="space-y-4 pt-1"></div>
         </div>
 
         <!-- 2. 맛집 탭 (Gourmet) -->
-        <div id="spot" class="tab-content space-y-4">
+        <div id="spot" class="tab-content space-y-5">
             <div class="px-1">
-                <h2 class="text-xl font-black tracking-tight text-slate-800 dark:text-white">후쿠오카 추천 맛집 & 메뉴</h2>
-                <p class="text-xs text-slate-500 mt-0.5">성지 vs 로컬 숨은 맛집 vs 아이 안심 메뉴 안내</p>
+                <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">후쿠오카 추천 맛집 & 메뉴</h2>
+                <p class="text-sm text-slate-500 mt-1 font-medium">성지 vs 로컬 숨은 맛집 vs 아이 안심 메뉴 안내</p>
             </div>
 
-            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
-                <button onclick="filterSpots('전체')" class="category-chip active px-4 py-2 rounded-full bg-white dark:bg-slate-900 shadow-sm" data-cat="전체">전체</button>
-                <button onclick="filterSpots('한국인유명')" class="category-chip px-4 py-2 rounded-full bg-white dark:bg-slate-900" data-cat="한국인유명">🔥 유명 성지</button>
-                <button onclick="filterSpots('현지인로컬')" class="category-chip px-4 py-2 rounded-full bg-white dark:bg-slate-900" data-cat="현지인로컬">🌿 로컬 강추</button>
-                <button onclick="filterSpots('웨이팅적음')" class="category-chip px-4 py-2 rounded-full bg-white dark:bg-slate-900" data-cat="웨이팅적음">⚡ 웨이팅 적음</button>
-                <button onclick="filterSpots('디저트')" class="category-chip px-4 py-2 rounded-full bg-white dark:bg-slate-900" data-cat="디저트">🍰 디저트/빵</button>
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-sm font-bold">
+                <button onclick="filterSpots('전체')" class="category-chip active px-4 py-2.5 rounded-full bg-white dark:bg-slate-900 shadow-sm" data-cat="전체">전체</button>
+                <button onclick="filterSpots('한국인유명')" class="category-chip px-4 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="한국인유명">🔥 유명 성지</button>
+                <button onclick="filterSpots('현지인로컬')" class="category-chip px-4 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="현지인로컬">🌿 로컬 강추</button>
+                <button onclick="filterSpots('웨이팅적음')" class="category-chip px-4 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="웨이팅적음">⚡ 웨이팅 적음</button>
+                <button onclick="filterSpots('디저트')" class="category-chip px-4 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="디저트">🍰 디저트/빵</button>
             </div>
 
-            <div id="spot-list" class="space-y-3.5"></div>
+            <div id="spot-list" class="space-y-4"></div>
         </div>
 
         <!-- 3. 쇼핑 & 명소 탭 (Shopping & Sights) -->
-        <div id="shopping" class="tab-content space-y-4">
+        <div id="shopping" class="tab-content space-y-5">
             <div class="px-1">
-                <h2 class="text-xl font-black tracking-tight text-slate-800 dark:text-white">단톤·쇼핑 & 추천 관광지</h2>
-                <p class="text-xs text-slate-500 mt-0.5">단톤 매장/편집숍 비교 및 인기 쇼핑템 완벽 정리</p>
+                <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">단톤·쇼핑 & 추천 관광지</h2>
+                <p class="text-sm text-slate-500 mt-1 font-medium">단톤 매장/편집숍 비교 및 인기 쇼핑템 완벽 정리</p>
             </div>
             <div id="shopping-list" class="space-y-4"></div>
         </div>
 
         <!-- 4. 엔화 환율 계산기 & 가계부 -->
-        <div id="ledger" class="tab-content space-y-5">
+        <div id="ledger" class="tab-content space-y-6">
             <div class="bg-slate-900 text-white p-6 rounded-[2.2rem] shadow-xl relative overflow-hidden">
                 <div class="flex justify-between items-center mb-1">
-                    <span class="text-xs font-black text-slate-400 tracking-wider uppercase">실시간 엔화 환율 계산기</span>
-                    <button onclick="fetchExchangeRate()" class="text-xs text-amber-400"><i class="fas fa-sync-alt"></i></button>
+                    <span class="text-sm font-black text-slate-400 tracking-wider uppercase">실시간 엔화 환율 계산기</span>
+                    <button onclick="fetchExchangeRate()" class="text-sm text-amber-400 p-1"><i class="fas fa-sync-alt"></i></button>
                 </div>
-                <h2 class="text-3xl font-black italic tracking-tighter" id="exchange-rate-display">100¥ = 계산 중...</h2>
-                <div class="space-y-3.5 relative z-10 mt-5">
+                <h2 class="text-4xl font-black italic tracking-tighter" id="exchange-rate-display">100¥ = 계산 중...</h2>
+                <div class="space-y-4 relative z-10 mt-6">
                     <div class="relative">
-                        <span class="absolute left-4 top-4 text-white/60 font-black text-sm">JPY (엔화 ¥)</span>
-                        <input type="number" id="jpy-input" placeholder="엔화 입력" class="w-full p-4 pl-28 rounded-2xl bg-white/10 border border-white/10 text-white font-black outline-none text-2xl">
+                        <span class="absolute left-4 top-4 text-white/70 font-black text-base">JPY (엔화 ¥)</span>
+                        <input type="number" id="jpy-input" placeholder="엔화 입력" class="w-full p-4 pl-32 rounded-2xl bg-white/10 border border-white/10 text-white font-black outline-none text-3xl">
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="addJPY(500)" class="flex-1 bg-white/10 text-white py-3 rounded-xl font-black text-xs active:scale-95">+500¥</button>
-                        <button onclick="addJPY(1000)" class="flex-1 bg-white/10 text-white py-3 rounded-xl font-black text-xs active:scale-95">+1,000¥</button>
-                        <button onclick="addJPY(5000)" class="flex-1 bg-white/10 text-white py-3 rounded-xl font-black text-xs active:scale-95">+5,000¥</button>
-                        <button onclick="clearJPY()" class="w-12 bg-rose-600 text-white py-3 rounded-xl font-black text-xs active:scale-95"><i class="fas fa-undo"></i></button>
+                        <button onclick="addJPY(500)" class="flex-1 bg-white/10 text-white py-3 rounded-xl font-black text-sm active:scale-95">+500¥</button>
+                        <button onclick="addJPY(1000)" class="flex-1 bg-white/10 text-white py-3 rounded-xl font-black text-sm active:scale-95">+1,000¥</button>
+                        <button onclick="addJPY(5000)" class="flex-1 bg-white/10 text-white py-3 rounded-xl font-black text-sm active:scale-95">+5,000¥</button>
+                        <button onclick="clearJPY()" class="w-14 bg-rose-600 text-white py-3 rounded-xl font-black text-sm active:scale-95"><i class="fas fa-undo"></i></button>
                     </div>
                     <div class="relative">
-                        <span class="absolute left-4 top-4 text-white/80 font-black text-sm">KRW (원화 ₩)</span>
-                        <input type="number" id="krw-input" placeholder="원화 환산" class="w-full p-4 pl-28 rounded-2xl bg-amber-600 border-none text-white font-black outline-none text-2xl">
+                        <span class="absolute left-4 top-4 text-white/90 font-black text-base">KRW (원화 ₩)</span>
+                        <input type="number" id="krw-input" placeholder="원화 환산" class="w-full p-4 pl-32 rounded-2xl bg-amber-600 border-none text-white font-black outline-none text-3xl">
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
-                <h3 class="font-black text-sm text-slate-500 uppercase tracking-widest mb-3">지출 기록</h3>
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 class="font-black text-base text-slate-500 uppercase tracking-widest mb-3">지출 기록</h3>
                 <div class="flex gap-2 mb-4">
-                    <input type="text" id="exp-desc" placeholder="항목 (예: 단톤 이너패딩)" class="flex-1 p-3 text-sm font-bold rounded-xl border dark:bg-slate-800 dark:border-slate-700">
-                    <input type="number" id="exp-amt" placeholder="¥" class="w-24 p-3 text-sm font-bold rounded-xl border text-center dark:bg-slate-800 dark:border-slate-700">
-                    <button onclick="addExpense()" class="px-5 bg-slate-900 dark:bg-amber-600 text-white text-sm font-black rounded-xl active:scale-95">저장</button>
+                    <input type="text" id="exp-desc" placeholder="항목 (예: 단톤 이너패딩)" class="flex-1 p-3.5 text-base font-bold rounded-xl border dark:bg-slate-800 dark:border-slate-700">
+                    <input type="number" id="exp-amt" placeholder="¥" class="w-28 p-3.5 text-base font-bold rounded-xl border text-center dark:bg-slate-800 dark:border-slate-700">
+                    <button onclick="addExpense()" class="px-6 bg-slate-900 dark:bg-amber-600 text-white text-base font-black rounded-xl active:scale-95">저장</button>
                 </div>
-                <div id="expense-list" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
-                <div class="mt-4 pt-3 border-t border-dashed dark:border-slate-800 flex justify-between items-center text-sm font-black">
+                <div id="expense-list" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></div>
+                <div class="mt-4 pt-3 border-t border-dashed dark:border-slate-800 flex justify-between items-center text-base font-black">
                     <span class="text-slate-400 uppercase">합계</span>
-                    <span id="total-expense" class="text-xl text-amber-600 font-black">0 ¥</span>
+                    <span id="total-expense" class="text-2xl text-amber-600 font-black">0 ¥</span>
                 </div>
             </div>
         </div>
 
         <!-- 5. 일본어 회화/TTS -->
-        <div id="phrases" class="tab-content space-y-4">
-            <div class="bg-slate-900 text-white p-5 rounded-[2rem] shadow-lg flex justify-between items-center">
+        <div id="phrases" class="tab-content space-y-5">
+            <div class="bg-slate-900 text-white p-6 rounded-[2rem] shadow-lg flex justify-between items-center">
                 <div>
-                    <h3 class="font-black text-lg"><i class="fas fa-child mr-2 text-amber-400"></i>아이 동반 & 쇼핑 회화</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">카드를 누르면 발음(TTS)이 재생됩니다.</p>
+                    <h3 class="font-black text-xl"><i class="fas fa-child mr-2 text-amber-400"></i>아이 동반 & 쇼핑 회화</h3>
+                    <p class="text-sm text-slate-300 mt-1 font-medium">카드를 누르면 발음(TTS)이 재생됩니다.</p>
                 </div>
-                <button onclick="window.open('https://papago.naver.com/?sk=ko&tk=ja', '_blank')" class="bg-white/10 text-xs px-3.5 py-2 rounded-xl font-bold">파파고 <i class="fas fa-external-link-alt ml-1"></i></button>
+                <button onclick="window.open('https://papago.naver.com/?sk=ko&tk=ja', '_blank')" class="bg-white/10 text-sm px-4 py-2.5 rounded-xl font-bold">파파고 <i class="fas fa-external-link-alt ml-1"></i></button>
             </div>
             <div id="phrase-list" class="space-y-4 pb-6"></div>
         </div>
@@ -170,46 +170,46 @@
     <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 left-0 right-0 glass-header flex bottom-nav z-50 shadow-2xl max-w-lg mx-auto">
         <button onclick="showTab('schedule')" id="nav-schedule" class="tab-btn flex-1 flex flex-col items-center justify-center text-amber-600 font-black">
-            <i class="fas fa-calendar-alt text-[22px] mb-1"></i><span class="text-[10px]">일정</span>
+            <i class="fas fa-calendar-alt text-[24px] mb-1"></i><span class="text-[12px]">일정</span>
         </button>
         <button onclick="showTab('spot')" id="nav-spot" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-utensils text-[22px] mb-1"></i><span class="text-[10px]">맛집</span>
+            <i class="fas fa-utensils text-[24px] mb-1"></i><span class="text-[12px]">맛집</span>
         </button>
         <button onclick="showTab('shopping')" id="nav-shopping" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-tshirt text-[22px] mb-1"></i><span class="text-[10px]">쇼핑/관광</span>
+            <i class="fas fa-tshirt text-[24px] mb-1"></i><span class="text-[12px]">쇼핑/관광</span>
         </button>
         <button onclick="showTab('ledger')" id="nav-ledger" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-coins text-[22px] mb-1"></i><span class="text-[10px]">환율/가계부</span>
+            <i class="fas fa-coins text-[24px] mb-1"></i><span class="text-[12px]">환율/가계부</span>
         </button>
         <button onclick="showTab('phrases')" id="nav-phrases" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-comment-dots text-[22px] mb-1"></i><span class="text-[10px]">회화</span>
+            <i class="fas fa-comment-dots text-[24px] mb-1"></i><span class="text-[12px]">회화</span>
         </button>
     </nav>
 
-    <!-- 상단 헤더 전용: 지하철 공식 노선도 모달 -->
+    <!-- 지하철 노선도 모달 -->
     <div id="subway-modal" class="fixed inset-0 bg-black/80 z-[400] hidden flex items-center justify-center p-4 backdrop-blur-md" onclick="closeSubwayModal()">
         <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-4 max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center border-b pb-3 dark:border-slate-800">
                 <div>
-                    <h3 class="font-black text-xl text-slate-900 dark:text-white flex items-center">
-                        <span class="w-3.5 h-3.5 rounded-full bg-orange-500 mr-2"></span>후쿠오카 지하철 안내
+                    <h3 class="font-black text-2xl text-slate-900 dark:text-white flex items-center">
+                        <span class="w-4 h-4 rounded-full bg-orange-500 mr-2"></span>후쿠오카 지하철 안내
                     </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">후쿠오카는 '공항선(주황색)' 하나면 도심 이동 끝!</p>
+                    <p class="text-sm text-slate-500 mt-1">공항선(주황색) 하나면 도심 이동 끝!</p>
                 </div>
-                <button onclick="closeSubwayModal()" class="text-slate-400 text-2xl">&times;</button>
+                <button onclick="closeSubwayModal()" class="text-slate-400 text-3xl">&times;</button>
             </div>
             
-            <div class="space-y-3 text-xs">
+            <div class="space-y-3.5 text-sm">
                 <div class="p-4 bg-orange-50 dark:bg-orange-950/30 rounded-2xl border border-orange-200 dark:border-orange-900">
-                    <p class="font-black text-orange-800 dark:text-orange-300 text-sm mb-1.5">🟠 공항선(주황색) 주요 이동 구간</p>
-                    <p class="text-slate-700 dark:text-slate-300 leading-relaxed font-bold">
+                    <p class="font-black text-orange-800 dark:text-orange-300 text-base mb-1.5">🟠 공항선(주황색) 주요 이동 구간</p>
+                    <p class="text-slate-700 dark:text-slate-200 leading-relaxed font-bold">
                         후쿠오카공항 ↔ <span class="text-orange-600 font-black">하카타(비아인)</span> ↔ <span class="text-orange-600 font-black">기온(크룸기온)</span> ↔ 나카스카와바타(장어) ↔ 텐진(쇼핑) ↔ <span class="text-orange-600 font-black">오호리공원(보트·신선산도)</span>
                     </p>
                 </div>
 
                 <div class="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl space-y-2">
-                    <p class="font-black text-slate-800 dark:text-white text-sm">💡 베테랑 가이드 승차 꿀팁</p>
-                    <ul class="list-disc pl-4 space-y-1.5 text-slate-600 dark:text-slate-300">
+                    <p class="font-black text-slate-800 dark:text-white text-base">💡 베테랑 가이드 승차 꿀팁</p>
+                    <ul class="list-disc pl-5 space-y-1.5 text-slate-600 dark:text-slate-300">
                         <li><strong>신용카드 직접 태그</strong>: 한국 컨택리스 카드(트래블로그, 트래블월렛, 비자/마스터)로 개찰구 바로 터치 탑승 가능!</li>
                         <li><strong>유아 요금 면제</strong>: 38개월 영유아는 보호자 동반 시 지하철 요금이 전액 무료입니다.</li>
                         <li><strong>다이렉트 길찾기</strong>: 각 일정 카드 하단의 주황색 경로를 누르면 출발지에서 목적지까지 지하철 길찾기가 바로 열립니다.</li>
@@ -218,56 +218,56 @@
             </div>
 
             <div class="flex gap-2 pt-2">
-                <button onclick="window.open('https://subway.city.fukuoka.lg.jp/kor/route/', '_blank')" class="flex-1 py-3.5 bg-orange-500 text-white rounded-xl text-xs font-black shadow-md flex items-center justify-center">
-                    <i class="fas fa-external-link-alt mr-1.5"></i>공식 한국어 노선도 웹 열기
+                <button onclick="window.open('https://subway.city.fukuoka.lg.jp/kor/route/', '_blank')" class="flex-1 py-4 bg-orange-500 text-white rounded-xl text-sm font-black shadow-md flex items-center justify-center">
+                    <i class="fas fa-external-link-alt mr-2"></i>공식 한국어 노선도 웹 열기
                 </button>
-                <button onclick="closeSubwayModal()" class="px-5 py-3.5 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold text-slate-500">닫기</button>
+                <button onclick="closeSubwayModal()" class="px-6 py-4 bg-slate-100 dark:bg-slate-800 rounded-xl text-sm font-bold text-slate-500">닫기</button>
             </div>
         </div>
     </div>
 
     <!-- 택시 기사용 호텔 카드 선택 모달 -->
     <div id="hotel-selector-modal" class="fixed inset-0 bg-black/70 z-[450] hidden flex items-center justify-center p-5 backdrop-blur-md" onclick="closeHotelCardSelector()">
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-sm space-y-3" onclick="event.stopPropagation()">
-            <h3 class="font-black text-lg text-center mb-4 text-slate-800 dark:text-white">택시 기사용 숙소 선택</h3>
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-sm space-y-3.5" onclick="event.stopPropagation()">
+            <h3 class="font-black text-xl text-center mb-4 text-slate-800 dark:text-white">택시 기사용 숙소 선택</h3>
             <button onclick="showHotelCard(1)" class="w-full text-left p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
                 <span class="text-xs font-black text-amber-700 uppercase">1박 (10/10)</span>
-                <p class="font-black text-slate-900 dark:text-white mt-0.5 text-base">비아인 하카타구치 에키마에</p>
-                <p class="text-xs text-slate-500 mt-1">ヴィアイン博多口駅前</p>
+                <p class="font-black text-slate-900 dark:text-white mt-1 text-lg">비아인 하카타구치 에키마에</p>
+                <p class="text-sm text-slate-500 mt-1">ヴィアイン博多口駅前</p>
             </button>
             <button onclick="showHotelCard(2)" class="w-full text-left p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900">
                 <span class="text-xs font-black text-indigo-600 uppercase">2~3박 (10/11~13)</span>
-                <p class="font-black text-slate-900 dark:text-white mt-0.5 text-base">니시테츠 크룸 하카타 기온</p>
-                <p class="text-xs text-slate-500 mt-1">西鉄ホテル クルーム 博多祇園</p>
+                <p class="font-black text-slate-900 dark:text-white mt-1 text-lg">니시테츠 크룸 하카타 기온</p>
+                <p class="text-sm text-slate-500 mt-1">西鉄ホテル クルーム 博多祇園</p>
             </button>
-            <button onclick="closeHotelCardSelector()" class="w-full py-3 bg-slate-100 dark:bg-slate-800 rounded-xl font-black text-xs text-slate-500">닫기</button>
+            <button onclick="closeHotelCardSelector()" class="w-full py-3.5 bg-slate-100 dark:bg-slate-800 rounded-xl font-black text-sm text-slate-500">닫기</button>
         </div>
     </div>
 
     <!-- 전체 화면 호텔 카드 -->
     <div id="hotel-card" class="fixed inset-0 bg-white z-[500] hidden flex flex-col items-center justify-center p-8 text-center" onclick="this.classList.add('hidden')">
-        <p class="text-slate-500 font-bold text-lg mb-6">기사님, 여기로 가주세요<br><span class="text-sm text-slate-400">(運転手さん、ここまでお願いします)</span></p>
-        <h2 id="hotel-card-name" class="text-4xl font-black text-slate-950 mb-6 leading-tight"></h2>
-        <p id="hotel-card-addr" class="text-xl font-bold text-slate-700 leading-relaxed mb-6"></p>
-        <p id="hotel-card-tel" class="text-base font-semibold text-amber-700 bg-amber-50 px-5 py-2.5 rounded-xl mb-10"></p>
-        <div class="bg-slate-100 px-6 py-3 rounded-full font-black text-slate-400 animate-pulse text-xs">화면을 터치하면 닫힙니다</div>
+        <p class="text-slate-600 font-bold text-xl mb-6">기사님, 여기로 가주세요<br><span class="text-base text-slate-400">(運転手さん、ここまでお願いします)</span></p>
+        <h2 id="hotel-card-name" class="text-5xl font-black text-slate-950 mb-6 leading-tight"></h2>
+        <p id="hotel-card-addr" class="text-2xl font-bold text-slate-700 leading-relaxed mb-6"></p>
+        <p id="hotel-card-tel" class="text-xl font-bold text-amber-700 bg-amber-50 px-6 py-3 rounded-xl mb-10"></p>
+        <div class="bg-slate-100 px-8 py-3.5 rounded-full font-black text-slate-500 animate-pulse text-sm">화면을 터치하면 닫힙니다</div>
     </div>
 
     <!-- SOS 모달 -->
     <div id="sos-modal" class="fixed inset-0 bg-black/70 z-[400] hidden flex items-center justify-center p-5 backdrop-blur-md" onclick="closeSOSModal()">
         <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-4 border-t-[8px] border-rose-500" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center border-b pb-3 dark:border-slate-800">
-                <h3 class="font-black text-xl text-rose-500 flex items-center"><i class="fas fa-exclamation-triangle mr-2"></i>일본 긴급 비상연락</h3>
-                <button onclick="closeSOSModal()" class="text-slate-400 text-2xl">&times;</button>
+                <h3 class="font-black text-2xl text-rose-500 flex items-center"><i class="fas fa-exclamation-triangle mr-2"></i>일본 긴급 비상연락</h3>
+                <button onclick="closeSOSModal()" class="text-slate-400 text-3xl">&times;</button>
             </div>
-            <div class="grid grid-cols-2 gap-2 text-xs font-black">
+            <div class="grid grid-cols-2 gap-2 text-sm font-black">
                 <a href="tel:110" class="bg-rose-50 text-rose-600 p-4 rounded-2xl text-center border border-rose-100">경찰 (110)</a>
                 <a href="tel:119" class="bg-amber-50 text-amber-700 p-4 rounded-2xl text-center border border-amber-100">구급/소방 (119)</a>
-                <a href="tel:+81-92-771-0461" class="col-span-2 bg-blue-50 text-blue-600 p-3.5 rounded-2xl text-center border border-blue-100">
-                    🇰🇷 주후쿠오카 대한민국 총영사관<br><span class="text-[10px] font-normal text-slate-500">+81-92-771-0461 (야간긴급 +81-90-1367-3638)</span>
+                <a href="tel:+81-92-771-0461" class="col-span-2 bg-blue-50 text-blue-600 p-4 rounded-2xl text-center border border-blue-100">
+                    🇰🇷 주후쿠오카 대한민국 총영사관<br><span class="text-xs font-normal text-slate-500">+81-92-771-0461 (야간긴급 +81-90-1367-3638)</span>
                 </a>
             </div>
-            <button onclick="closeSOSModal(); openHotelCardSelector();" class="w-full bg-slate-900 text-white dark:bg-amber-600 py-3.5 rounded-2xl font-black text-xs">🚕 택시용 숙소 카드 보기</button>
+            <button onclick="closeSOSModal(); openHotelCardSelector();" class="w-full bg-slate-900 text-white dark:bg-amber-600 py-4 rounded-2xl font-black text-sm">🚕 택시용 숙소 카드 보기</button>
         </div>
     </div>
 
@@ -282,7 +282,7 @@
 
         let jpyPerKrw = 9.15;
 
-        // 3박 4일 일정 (다이렉트 대중교통 길찾기 파라미터 origin/dest 세팅)
+        // 3박 4일 일정
         const itinerary = [
             {
                 date: "10-10",
@@ -324,7 +324,7 @@
                         title: "저녁: 함바그 요시 (텐진) or 규센닌", 
                         desc: "💡가이드 팁: 키와미야는 2시간 넘는 계단 대기와 기름 튐으로 영유아 동반 시 위험합니다. 직원이 안전하게 구워주며 유모차 진입이 편한 '함바그 요시'나 부드러운 와규집 추천!", 
                         mapQuery: "ハンバーグ よし 福岡",
-                        subwayRoute: "🟠 공항선 [하카타역] → [텐진역] 2번 출구 도보 5분 (클릭 시 지하철 길찾기)",
+                        subwayRoute: "🟠 공항선 [하카타역] → [텐진역] 2번 출구 도보 5분 (클릭 시 길찾기)",
                         transitOrigin: "하카타역",
                         transitDest: "ハンバーグ よし 福岡",
                         nearbyHighlights: "텐진 지하상가(Bake 치즈타르트), 다이묘 소프트크림"
@@ -371,7 +371,7 @@
                         title: "점심: 하가쿠레 우동 (葉隠うどん)", 
                         desc: "미슐랭 빕구르망 로컬 우동. 자극적이지 않고 맑은 멸치 육수에 부드러운 하카타면이라 아이에게 잘라주면 최고!", 
                         mapQuery: "葉隠うどん 博多",
-                        subwayRoute: "🚖 택시 추천 (하카타역 남쪽 방면, 약 800엔 / 클릭 시 길찾기)",
+                        subwayRoute: "🚖 하카타역 남쪽 방면 택시 탑승 (약 800엔 / 클릭 시 길찾기)",
                         transitOrigin: "pain stock tenjin",
                         transitDest: "葉隠うどん 博多",
                         nearbyHighlights: "근처 로컬 화과자점, 조용한 주택가 골목"
@@ -843,36 +843,36 @@
             const container = document.getElementById('itinerary-list');
             const target = filter === 'all' ? itinerary : itinerary.filter(d => d.date === filter);
             container.innerHTML = target.map(day => `
-                <div class="mb-7">
-                    <div class="flex justify-between items-center mb-2.5 px-1">
-                        <h3 class="text-base font-black text-amber-800 dark:text-amber-400 flex items-center">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-2"></span>${day.dateLabel}
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-3 px-1">
+                        <h3 class="text-lg font-black text-amber-800 dark:text-amber-400 flex items-center">
+                            <span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span>${day.dateLabel}
                         </h3>
-                        <span class="text-xs font-bold text-slate-500 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-full">🏨 ${day.hotel}</span>
+                        <span class="text-xs font-bold text-slate-500 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-full">🏨 ${day.hotel}</span>
                     </div>
-                    <div class="space-y-3.5">
+                    <div class="space-y-4">
                         ${day.items.map(item => `
-                            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-2.5">
+                            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-xs font-black ${item.time.includes('선택') ? 'bg-indigo-600' : 'bg-amber-500'} text-white px-2.5 py-1 rounded-lg">${item.time}</span>
-                                    <button onclick="openGoogleMap('${item.mapQuery}')" class="text-xs font-bold text-slate-400 hover:text-amber-600 flex items-center">
-                                        <i class="fas fa-map-marker-alt mr-1"></i>장소위치
+                                    <span class="text-sm font-black ${item.time.includes('선택') ? 'bg-indigo-600' : 'bg-amber-500'} text-white px-3 py-1 rounded-xl">${item.time}</span>
+                                    <button onclick="openGoogleMap('${item.mapQuery}')" class="text-sm font-bold text-slate-500 hover:text-amber-600 flex items-center">
+                                        <i class="fas fa-map-marker-alt mr-1.5 text-amber-500"></i>장소위치
                                     </button>
                                 </div>
-                                <h4 class="font-black text-base text-slate-900 dark:text-white leading-snug">${item.title}</h4>
-                                <p class="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-line">${item.desc}</p>
+                                <h4 class="font-black text-xl text-slate-900 dark:text-white leading-snug">${item.title}</h4>
+                                <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-line">${item.desc}</p>
                                 
                                 ${item.nearbyHighlights ? `
-                                <div class="bg-amber-50/60 dark:bg-amber-950/20 p-2.5 rounded-xl border border-amber-100 dark:border-amber-900/30 text-xs">
-                                    <span class="font-black text-amber-700 dark:text-amber-400">✨ 주변 볼거리/간식:</span>
-                                    <span class="text-slate-600 dark:text-slate-300 font-medium ml-1">${item.nearbyHighlights}</span>
+                                <div class="bg-amber-50/70 dark:bg-amber-950/25 p-3 rounded-2xl border border-amber-100 dark:border-amber-900/30 text-sm">
+                                    <span class="font-black text-amber-800 dark:text-amber-300">✨ 주변 볼거리/간식:</span>
+                                    <span class="text-slate-700 dark:text-slate-200 font-medium ml-1.5">${item.nearbyHighlights}</span>
                                 </div>` : ''}
 
                                 ${item.subwayRoute ? `
-                                <div onclick="openDirectTransit('${item.transitOrigin}', '${item.transitDest}')" class="pt-2.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center text-xs font-black text-orange-600 dark:text-orange-400 cursor-pointer active:scale-[0.99] transition-transform">
-                                    <i class="fas fa-directions mr-1.5 text-sm"></i>
+                                <div onclick="openDirectTransit('${item.transitOrigin}', '${item.transitDest}')" class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center text-sm font-black text-orange-600 dark:text-orange-400 cursor-pointer active:scale-[0.99] transition-transform">
+                                    <i class="fas fa-directions mr-2 text-base"></i>
                                     <span class="underline">${item.subwayRoute}</span>
-                                    <i class="fas fa-chevron-right ml-1 text-[10px] opacity-70"></i>
+                                    <i class="fas fa-chevron-right ml-1.5 text-xs opacity-75"></i>
                                 </div>` : ''}
                             </div>
                         `).join('')}
@@ -896,38 +896,38 @@
             const container = document.getElementById('spot-list');
             const filtered = cat === '전체' ? spots : spots.filter(s => s.cat === cat);
             container.innerHTML = filtered.map(s => `
-                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3.5">
                     <div class="flex justify-between items-start">
-                        <span class="text-xs font-black text-amber-700 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-1 rounded-lg">${s.badge}</span>
-                        <span class="text-xs font-bold text-slate-400">${s.addr}</span>
+                        <span class="text-sm font-black text-amber-800 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 rounded-xl">${s.badge}</span>
+                        <span class="text-sm font-bold text-slate-400">${s.addr}</span>
                     </div>
                     <div>
-                        <h4 class="font-black text-lg text-slate-900 dark:text-white leading-tight">${s.nameKo}</h4>
-                        <p class="text-xs font-bold text-slate-400 mt-0.5">${s.nameJp}</p>
+                        <h4 class="font-black text-2xl text-slate-900 dark:text-white leading-tight">${s.nameKo}</h4>
+                        <p class="text-sm font-bold text-slate-400 mt-1">${s.nameJp}</p>
                     </div>
-                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">${s.desc}</p>
+                    <p class="text-base text-slate-600 dark:text-slate-300 leading-relaxed font-medium">${s.desc}</p>
                     
-                    <div class="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/50 space-y-2 text-xs">
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-100 dark:border-slate-700/50 space-y-2.5 text-sm">
                         <div class="flex items-start">
-                            <span class="font-black text-amber-600 dark:text-amber-400 w-16 shrink-0">🥢 성인 추천:</span>
-                            <span class="font-bold text-slate-800 dark:text-slate-200">${s.adultMenu}</span>
+                            <span class="font-black text-amber-700 dark:text-amber-300 w-20 shrink-0">🥢 성인 추천:</span>
+                            <span class="font-bold text-slate-800 dark:text-slate-100">${s.adultMenu}</span>
                         </div>
                         <div class="flex items-start">
-                            <span class="font-black text-emerald-600 dark:text-emerald-400 w-16 shrink-0">👶 38m 아이:</span>
-                            <span class="font-bold text-slate-800 dark:text-slate-200">${s.childMenu}</span>
+                            <span class="font-black text-emerald-700 dark:text-emerald-300 w-20 shrink-0">👶 38m 아이:</span>
+                            <span class="font-bold text-slate-800 dark:text-slate-100">${s.childMenu}</span>
                         </div>
                         ${s.childTip ? `
-                        <div class="pt-1.5 border-t border-slate-200/50 dark:border-slate-700 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                        <div class="pt-2 border-t border-slate-200/60 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 font-medium leading-normal">
                             <i class="fas fa-info-circle mr-1 text-amber-500"></i>${s.childTip}
                         </div>` : ''}
                     </div>
 
                     <div class="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                        <button onclick="speakJapanese('${s.nameJp}')" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs font-bold active:scale-95">
-                            <i class="fas fa-volume-up mr-1 text-amber-600"></i>발음
+                        <button onclick="speakJapanese('${s.nameJp}')" class="px-4 py-3 bg-slate-100 dark:bg-slate-800 rounded-2xl text-sm font-bold active:scale-95">
+                            <i class="fas fa-volume-up mr-1.5 text-amber-600"></i>발음
                         </button>
-                        <button onclick="openGoogleMap('${s.nameJp}')" class="flex-1 py-2.5 bg-slate-900 text-white dark:bg-amber-600 rounded-xl text-xs font-black active:scale-95 shadow-sm">
-                            <i class="fas fa-location-arrow mr-1.5"></i>구글맵 길찾기
+                        <button onclick="openGoogleMap('${s.nameJp}')" class="flex-1 py-3 bg-slate-900 text-white dark:bg-amber-600 rounded-2xl text-sm font-black active:scale-95 shadow-sm">
+                            <i class="fas fa-location-arrow mr-2"></i>구글맵 길찾기
                         </button>
                     </div>
                 </div>
@@ -942,17 +942,17 @@
         function renderShopping() {
             const container = document.getElementById('shopping-list');
             container.innerHTML = shoppingGuides.map(s => `
-                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
                     <div class="flex justify-between items-center mb-1">
-                        <h3 class="font-black text-lg text-slate-900 dark:text-white">${s.place}</h3>
-                        <button onclick="openGoogleMap('${s.place}')" class="text-xs font-bold text-amber-600">지도 <i class="fas fa-chevron-right ml-0.5"></i></button>
+                        <h3 class="font-black text-xl text-slate-900 dark:text-white">${s.place}</h3>
+                        <button onclick="openGoogleMap('${s.place}')" class="text-sm font-bold text-amber-600">지도 <i class="fas fa-chevron-right ml-0.5"></i></button>
                     </div>
-                    <p class="text-xs text-amber-700 dark:text-amber-400 font-bold mb-3.5">${s.desc}</p>
-                    <div class="space-y-2 bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                    <p class="text-sm text-amber-800 dark:text-amber-400 font-bold mb-4">${s.desc}</p>
+                    <div class="space-y-3 bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-100 dark:border-slate-700/50">
                         ${s.items.map(item => `
-                            <div class="pb-2.5 border-b border-slate-200/60 dark:border-slate-700 last:border-none last:pb-0">
-                                <p class="text-sm font-black text-slate-800 dark:text-slate-100">${item.name}</p>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">${item.desc}</p>
+                            <div class="pb-3 border-b border-slate-200/60 dark:border-slate-700 last:border-none last:pb-0">
+                                <p class="text-base font-black text-slate-800 dark:text-slate-100">${item.name}</p>
+                                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed font-medium">${item.desc}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -964,16 +964,16 @@
             const container = document.getElementById('phrase-list');
             container.innerHTML = phrases.map(grp => `
                 <div>
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2.5 pl-1">${grp.cat}</h4>
-                    <div class="space-y-2.5">
+                    <h4 class="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 pl-1">${grp.cat}</h4>
+                    <div class="space-y-3">
                         ${grp.items.map(p => `
-                            <div onclick="speakJapanese('${p.jp}')" class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex justify-between items-center active:scale-[0.98] transition-transform cursor-pointer">
+                            <div onclick="speakJapanese('${p.jp}')" class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex justify-between items-center active:scale-[0.98] transition-transform cursor-pointer">
                                 <div>
-                                    <p class="text-sm font-black text-slate-800 dark:text-white">${p.ko}</p>
-                                    <p class="text-base font-black text-amber-600 mt-0.5">${p.jp}</p>
-                                    <p class="text-xs text-slate-400 font-semibold uppercase mt-0.5">${p.ro}</p>
+                                    <p class="text-base font-black text-slate-800 dark:text-white">${p.ko}</p>
+                                    <p class="text-lg font-black text-amber-600 mt-1">${p.jp}</p>
+                                    <p class="text-sm text-slate-400 font-bold uppercase mt-0.5">${p.ro}</p>
                                 </div>
-                                <button class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center text-base">
+                                <button class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center text-lg">
                                     <i class="fas fa-volume-up"></i>
                                 </button>
                             </div>
@@ -1023,12 +1023,12 @@
                     const html = Object.entries(val).map(([k, v]) => {
                         total += v.amt;
                         return `
-                            <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-xs font-bold">
+                            <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3.5 rounded-xl text-sm font-bold">
                                 <div><span>${v.desc}</span><span class="text-slate-400 ml-2">(${Math.round(v.amt * jpyPerKrw).toLocaleString()}원)</span></div>
-                                <div class="flex items-center"><span class="text-amber-600 font-black text-sm">${v.amt.toLocaleString()}¥</span><button onclick="db.ref('${basePath}/expenses/${k}').remove()" class="ml-2 text-slate-300 hover:text-red-500">&times;</button></div>
+                                <div class="flex items-center"><span class="text-amber-600 font-black text-base">${v.amt.toLocaleString()}¥</span><button onclick="db.ref('${basePath}/expenses/${k}').remove()" class="ml-3 text-slate-300 hover:text-red-500 text-lg">&times;</button></div>
                             </div>`;
                     }).join('');
-                    document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-xs text-slate-400">지출 내역이 없습니다.</div>';
+                    document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-sm text-slate-400">지출 내역이 없습니다.</div>';
                     document.getElementById('total-expense').innerText = `${total.toLocaleString()} ¥ (${Math.round(total * jpyPerKrw).toLocaleString()} ₩)`;
                 });
             } else {
@@ -1037,12 +1037,12 @@
                 const html = list.map(item => {
                     total += item.amt;
                     return `
-                        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-xs font-bold">
+                        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3.5 rounded-xl text-sm font-bold">
                             <div><span>${item.desc}</span><span class="text-slate-400 ml-2">(${Math.round(item.amt * jpyPerKrw).toLocaleString()}원)</span></div>
-                            <span class="text-amber-600 font-black text-sm">${item.amt.toLocaleString()}¥</span>
+                            <span class="text-amber-600 font-black text-base">${item.amt.toLocaleString()}¥</span>
                         </div>`;
                 }).join('');
-                document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-xs text-slate-400">지출 내역이 없습니다.</div>';
+                document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-sm text-slate-400">지출 내역이 없습니다.</div>';
                 document.getElementById('total-expense').innerText = `${total.toLocaleString()} ¥`;
             }
         }
