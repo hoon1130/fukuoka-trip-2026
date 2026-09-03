@@ -83,7 +83,7 @@
             <div id="itinerary-list" class="space-y-4 pt-1"></div>
         </div>
 
-        <!-- 2. 맛집 탭 (Gourmet) - 1티어 픽 탭 추가 -->
+        <!-- 2. 맛집 탭 (Gourmet) -->
         <div id="spot" class="tab-content space-y-5">
             <div class="px-1">
                 <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">후쿠오카 완벽 맛집 컬렉션</h2>
@@ -618,9 +618,46 @@
             }
         ];
 
-        // 30곳 이상의 완벽 맛집 데이터베이스 (가이드 1티어 픽 태그 포함)
+        // 30곳 이상의 완벽 맛집 데이터베이스 (함바그 1티어 픽 정상 반영 완료)
         const spots = [
-            // 1. 우동 (Udon)
+            // 1. 함바그 (Hamburg)
+            { 
+                cat: "함바그", 
+                isTopPick: true,
+                topRank: "👑 함바그 1티어 픽",
+                nameKo: "함바그 요시 (텐진 다이묘)", 
+                nameJp: "ハンバーグ よし", 
+                desc: "★가이드 1티어 픽★ 숯불에 직접 완벌 구이해 육즙이 가득하며, 돌판 없이 서빙되어 아이 화상 위험 제로! 좌석 간격이 넓고 유모차 진입이 수월한 최고의 패밀리 함바그 명가.", 
+                badge: "1티어픽·안전쾌적", 
+                addr: "텐진역 2번 출구 도보 5분",
+                adultMenu: "숯불 소고기 함바그 정식 (3개 코스), 흑후추 소스",
+                childMenu: "완벌 구이 함바그 + 쌀밥 + 달걀말이 (소스 없이 소금간만 살짝 주면 아주 잘 먹음)",
+                childTip: "뜨거운 개인 스톤 없이 직원이 완벽히 구워서 내오므로 38개월 유아에게 가장 안전합니다!"
+            },
+            { 
+                cat: "함바그", 
+                nameKo: "키와미야 함바그 하카타점", 
+                nameJp: "極味や 博多店", 
+                desc: "돌판에 직접 구워먹는 원조 함바그 성지. 맛은 뛰어나나 대기 2시간 및 심한 기름 튐 주의.", 
+                badge: "유명성지·원조", 
+                addr: "하카타 버스터미널 1층",
+                adultMenu: "키와미야 함바그 M사이즈 + 달걀 소스 세트",
+                childMenu: "단품 쌀밥 + 소프트아이스크림 세트",
+                childTip: "기름이 사방으로 많이 튀므로 38개월 유아는 돌판에서 먼 안쪽 자리에 앉히세요."
+            },
+            { 
+                cat: "함바그", 
+                nameKo: "규센닌 런치 함바그 (하카타)", 
+                nameJp: "牛仙人", 
+                desc: "흑모와규 전문점의 점심 한정 특선 숯불 함바그. 육즙이 풍부하고 웨이팅이 적어 쾌적함.", 
+                badge: "로컬숨은맛집", 
+                addr: "하카타역 서쪽출구 도보 7분",
+                adultMenu: "와규 치즈 숯불 함바그 세트",
+                childMenu: "와규 함바그 + 맑은 장국 + 흰쌀밥",
+                childTip: "테이블 간격이 넓고 아기의자가 완비되어 있어 유아 동반 식사로 매우 여유롭습니다."
+            },
+
+            // 2. 우동 (Udon)
             { 
                 cat: "우동", 
                 isTopPick: true,
@@ -679,7 +716,7 @@
                 childTip: "자극적인 조미료 맛이 전혀 없는 천연 육수라 유아 식사로 매우 훌륭합니다."
             },
 
-            // 2. 라멘 (Ramen)
+            // 3. 라멘 (Ramen)
             { 
                 cat: "라멘", 
                 isTopPick: true,
@@ -727,7 +764,7 @@
                 childTip: "아이용 식기와 포크를 제공하며, 차슈가 부드러워 밥 위에 얹어 비벼주면 잘 먹습니다."
             },
 
-            // 3. 야키니쿠 (Yakiniku)
+            // 4. 야키니쿠 (Yakiniku)
             { 
                 cat: "야키니쿠", 
                 isTopPick: true,
@@ -764,7 +801,7 @@
                 childTip: "테이블마다 강력한 하향식 환풍기가 있어 연기가 아이 얼굴로 가지 않습니다."
             },
 
-            // 4. 장어 & 명란 덮밥 (Unagi & Mentaiko)
+            // 5. 장어 & 명란 덮밥 (Unagi & Mentaiko)
             { 
                 cat: "장어/명란덮밥", 
                 isTopPick: true,
@@ -803,7 +840,7 @@
                 childTip: "기온 숙소(니시테츠 크룸)와 매우 가까워 여유롭고 쾌적하게 식사할 수 있습니다."
             },
 
-            // 5. 스시 (Sushi)
+            // 6. 스시 (Sushi)
             { 
                 cat: "스시", 
                 isTopPick: true,
@@ -840,7 +877,7 @@
                 childTip: "2층 좁은 계단 대기가 길어 유모차를 접고 안고 기다려야 하니 참고하세요."
             },
 
-            // 6. 카이센동 (Seafood Rice Bowl)
+            // 7. 카이센동 (Seafood Rice Bowl)
             { 
                 cat: "카이센동", 
                 nameKo: "우오타츠 카이센동 키스이마루 (하카타)", 
@@ -864,7 +901,7 @@
                 childTip: "점심시간 12:00~13:00를 살짝 피해 11:30에 방문하면 웨이팅 없이 편안히 식사할 수 있습니다."
             },
 
-            // 7. 이자카야 / 기타 (Izakaya & Etc)
+            // 8. 이자카야 / 기타 (Izakaya & Etc)
             { 
                 cat: "이자카야/기타", 
                 nameKo: "하카타 토메테바 (とめ手羽)", 
@@ -888,7 +925,7 @@
                 childTip: "살아 움직이는 투명한 오징어 회를 아이가 신기하게 구경하며, 닭꼬치 소금구이가 맛있습니다."
             },
 
-            // 8. 디저트 & 베이커리 (Dessert)
+            // 9. 디저트 & 베이커리 (Dessert)
             { 
                 cat: "디저트", 
                 nameKo: "빵스톡 텐진점 (Pain Stock)", 
@@ -1520,7 +1557,7 @@
             fetchWeather();
             fetchExchangeRate();
             loadItinerary();
-            renderSpots('가이드픽'); // 기본 노출을 1티어 픽으로 설정
+            renderSpots('가이드픽'); // 기본 노출을 1티어 픽으로 설정 (함바그 요시 포함 전체 1티어 정상 노출)
             renderShopping();
             loadPacking();
             renderPhrases();
