@@ -67,13 +67,17 @@
     <main class="p-4 max-w-lg mx-auto space-y-6">
         <!-- 1. 일정 탭 (Schedule) -->
         <div id="schedule" class="tab-content active space-y-4">
-            <!-- 날짜 필터 -->
-            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-base font-black">
-                <button onclick="filterDay('all')" class="day-chip active px-4 py-3 rounded-2xl bg-amber-500 text-white shadow-sm" data-day="all">전체 일정</button>
-                <button onclick="filterDay('10-10')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-10">1일차(10.10)</button>
-                <button onclick="filterDay('10-11')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-11">2일차(10.11)</button>
-                <button onclick="filterDay('10-12')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-12">3일차(10.12)</button>
-                <button onclick="filterDay('10-13')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-13">4일차(10.13)</button>
+            <div class="flex justify-between items-center px-1">
+                <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-base font-black flex-1 mr-2">
+                    <button onclick="filterDay('all')" class="day-chip active px-4 py-2.5 rounded-2xl bg-amber-500 text-white shadow-sm" data-day="all">전체</button>
+                    <button onclick="filterDay('10-10')" class="day-chip px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-10">1일차</button>
+                    <button onclick="filterDay('10-11')" class="day-chip px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-11">2일차</button>
+                    <button onclick="filterDay('10-12')" class="day-chip px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-12">3일차</button>
+                    <button onclick="filterDay('10-13')" class="day-chip px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-13">4일차</button>
+                </div>
+                <button onclick="openItineraryModal()" class="px-3.5 py-2.5 bg-slate-900 dark:bg-amber-600 text-white text-xs font-black rounded-2xl shadow-md active:scale-95 shrink-0">
+                    <i class="fas fa-plus mr-1"></i>추가
+                </button>
             </div>
 
             <div id="itinerary-list" class="space-y-4 pt-1"></div>
@@ -103,13 +107,32 @@
         <!-- 3. 쇼핑 & 명소 탭 (Shopping & Sights) -->
         <div id="shopping" class="tab-content space-y-5">
             <div class="px-1">
-                <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">단톤·쇼핑 & 명소 리스트</h2>
-                <p class="text-sm text-slate-500 mt-1 font-medium">호빵맨 박물관 팁, 면세 바코드 추가 할인 & 텐진 쇼핑</p>
+                <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">단톤·쇼핑 & 최신 꿀템 리스트</h2>
+                <p class="text-sm text-slate-500 mt-1 font-medium">면세+바코드 추가 할인(3~7%) & 텐진 알짜 쇼핑템</p>
             </div>
             <div id="shopping-list" class="space-y-4"></div>
         </div>
 
-        <!-- 4. 엔화 환율 계산기 & 가계부 -->
+        <!-- 4. 준비물 체크리스트 탭 (복원 완료) -->
+        <div id="packing" class="tab-content space-y-5">
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.2rem] border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900 dark:text-white flex items-center">
+                            <i class="fas fa-clipboard-check mr-2 text-amber-500"></i>여행 준비물 체크리스트
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Firebase 실시간 동기화</p>
+                    </div>
+                    <span id="pack-progress-text" class="text-sm font-black text-amber-600">0%</span>
+                </div>
+                <div class="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                    <div id="pack-progress-bar" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div id="pack-items" class="space-y-2.5 pt-2"></div>
+            </div>
+        </div>
+
+        <!-- 5. 엔화 환율 계산기 & 가계부 -->
         <div id="ledger" class="tab-content space-y-6">
             <div class="bg-slate-900 text-white p-6 rounded-[2.2rem] shadow-xl relative overflow-hidden">
                 <div class="flex justify-between items-center mb-1">
@@ -138,7 +161,7 @@
             <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
                 <h3 class="font-black text-base text-slate-500 uppercase tracking-widest mb-3">지출 기록</h3>
                 <div class="flex gap-2 mb-4">
-                    <input type="text" id="exp-desc" placeholder="항목 (예: 호빵맨 박물관, 단톤)" class="flex-1 p-3.5 text-base font-bold rounded-xl border dark:bg-slate-800 dark:border-slate-700">
+                    <input type="text" id="exp-desc" placeholder="항목 (예: 단톤 이너패딩)" class="flex-1 p-3.5 text-base font-bold rounded-xl border dark:bg-slate-800 dark:border-slate-700">
                     <input type="number" id="exp-amt" placeholder="¥" class="w-28 p-3.5 text-base font-bold rounded-xl border text-center dark:bg-slate-800 dark:border-slate-700">
                     <button onclick="addExpense()" class="px-6 bg-slate-900 dark:bg-amber-600 text-white text-base font-black rounded-xl active:scale-95">저장</button>
                 </div>
@@ -150,7 +173,7 @@
             </div>
         </div>
 
-        <!-- 5. 일본어 회화/TTS -->
+        <!-- 6. 일본어 회화/TTS -->
         <div id="phrases" class="tab-content space-y-5">
             <div class="bg-slate-900 text-white p-6 rounded-[2rem] shadow-lg flex justify-between items-center">
                 <div>
@@ -163,24 +186,50 @@
         </div>
     </main>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation (6개 탭 구성 완료) -->
     <nav class="fixed bottom-0 left-0 right-0 glass-header flex bottom-nav z-50 shadow-2xl max-w-lg mx-auto">
         <button onclick="showTab('schedule')" id="nav-schedule" class="tab-btn flex-1 flex flex-col items-center justify-center text-amber-600 font-black">
-            <i class="fas fa-calendar-alt text-[24px] mb-1"></i><span class="text-[12px]">일정</span>
+            <i class="fas fa-calendar-alt text-[22px] mb-1"></i><span class="text-[11px]">일정</span>
         </button>
         <button onclick="showTab('spot')" id="nav-spot" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-utensils text-[24px] mb-1"></i><span class="text-[12px]">맛집</span>
+            <i class="fas fa-utensils text-[22px] mb-1"></i><span class="text-[11px]">맛집</span>
         </button>
         <button onclick="showTab('shopping')" id="nav-shopping" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-shopping-bag text-[24px] mb-1"></i><span class="text-[12px]">쇼핑/명소</span>
+            <i class="fas fa-shopping-bag text-[22px] mb-1"></i><span class="text-[11px]">쇼핑/명소</span>
+        </button>
+        <button onclick="showTab('packing')" id="nav-packing" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
+            <i class="fas fa-clipboard-check text-[22px] mb-1"></i><span class="text-[11px]">체크</span>
         </button>
         <button onclick="showTab('ledger')" id="nav-ledger" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-coins text-[24px] mb-1"></i><span class="text-[12px]">환율/가계부</span>
+            <i class="fas fa-coins text-[22px] mb-1"></i><span class="text-[11px]">환율/가계부</span>
         </button>
         <button onclick="showTab('phrases')" id="nav-phrases" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400 font-bold">
-            <i class="fas fa-comment-dots text-[24px] mb-1"></i><span class="text-[12px]">회화</span>
+            <i class="fas fa-comment-dots text-[22px] mb-1"></i><span class="text-[11px]">회화</span>
         </button>
     </nav>
+
+    <!-- 일정 추가/수정 모달 (복원 완료) -->
+    <div id="itinerary-modal" class="fixed inset-0 bg-black/70 z-[450] hidden flex items-center justify-center p-4 backdrop-blur-md" onclick="closeItineraryModal()">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-3.5" onclick="event.stopPropagation()">
+            <h3 class="font-black text-xl text-amber-600 text-center">일정 편집</h3>
+            <input type="hidden" id="edit-key">
+            <select id="form-date" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-sm">
+                <option value="10-10">10월 10일 (금)</option>
+                <option value="10-11">10월 11일 (토)</option>
+                <option value="10-12">10월 12일 (일)</option>
+                <option value="10-13">10월 13일 (월)</option>
+            </select>
+            <input type="text" id="form-time" placeholder="시간 (예: 18:30~20:00)" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-sm">
+            <input type="text" id="form-title" placeholder="일정명 / 장소" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-sm">
+            <textarea id="form-desc" placeholder="상세 내용 / 꿀팁" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-sm h-24"></textarea>
+            <input type="text" id="form-subway" placeholder="지하철 안내 문구" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold text-sm">
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveItinerary()" class="flex-1 bg-slate-900 text-white dark:bg-amber-600 py-3.5 rounded-xl font-black text-sm">저장</button>
+                <button onclick="closeItineraryModal()" class="flex-1 bg-slate-200 dark:bg-slate-800 py-3.5 rounded-xl font-bold text-sm">닫기</button>
+            </div>
+            <button id="btn-del-itinerary" onclick="deleteItinerary()" class="w-full text-red-500 text-xs underline mt-1 hidden">일정 삭제</button>
+        </div>
+    </div>
 
     <!-- 베이비룸 모달 -->
     <div id="baby-modal" class="fixed inset-0 bg-black/80 z-[420] hidden flex items-center justify-center p-4 backdrop-blur-md" onclick="closeBabyModal()">
@@ -237,7 +286,7 @@
                 <div class="p-4 bg-orange-50 dark:bg-orange-950/30 rounded-2xl border border-orange-200 dark:border-orange-900">
                     <p class="font-black text-orange-800 dark:text-orange-300 text-base mb-1.5">🟠 공항선(주황색) 주요 이동 구간</p>
                     <p class="text-slate-700 dark:text-slate-200 leading-relaxed font-bold">
-                        후쿠오카공항 ↔ <span class="text-orange-600 font-black">하카타(비아인)</span> ↔ <span class="text-orange-600 font-black">기온(크룸기온)</span> ↔ <span class="text-orange-600 font-black">나카스카와바타(호빵맨박물관)</span> ↔ 텐진(쇼핑) ↔ <span class="text-orange-600 font-black">오호리공원(보트·신선산도)</span>
+                        후쿠오카공항 ↔ <span class="text-orange-600 font-black">하카타(비아인)</span> ↔ <span class="text-orange-600 font-black">기온(크룸기온)</span> ↔ 나카스카와바타(호빵맨박물관) ↔ 텐진(쇼핑) ↔ <span class="text-orange-600 font-black">오호리공원(보트·신선산도)</span>
                     </p>
                 </div>
 
@@ -302,7 +351,6 @@
                 </a>
             </div>
 
-            <!-- 일본 택시 앱 바로 호출 -->
             <div class="pt-2 border-t dark:border-slate-800 space-y-2">
                 <p class="text-xs font-black text-slate-500">아이 낮잠/우천 시 택시 즉시 호출</p>
                 <div class="flex gap-2">
@@ -329,246 +377,240 @@
         } catch(e) {}
 
         let jpyPerKrw = 9.15;
+        let itineraryData = [];
 
-        // 3박 4일 일정 (2일차 오전에 호빵맨 어린이 박물관 배치)
-        const itinerary = [
+        // 3박 4일 기본 일정
+        const defaultItinerary = [
             {
                 date: "10-10",
-                dateLabel: "10월 10일 (금) - 1일차 [하카타 단톤 & 안심 첫 저녁]",
-                hotel: "비아인 하카타구치 에키마에 (1박)",
-                items: [
-                    { 
-                        time: "14:25~16:00", 
-                        title: "인천(ICN) → 후쿠오카(FUK)", 
-                        desc: "에어서울 RS0727편 탑승. 착륙 전 아이에게 젤리나 물을 먹여 귀 통증(이압)을 예방하세요.", 
-                        mapQuery: "후쿠오카 공항 국제선",
-                        subwayRoute: "후쿠오카 공항 국제선 터미널 도착",
-                        transitOrigin: "인천국제공항",
-                        transitDest: "후쿠오카공항 국제선",
-                        nearbyHighlights: "공항 세븐일레븐(타마고 샌드위치), 패밀리마트(이로하스 복숭아물)"
-                    },
-                    { 
-                        time: "16:40~17:15", 
-                        title: "공항 → 숙소 이동 (택시 강력 추천)", 
-                        desc: "💡가이드 팁: 38개월 아이와 짐을 끌고 국내선 셔틀버스 기다리기보다 국제선 게이트 앞 택시 승강장에서 하카타역까지 바로 택시를 타세요 (약 15분, 1,800엔~2,000엔).", 
-                        mapQuery: "비아인 하카타구치 에키마에",
-                        subwayRoute: "🚖 국제선 직통 택시 15분 (클릭 시 길찾기)",
-                        transitOrigin: "후쿠오카공항 국제선",
-                        transitDest: "비아인 하카타구치 에키마에",
-                        nearbyHighlights: "비아인 호텔 바로 옆 로손 편의점, 드럭일레븐"
-                    },
-                    { 
-                        time: "17:20~18:20", 
-                        title: "하카타 아뮤플라자: 단톤(DANTON) 직영점 & 미뇽", 
-                        desc: "★단톤 1차 공략★ 아뮤플라자 4층 단톤 공식 단독 매장(DANTON FUKUOKA)에서 경량패딩, 모자, 키즈 의류 쇼핑! 1층 중앙 통로에서 '일 포르노 델 미뇽' 미니 크루아상(플레인/고구마) 갓 구운 간식 테이크아웃.", 
-                        mapQuery: "DANTON FUKUOKA アミュプラザ博多",
-                        subwayRoute: "🟠 공항선 [하카타역] 서쪽출구(하카타구치) 🛗EV 직결 도보 1분",
-                        transitOrigin: "비아인 하카타구치 에키마에",
-                        transitDest: "아뮤플라자 하카타",
-                        nearbyHighlights: "아뮤플라자 8층 포켓몬센터(아이 환호!), 9~10층 식당가"
-                    },
-                    { 
-                        time: "18:30~20:00", 
-                        title: "저녁: 함바그 요시 (텐진) or 규센닌", 
-                        desc: "💡가이드 팁: 키와미야는 2시간 넘는 계단 대기와 기름 튐으로 영유아 동반 시 위험합니다. 직원이 안전하게 구워주며 유모차 진입이 편한 '함바그 요시'나 부드러운 와규집 추천!", 
-                        mapQuery: "ハンバーグ よし 福岡",
-                        subwayRoute: "🟠 공항선 [하카타역] → [텐진역] 2번 출구(🛗EV 솔라리아연결) 도보 5분",
-                        transitOrigin: "하카타역",
-                        transitDest: "ハンバーグ よし 福岡",
-                        nearbyHighlights: "텐진 지하상가(Bake 치즈타르트, 러쉬), 다이묘 소프트크림"
-                    },
-                    { 
-                        time: "20:30~21:30", 
-                        title: "야식 포장: 멘야 타이슨 or 편의점", 
-                        desc: "아이가 피곤할 시간이므로 숙소 근처 편의점(오이시이 우유, 다시마끼 계란말이)과 톤코츠 라멘 한 그릇으로 깔끔하게 1일차 마무리.", 
-                        mapQuery: "비아인 하카타구치 에키마에",
-                        subwayRoute: "🚶 비아인 숙소에서 도보 4분 (클릭 시 도보 길찾기)",
-                        transitOrigin: "비아인 하카타구치 에키마에",
-                        transitDest: "麺屋タイソン",
-                        nearbyHighlights: "하카타역 옥상 츠바메노모리 광장(아이용 미니 기차 운행)"
-                    }
-                ]
+                time: "14:25~16:00", 
+                title: "인천(ICN) → 후쿠오카(FUK)", 
+                desc: "에어서울 RS0727편 탑승. 착륙 전 아이에게 젤리나 물을 먹여 귀 통증(이압)을 예방하세요.", 
+                mapQuery: "후쿠오카 공항 국제선",
+                subwayRoute: "후쿠오카 공항 국제선 터미널 도착",
+                transitOrigin: "인천국제공항",
+                transitDest: "후쿠오카공항 국제선",
+                nearbyHighlights: "공항 세븐일레븐(타마고 샌드위치), 패밀리마트(이로하스 복숭아물)"
+            },
+            {
+                date: "10-10",
+                time: "16:40~17:15", 
+                title: "공항 → 숙소 이동 (택시 강력 추천)", 
+                desc: "💡가이드 팁: 38개월 아이와 짐을 끌고 국내선 셔틀버스 기다리기보다 국제선 게이트 앞 택시 승강장에서 하카타역까지 바로 택시를 타세요 (약 15분, 1,800엔~2,000엔).", 
+                mapQuery: "비아인 하카타구치 에키마에",
+                subwayRoute: "🚖 국제선 직통 택시 15분 (클릭 시 길찾기)",
+                transitOrigin: "후쿠오카공항 국제선",
+                transitDest: "비아인 하카타구치 에키마에",
+                nearbyHighlights: "비아인 호텔 바로 옆 로손 편의점, 드럭일레븐"
+            },
+            {
+                date: "10-10",
+                time: "17:20~18:20", 
+                title: "하카타 아뮤플라자: 단톤(DANTON) 직영점 & 미뇽", 
+                desc: "★단톤 1차 공략★ 아뮤플라자 4층 단톤 공식 단독 매장(DANTON FUKUOKA)에서 경량패딩, 모자, 키즈 의류 쇼핑! 1층 중앙 통로에서 '일 포르노 델 미뇽' 미니 크루아상(플레인/고구마) 갓 구운 간식 테이크아웃.", 
+                mapQuery: "DANTON FUKUOKA アミュプラザ博多",
+                subwayRoute: "🟠 공항선 [하카타역] 서쪽출구(하카타구치) 🛗EV 직결 도보 1분",
+                transitOrigin: "비아인 하카타구치 에키마에",
+                transitDest: "아뮤플라자 하카타",
+                nearbyHighlights: "아뮤플라자 8층 포켓몬센터(아이 환호!), 9~10층 식당가"
+            },
+            {
+                date: "10-10",
+                time: "18:30~20:00", 
+                title: "저녁: 함바그 요시 (텐진) or 규센닌", 
+                desc: "💡가이드 팁: 키와미야는 2시간 넘는 계단 대기와 기름 튐으로 영유아 동반 시 위험합니다. 직원이 안전하게 구워주며 유모차 진입이 편한 '함바그 요시'나 부드러운 와규집 추천!", 
+                mapQuery: "ハンバーグ よし 福岡",
+                subwayRoute: "🟠 공항선 [하카타역] → [텐진역] 2번 출구(🛗EV 솔라리아연결) 도보 5분",
+                transitOrigin: "하카타역",
+                transitDest: "ハンバーグ よし 福岡",
+                nearbyHighlights: "텐진 지하상가(Bake 치즈타르트, 러쉬), 다이묘 소프트크림"
+            },
+            {
+                date: "10-10",
+                time: "20:30~21:30", 
+                title: "야식 포장: 멘야 타이슨 or 편의점", 
+                desc: "아이가 피곤할 시간이므로 숙소 근처 편의점(오이시이 우유, 다시마끼 계란말이)과 톤코츠 라멘 한 그릇으로 깔끔하게 1일차 마무리.", 
+                mapQuery: "비아인 하카타구치 에키마에",
+                subwayRoute: "🚶 비아인 숙소에서 도보 4분 (클릭 시 도보 길찾기)",
+                transitOrigin: "비아인 하카타구치 에키마에",
+                transitDest: "麺屋タイソン",
+                nearbyHighlights: "하카타역 옥상 츠바메노모리 광장(아이용 미니 기차 운행)"
             },
             {
                 date: "10-11",
-                dateLabel: "10월 11일 (토) - 2일차 [호빵맨 박물관 & 텐진 쇼핑]",
-                hotel: "니시테츠 크룸 하카타 기온 (체크인)",
-                items: [
-                    { 
-                        time: "09:30~10:00", 
-                        title: "체크아웃 & 2박 숙소(기온) 짐 보관", 
-                        desc: "비아인 체크아웃 후 '니시테츠 크룸 하카타 기온'으로 이동하여 짐 드롭. 기온역 6번출구 바로 앞입니다.", 
-                        mapQuery: "西鉄ホテル クルーム 博多祇園",
-                        subwayRoute: "🟠 공항선 [하카타역] → [기온역] 6번 출구 🛗EV 앞 도보 1분",
-                        transitOrigin: "비아인 하카타구치 에키마에",
-                        transitDest: "니시테츠 호텔 크룸 하카타 기온",
-                        nearbyHighlights: "기온역 앞 도초지, 조텐지 정원"
-                    },
-                    { 
-                        time: "10:00~12:30", 
-                        title: "🎈 후쿠오카 호빵맨 어린이 박물관 (하카타 리버레인)", 
-                        desc: "★38개월 아이 최고 인기 코스★ 기온 숙소에서 1정거장(도보 8분). 하카타 리버레인 몰 5~6층. 유모차는 5층 입구에 주차 후 신발 벗고 입장! 잼 아저씨 빵공장에서 호빵맨 얼굴 빵 구매 필수. 오전 11시 전후 무대 댄스 쇼 관람.", 
-                        mapQuery: "후쿠오카 호빵맨 어린이 박물관",
-                        subwayRoute: "🟠 공항선 [기온역] → [나카스카와바타역] 지하 직결 🛗EV 리버레인 5층 연결",
-                        transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
-                        transitDest: "후쿠오카 호빵맨 어린이 박물관",
-                        nearbyHighlights: "리버레인 몰 지하 식당가, 잼 아저씨의 빵공장(캐릭터 빵)"
-                    },
-                    { 
-                        time: "12:45~13:45", 
-                        title: "점심: 하가쿠레 우동 or 나카스 수변 빵스톡", 
-                        desc: "박물관 바로 앞 강변에서 빵스톡(Pain Stock) 명란바게트와 아이용 빵을 즐기거나, 하카타역 남쪽 미슐랭 하가쿠레 우동으로 이동해 부드러운 우엉튀김 우동 식사.", 
-                        mapQuery: "pain stock tenjin",
-                        subwayRoute: "🚶 리버레인 몰에서 다리 건너 도보 4분 (하레노가든 강변 산책로)",
-                        transitOrigin: "후쿠오카 호빵맨 어린이 박물관",
-                        transitDest: "pain stock tenjin",
-                        nearbyHighlights: "하레노가든 수변 잔디밭, 아크로스 후쿠오카"
-                    },
-                    { 
-                        time: "14:15~16:45", 
-                        title: "텐진 솔라리아 Bshop & 파르코 스탠다드 프로덕트", 
-                        desc: "★단톤 2차 공략 & 쇼핑 가방 득템★ 솔라리아 3층 Bshop에서 단톤 아우터 비교! 파르코 5층 '스탠다드 프로덕트'에서 기내용 접이식 보스턴백 득템 & 텐진지하상가 칼디(레몬에이드 베이스), 러쉬(바디스프레이) 쇼핑.", 
-                        mapQuery: "솔라리아 플라자 비샵",
-                        subwayRoute: "🟠 공항선 [나카스카와바타역] → [텐진역] 2번 출구 솔라리아 플라자 직결",
-                        transitOrigin: "pain stock tenjin",
-                        transitDest: "솔라리아 플라자",
-                        nearbyHighlights: "텐진 파르코(스탠다드 프로덕트), 텐진 지하상가 칼디·러쉬, 다이묘 가든시티 잔디광장"
-                    },
-                    { 
-                        time: "17:00~18:00", 
-                        title: "기온 호텔 입실 & 아이 낮잠/온천 휴식", 
-                        desc: "오전 박물관에서 에너지를 쏟은 아이를 위해 호텔 체크인 후 1시간 휴식. 니시테츠 크룸 1층 천연온천 대욕장 이용.", 
-                        mapQuery: "西鉄ホテル クルーム 博多祇園",
-                        subwayRoute: "🟠 공항선 [텐진역] → [기온역] 직통 복귀 (2정거장, 4분)",
-                        transitOrigin: "텐진역",
-                        transitDest: "니시테츠 호텔 크룸 하카타 기온",
-                        nearbyHighlights: "호텔 1층 세븐일레븐(일본 아이스크림)"
-                    },
-                    { 
-                        time: "18:15~20:00", 
-                        title: "저녁: 야키니쿠 이리와 (いりわ) or 규센닌", 
-                        desc: "한국인 점주가 운영해 소통이 완벽한 니시나카스 와규 맛집 '이리와' 또는 가성비 흑모와규 '규센닌'. 연기 걱정 없이 부드러운 갈비살 식사.", 
-                        mapQuery: "焼肉 いりわ",
-                        subwayRoute: "🚶 기온 호텔에서 니시나카스 방면 도보 8분 또는 택시 기본요금",
-                        transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
-                        transitDest: "焼肉 いりわ",
-                        nearbyHighlights: "하카타역 야경 분수대 산책"
-                    }
-                ]
+                time: "09:30~10:00", 
+                title: "체크아웃 & 2박 숙소(기온) 짐 보관", 
+                desc: "비아인 체크아웃 후 '니시테츠 크룸 하카타 기온'으로 이동하여 짐 드롭. 기온역 6번출구 바로 앞입니다.", 
+                mapQuery: "西鉄ホテル クルーム 博多祇園",
+                subwayRoute: "🟠 공항선 [하카타역] → [기온역] 6번 출구 🛗EV 앞 도보 1분",
+                transitOrigin: "비아인 하카타구치 에키마에",
+                transitDest: "니시테츠 호텔 크룸 하카타 기온",
+                nearbyHighlights: "기온역 앞 도초지, 조텐지 정원"
+            },
+            {
+                date: "10-11",
+                time: "10:00~12:30", 
+                title: "🎈 후쿠오카 호빵맨 어린이 박물관 (하카타 리버레인)", 
+                desc: "★38개월 아이 최고 인기 코스★ 기온 숙소에서 1정거장(도보 8분). 하카타 리버레인 몰 5~6층. 유모차는 5층 입구에 주차 후 신발 벗고 입장! 잼 아저씨 빵공장에서 호빵맨 얼굴 빵 구매 필수. 오전 11시 전후 무대 댄스 쇼 관람.", 
+                mapQuery: "후쿠오카 호빵맨 어린이 박물관",
+                subwayRoute: "🟠 공항선 [기온역] → [나카스카와바타역] 지하 직결 🛗EV 리버레인 5층 연결",
+                transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
+                transitDest: "후쿠오카 호빵맨 어린이 박물관",
+                nearbyHighlights: "리버레인 몰 지하 식당가, 잼 아저씨의 빵공장(캐릭터 빵)"
+            },
+            {
+                date: "10-11",
+                time: "12:45~13:45", 
+                title: "점심: 하가쿠레 우동 or 나카스 수변 빵스톡", 
+                desc: "박물관 바로 앞 강변에서 빵스톡(Pain Stock) 명란바게트와 아이용 빵을 즐기거나, 하카타역 남쪽 미슐랭 하가쿠레 우동으로 이동해 부드러운 우엉튀김 우동 식사.", 
+                mapQuery: "pain stock tenjin",
+                subwayRoute: "🚶 리버레인 몰에서 다리 건너 도보 4분 (하레노가든 강변 산책로)",
+                transitOrigin: "후쿠오카 호빵맨 어린이 박물관",
+                transitDest: "pain stock tenjin",
+                nearbyHighlights: "하레노가든 수변 잔디밭, 아크로스 후쿠오카"
+            },
+            {
+                date: "10-11",
+                time: "14:15~16:45", 
+                title: "텐진 솔라리아 Bshop & 파르코 스탠다드 프로덕트", 
+                desc: "★단톤 2차 공략 & 쇼핑 가방 득템★ 솔라리아 3층 Bshop에서 단톤 아우터 비교! 파르코 5층 '스탠다드 프로덕트'에서 기내용 접이식 보스턴백 득템 & 텐진지하상가 칼디(레몬에이드 베이스), 러쉬(바디스프레이) 쇼핑.", 
+                mapQuery: "솔라리아 플라자 비샵",
+                subwayRoute: "🟠 공항선 [나카스카와바타역] → [텐진역] 2번 출구 솔라리아 플라자 직결",
+                transitOrigin: "pain stock tenjin",
+                transitDest: "솔라리아 플라자",
+                nearbyHighlights: "텐진 파르코(스탠다드 프로덕트), 텐진 지하상가 칼디·러쉬, 다이묘 가든시티 잔디광장"
+            },
+            {
+                date: "10-11",
+                time: "17:00~18:00", 
+                title: "기온 호텔 입실 & 아이 낮잠/온천 휴식", 
+                desc: "오전 박물관에서 에너지를 쏟은 아이를 위해 호텔 체크인 후 1시간 휴식. 니시테츠 크룸 1층 천연온천 대욕장 이용.", 
+                mapQuery: "西鉄ホテル クルーム 博多祇園",
+                subwayRoute: "🟠 공항선 [텐진역] → [기온역] 직통 복귀 (2정거장, 4분)",
+                transitOrigin: "텐진역",
+                transitDest: "니시테츠 호텔 크룸 하카타 기온",
+                nearbyHighlights: "호텔 1층 세븐일레븐(일본 아이스크림)"
+            },
+            {
+                date: "10-11",
+                time: "18:15~20:00", 
+                title: "저녁: 야키니쿠 이리와 (いりわ) or 규센닌", 
+                desc: "한국인 점주가 운영해 소통이 완벽한 니시나카스 와규 맛집 '이리와' 또는 가성비 흑모와규 '규센닌'. 연기 걱정 없이 부드러운 갈비살 식사.", 
+                mapQuery: "焼肉 いりわ",
+                subwayRoute: "🚶 기온 호텔에서 니시나카스 방면 도보 8분 또는 택시 기본요금",
+                transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
+                transitDest: "焼肉 いりわ",
+                nearbyHighlights: "하카타역 야경 분수대 산책"
             },
             {
                 date: "10-12",
-                dateLabel: "10월 12일 (일) - 3일차 [오호리 힐링·신선산도 & 캐널시티]",
-                hotel: "니시테츠 크룸 하카타 기온 (연박)",
-                items: [
-                    { 
-                        time: "10:30~12:00", 
-                        title: "점심: 요시즈카 우나기야 (장어덮밥)", 
-                        desc: "150년 전통 장어구이 명가. 10:30 오픈 15분 전 미리 도착해 번호표를 뽑으세요. 타레 소스 비빈 밥과 부드러운 장어 속살.", 
-                        mapQuery: "吉塚うなぎ屋",
-                        subwayRoute: "🚶 기온 호텔에서 나카스 강변 방향 도보 7분 (500m)",
-                        transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
-                        transitDest: "吉塚うなぎ屋",
-                        nearbyHighlights: "나카스 강변 다리(가족 사진 명당), 돈키호테 나카스점(바코드 추가할인)"
-                    },
-                    { 
-                        time: "12:30~15:00", 
-                        title: "오호리 공원 백조 보트 ↔ 롯폰마츠: 신선산도 & 이몬네", 
-                        desc: "★동선 완벽 최적화★ 오호리 공원에서 아이와 백조 페달보트 탑승 후, 남쪽 산책로를 통해 롯폰마츠 구역으로 이동! 신선한 우유 생크림과 과일이 터질 듯한 '신선산도'와 달콤한 고구마 디저트 '이몬네'를 한 번에 정복!", 
-                        mapQuery: "新鮮サンド 六本松",
-                        subwayRoute: "🟠 공항선 [나카스카와바타역] → [오호리공원역] 3번 출구 🛗EV → 롯폰마츠 도보 또는 택시 700엔",
-                        transitOrigin: "吉塚うなぎ屋",
-                        transitDest: "오호리 공원",
-                        nearbyHighlights: "오호리공원 스타벅스, 롯폰마츠 츠타야 서점(스타벅스 결합 대형 문화공간)"
-                    },
-                    { 
-                        time: "★ 예비 명소", 
-                        title: "[선택] 후쿠오카 타워 & 모모치 해변 (팀랩 포레스트)", 
-                        desc: "💡바다 & 실내 미디어아트 코스: 오호리 대신 바다를 보고 싶다면 추천! 타워 전망대 및 바로 옆 페이페이돔의 '팀랩 포레스트(빛의 동물 터치 미디어아트)'까지 완벽한 유아 코스.", 
-                        mapQuery: "후쿠오카 타워",
-                        subwayRoute: "🚌 오호리/롯폰마츠에서 버스 W1/302번 탑승 (20분) or 택시 1,800엔",
-                        transitOrigin: "오호리 공원",
-                        transitDest: "후쿠오카 타워",
-                        nearbyHighlights: "모모치 해변 마리존, 마크이즈 모모치 쇼핑몰(초대형 유아휴게실)"
-                    },
-                    { 
-                        time: "15:30~17:30", 
-                        title: "캐널시티 하카타 분수쇼 & 캐릭터 쇼핑", 
-                        desc: "정시마다 열리는 음악 분수쇼 관람! 지하 1층 동구리공화국(토토로샵)과 산리오 갤러리 필수 코스.", 
-                        mapQuery: "캐널시티 하카타",
-                        subwayRoute: "🚶 기온 숙소에서 남쪽 방향 도보 5분 (400m, 유모차 평지)",
-                        transitOrigin: "오호리 공원",
-                        transitDest: "캐널시티 하카타",
-                        nearbyHighlights: "캐널시티 B1F 반다이 남코 가챠샵, 라멘 스타디움"
-                    },
-                    { 
-                        time: "18:00~20:00", 
-                        title: "저녁: 츠키지 스시센 하루요시점", 
-                        desc: "효탄스시의 계단 대기 대신, 테이블석이 넓어 유모차 반입이 편하고 신선한 자연산 모둠초밥 명가. (와사비 뺀 계란·새우초밥)", 
-                        mapQuery: "築地すし鮮 福岡総本店",
-                        subwayRoute: "🚶 캐널시티에서 다리 건너 도보 5분 (하루요시 방면)",
-                        transitOrigin: "캐널시티 하카타",
-                        transitDest: "築地すし鮮 福岡総本店",
-                        nearbyHighlights: "하루요시 골목 감성 이자카야 거리"
-                    }
-                ]
+                time: "10:30~12:00", 
+                title: "점심: 요시즈카 우나기야 (장어덮밥)", 
+                desc: "150년 전통 장어구이 명가. 10:30 오픈 15분 전 미리 도착해 번호표를 뽑으세요. 타레 소스 비빈 밥과 부드러운 장어 속살.", 
+                mapQuery: "吉塚うなぎ屋",
+                subwayRoute: "🚶 기온 호텔에서 나카스 강변 방향 도보 7분 (500m)",
+                transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
+                transitDest: "吉塚うなぎ屋",
+                nearbyHighlights: "나카스 강변 다리(가족 사진 명당), 돈키호테 나카스점(바코드 추가할인)"
+            },
+            {
+                date: "10-12",
+                time: "12:30~15:00", 
+                title: "오호리 공원 백조 보트 ↔ 롯폰마츠: 신선산도 & 이몬네", 
+                desc: "★동선 완벽 최적화★ 오호리 공원에서 아이와 백조 페달보트 탑승 후, 남쪽 산책로를 통해 롯폰마츠 구역으로 이동! 신선한 우유 생크림과 과일이 터질 듯한 '신선산도'와 달콤한 고구마 디저트 '이몬네'를 한 번에 정복!", 
+                mapQuery: "新鮮サンド 六本松",
+                subwayRoute: "🟠 공항선 [나카스카와바타역] → [오호리공원역] 3번 출구 🛗EV → 롯폰마츠 도보 또는 택시 700엔",
+                transitOrigin: "吉塚うなぎ屋",
+                transitDest: "오호리 공원",
+                nearbyHighlights: "오호리공원 스타벅스, 롯폰마츠 츠타야 서점(스타벅스 결합 대형 문화공간)"
+            },
+            {
+                date: "10-12",
+                time: "★ 예비 명소", 
+                title: "[선택] 후쿠오카 타워 & 모모치 해변 (팀랩 포레스트)", 
+                desc: "💡바다 & 실내 미디어아트 코스: 오호리 대신 바다를 보고 싶다면 추천! 타워 전망대 및 바로 옆 페이페이돔의 '팀랩 포레스트(빛의 동물 터치 미디어아트)'까지 완벽한 유아 코스.", 
+                mapQuery: "후쿠오카 타워",
+                subwayRoute: "🚌 오호리/롯폰마츠에서 버스 W1/302번 탑승 (20분) or 택시 1,800엔",
+                transitOrigin: "오호리 공원",
+                transitDest: "후쿠오카 타워",
+                nearbyHighlights: "모모치 해변 마리존, 마크이즈 모모치 쇼핑몰(초대형 유아휴게실)"
+            },
+            {
+                date: "10-12",
+                time: "15:30~17:30", 
+                title: "캐널시티 하카타 분수쇼 & 캐릭터 쇼핑", 
+                desc: "정시마다 열리는 음악 분수쇼 관람! 지하 1층 동구리공화국(토토로샵)과 산리오 갤러리 필수 코스.", 
+                mapQuery: "캐널시티 하카타",
+                subwayRoute: "🚶 기온 숙소에서 남쪽 방향 도보 5분 (400m, 유모차 평지)",
+                transitOrigin: "오호리 공원",
+                transitDest: "캐널시티 하카타",
+                nearbyHighlights: "캐널시티 B1F 반다이 남코 가챠샵, 라멘 스타디움"
+            },
+            {
+                date: "10-12",
+                time: "18:00~20:00", 
+                title: "저녁: 츠키지 스시센 하루요시점", 
+                desc: "효탄스시의 계단 대기 대신, 테이블석이 넓어 유모차 반입이 편하고 신선한 자연산 모둠초밥 명가. (와사비 뺀 계란·새우초밥)", 
+                mapQuery: "築地すし鮮 福岡総本店",
+                subwayRoute: "🚶 캐널시티에서 다리 건너 도보 5분 (하루요시 방면)",
+                transitOrigin: "캐널시티 하카타",
+                transitDest: "築地すし鮮 福岡総本店",
+                nearbyHighlights: "하루요시 골목 감성 이자카야 거리"
             },
             {
                 date: "10-13",
-                dateLabel: "10월 13일 (월) - 4일차 [마지막 한큐/마잉구 쇼핑 & 귀국]",
-                hotel: "체크아웃",
-                items: [
-                    { 
-                        time: "10:00~10:30", 
-                        title: "호텔 체크아웃 & 프론트 짐 보관", 
-                        desc: "짐을 맡기고 가볍게 마지막 식사와 기념품 쇼핑을 즐기러 출발합니다.", 
-                        mapQuery: "西鉄ホテル クルーム 博多祇園",
-                        subwayRoute: "🚶 기온역 6번 출구 바로 앞",
-                        transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
-                        transitDest: "기온역",
-                        nearbyHighlights: "기온역 지하 아케이드"
-                    },
-                    { 
-                        time: "11:00~12:30", 
-                        title: "브런치: 미야케 우동 (노포)", 
-                        desc: "60년 전통 노포. 굵고 부드러운 면발과 둥근 어묵. 500엔으로 누리는 일본 현지의 정겨운 맛.", 
-                        mapQuery: "みやけうどん 博多",
-                        subwayRoute: "🚶 기온 호텔에서 고후쿠마치 방향 도보 6분 (450m)",
-                        transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
-                        transitDest: "みやけうどん 博多",
-                        nearbyHighlights: "고후쿠마치 전통 골목"
-                    },
-                    { 
-                        time: "12:45~14:15", 
-                        title: "하카타역 한큐백화점 5% 쿠폰 / 마잉구 쇼핑", 
-                        desc: "한큐 1층 안내데스크에서 5% 할인쿠폰 수령! 미키하우스(유아 신발), 갸또러스크, 명란젓, 토리몬 만주 쇼핑.", 
-                        mapQuery: "하카타 한큐 백화점",
-                        subwayRoute: "🟠 공항선 [기온역] → [하카타역] 1정거장 (2분, 서쪽출구 방면 직결)",
-                        transitOrigin: "みやけうどん 博多",
-                        transitDest: "하카타 한큐 백화점",
-                        nearbyHighlights: "마잉구 명란젓 시식 코너, 한큐 백화점 지하 식품관"
-                    },
-                    { 
-                        time: "14:30~14:50", 
-                        title: "공항 이동 (택시 강력 추천)", 
-                        desc: "💡가이드 팁: 짐과 유모차가 있으므로 기온 호텔 앞에서 국제선 터미널까지 직행 택시 탑승 (약 15분, 2,000엔 안팎).", 
-                        mapQuery: "후쿠오카 공항 국제선",
-                        subwayRoute: "🚖 국제선 직통 택시 15분 (클릭 시 이동 경로)",
-                        transitOrigin: "하카타 한큐 백화점",
-                        transitDest: "후쿠오카공항 국제선",
-                        nearbyHighlights: "면세점(로이스 초콜릿, 도쿄바나나, 시로이고이비토 - 계산 대기 길어 즉시 계산 권장)"
-                    },
-                    { 
-                        time: "17:00~18:35", 
-                        title: "후쿠오카(FUK) → 인천(ICN)", 
-                        desc: "에어서울 RS0728편 탑승. 18:35 인천공항 제1여객터미널 도착 및 안전한 귀가!", 
-                        mapQuery: "인천공항",
-                        subwayRoute: "✈️ 귀국 비행기 탑승",
-                        transitOrigin: "후쿠오카공항 국제선",
-                        transitDest: "인천국제공항",
-                        nearbyHighlights: "인천공항 제1여객터미널 입국장"
-                    }
-                ]
+                time: "10:00~10:30", 
+                title: "호텔 체크아웃 & 프론트 짐 보관", 
+                desc: "짐을 맡기고 가볍게 마지막 식사와 기념품 쇼핑을 즐기러 출발합니다.", 
+                mapQuery: "西鉄ホテル クルーム 博多祇園",
+                subwayRoute: "🚶 기온역 6번 출구 바로 앞",
+                transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
+                transitDest: "기온역",
+                nearbyHighlights: "기온역 지하 아케이드"
+            },
+            {
+                date: "10-13",
+                time: "11:00~12:30", 
+                title: "브런치: 미야케 우동 (노포)", 
+                desc: "60년 전통 노포. 굵고 부드러운 면발과 둥근 어묵. 500엔으로 누리는 일본 현지의 정겨운 맛.", 
+                mapQuery: "みやけうどん 博多",
+                subwayRoute: "🚶 기온 호텔에서 고후쿠마치 방향 도보 6분 (450m)",
+                transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
+                transitDest: "みやけうどん 博多",
+                nearbyHighlights: "고후쿠마치 전통 골목"
+            },
+            {
+                date: "10-13",
+                time: "12:45~14:15", 
+                title: "하카타역 한큐백화점 5% 쿠폰 / 마잉구 쇼핑", 
+                desc: "한큐 1층 안내데스크에서 5% 할인쿠폰 수령! 미키하우스(유아 신발), 갸또러스크, 명란젓, 토리몬 만주 쇼핑.", 
+                mapQuery: "하카타 한큐 백화점",
+                subwayRoute: "🟠 공항선 [기온역] → [하카타역] 1정거장 (2분, 서쪽출구 방면 직결)",
+                transitOrigin: "みやけうどん 博多",
+                transitDest: "하카타 한큐 백화점",
+                nearbyHighlights: "마잉구 명란젓 시식 코너, 한큐 백화점 지하 식품관"
+            },
+            {
+                date: "10-13",
+                time: "14:30~14:50", 
+                title: "공항 이동 (택시 강력 추천)", 
+                desc: "💡가이드 팁: 짐과 유모차가 있으므로 기온 호텔 앞에서 국제선 터미널까지 직행 택시 탑승 (약 15분, 2,000엔 안팎).", 
+                mapQuery: "후쿠오카 공항 국제선",
+                subwayRoute: "🚖 국제선 직통 택시 15분 (클릭 시 이동 경로)",
+                transitOrigin: "하카타 한큐 백화점",
+                transitDest: "후쿠오카공항 국제선",
+                nearbyHighlights: "면세점(로이스 초콜릿, 도쿄바나나, 시로이고이비토 - 계산 대기 길어 즉시 계산 권장)"
+            },
+            {
+                date: "10-13",
+                time: "17:00~18:35", 
+                title: "후쿠오카(FUK) → 인천(ICN)", 
+                desc: "에어서울 RS0728편 탑승. 18:35 인천공항 제1여객터미널 도착 및 안전한 귀가!", 
+                mapQuery: "인천공항",
+                subwayRoute: "✈️ 귀국 비행기 탑승",
+                transitOrigin: "후쿠오카공항 국제선",
+                transitDest: "인천국제공항",
+                nearbyHighlights: "인천공항 제1여객터미널 입국장"
             }
         ];
 
@@ -1010,6 +1052,18 @@
             }
         ];
 
+        // 기본 체크리스트 데이터
+        const defaultPack = [
+            { title: "여권 (유효기간 6개월 이상 확인)", done: false },
+            { title: "비짓재팬 Web 등록 및 QR 캡처본 갤러리 저장", done: false },
+            { title: "110V 돼지코 변환 플러그 (숙소 충전용)", done: false },
+            { title: "트래블로그 / 트래블월렛 카드 & 엔화 충전", done: false },
+            { title: "eSIM 또는 포켓와이파이 개통", done: false },
+            { title: "아이 상비약 (호빵맨 감기시럽, 해열제, 모기패치)", done: false },
+            { title: "휴대용 아기 식기 (가위, 스푼, 포크, 물티슈)", done: false },
+            { title: "접이식 휴대용 유모차 (기내 반입용)", done: false }
+        ];
+
         // 회화
         const phrases = [
             {
@@ -1080,44 +1134,58 @@
             window.open(url, '_blank');
         }
 
+        // Firebase 연동 일정 로드
+        function loadItinerary() {
+            if (!db) {
+                itineraryData = defaultItinerary;
+                renderItinerary();
+                return;
+            }
+            db.ref(`${basePath}/itinerary`).on('value', snap => {
+                const val = snap.val();
+                if (val) {
+                    itineraryData = Object.entries(val).map(([k, v]) => ({ ...v, key: k }));
+                    itineraryData.sort((a,b) => String(a.date).localeCompare(String(b.date)) || String(a.time).localeCompare(String(b.time)));
+                } else {
+                    defaultItinerary.forEach(i => db.ref(`${basePath}/itinerary`).push(i));
+                }
+                renderItinerary();
+            });
+        }
+
         function renderItinerary(filter = 'all') {
             const container = document.getElementById('itinerary-list');
-            const target = filter === 'all' ? itinerary : itinerary.filter(d => d.date === filter);
-            container.innerHTML = target.map(day => `
-                <div class="mb-8">
-                    <div class="flex justify-between items-center mb-3 px-1">
-                        <h3 class="text-lg font-black text-amber-800 dark:text-amber-400 flex items-center">
-                            <span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span>${day.dateLabel}
-                        </h3>
-                        <span class="text-xs font-bold text-slate-500 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-full">🏨 ${day.hotel}</span>
+            const target = filter === 'all' ? itineraryData : itineraryData.filter(d => d.date === filter);
+            if (!target || target.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-slate-400 font-bold">등록된 일정이 없습니다.</div>';
+                return;
+            }
+            container.innerHTML = target.map(item => `
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-black ${item.time.includes('선택') ? 'bg-indigo-600' : 'bg-amber-500'} text-white px-3 py-1 rounded-xl">${item.time}</span>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="openGoogleMap('${item.mapQuery}')" class="text-sm font-bold text-slate-500 hover:text-amber-600 flex items-center">
+                                <i class="fas fa-map-marker-alt mr-1 text-amber-500"></i>위치
+                            </button>
+                            ${item.key ? `<button onclick="openItineraryModal('${item.key}')" class="text-slate-400 text-sm p-1"><i class="fas fa-edit"></i></button>` : ''}
+                        </div>
                     </div>
-                    <div class="space-y-4">
-                        ${day.items.map(item => `
-                            <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-black ${item.time.includes('선택') ? 'bg-indigo-600' : 'bg-amber-500'} text-white px-3 py-1 rounded-xl">${item.time}</span>
-                                    <button onclick="openGoogleMap('${item.mapQuery}')" class="text-sm font-bold text-slate-500 hover:text-amber-600 flex items-center">
-                                        <i class="fas fa-map-marker-alt mr-1.5 text-amber-500"></i>장소위치
-                                    </button>
-                                </div>
-                                <h4 class="font-black text-xl text-slate-900 dark:text-white leading-snug">${item.title}</h4>
-                                <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-line">${item.desc}</p>
-                                
-                                ${item.nearbyHighlights ? `
-                                <div class="bg-amber-50/70 dark:bg-amber-950/25 p-3 rounded-2xl border border-amber-100 dark:border-amber-900/30 text-sm">
-                                    <span class="font-black text-amber-800 dark:text-amber-300">✨ 주변 볼거리/간식:</span>
-                                    <span class="text-slate-700 dark:text-slate-200 font-medium ml-1.5">${item.nearbyHighlights}</span>
-                                </div>` : ''}
+                    <h4 class="font-black text-xl text-slate-900 dark:text-white leading-snug">${item.title}</h4>
+                    <p class="text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-line">${item.desc}</p>
+                    
+                    ${item.nearbyHighlights ? `
+                    <div class="bg-amber-50/70 dark:bg-amber-950/25 p-3 rounded-2xl border border-amber-100 dark:border-amber-900/30 text-sm">
+                        <span class="font-black text-amber-800 dark:text-amber-300">✨ 주변 볼거리/간식:</span>
+                        <span class="text-slate-700 dark:text-slate-200 font-medium ml-1.5">${item.nearbyHighlights}</span>
+                    </div>` : ''}
 
-                                ${item.subwayRoute ? `
-                                <div onclick="openDirectTransit('${item.transitOrigin}', '${item.transitDest}')" class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center text-sm font-black text-orange-600 dark:text-orange-400 cursor-pointer active:scale-[0.99] transition-transform">
-                                    <i class="fas fa-directions mr-2 text-base"></i>
-                                    <span class="underline">${item.subwayRoute}</span>
-                                    <i class="fas fa-chevron-right ml-1.5 text-xs opacity-75"></i>
-                                </div>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
+                    ${item.subwayRoute ? `
+                    <div onclick="openDirectTransit('${item.transitOrigin || ''}', '${item.transitDest || item.mapQuery}')" class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center text-sm font-black text-orange-600 dark:text-orange-400 cursor-pointer active:scale-[0.99] transition-transform">
+                        <i class="fas fa-directions mr-2 text-base"></i>
+                        <span class="underline">${item.subwayRoute}</span>
+                        <i class="fas fa-chevron-right ml-1.5 text-xs opacity-75"></i>
+                    </div>` : ''}
                 </div>
             `).join('');
         }
@@ -1131,6 +1199,53 @@
                 c.classList.toggle('dark:bg-slate-900', !isActive);
             });
             renderItinerary(day);
+        }
+
+        // 일정 추가/수정 모달
+        function openItineraryModal(key = null) {
+            document.getElementById('edit-key').value = key || '';
+            document.getElementById('btn-del-itinerary').classList.toggle('hidden', !key);
+            document.getElementById('itinerary-modal').classList.remove('hidden');
+            if (key) {
+                const item = itineraryData.find(i => i.key === key);
+                if (item) {
+                    document.getElementById('form-date').value = item.date;
+                    document.getElementById('form-time').value = item.time;
+                    document.getElementById('form-title').value = item.title;
+                    document.getElementById('form-desc').value = item.desc;
+                    document.getElementById('form-subway').value = item.subwayRoute || '';
+                }
+            } else {
+                document.getElementById('form-title').value = '';
+                document.getElementById('form-desc').value = '';
+                document.getElementById('form-time').value = '';
+                document.getElementById('form-subway').value = '';
+            }
+        }
+        function closeItineraryModal() { document.getElementById('itinerary-modal').classList.add('hidden'); }
+        function saveItinerary() {
+            const k = document.getElementById('edit-key').value;
+            const data = {
+                date: document.getElementById('form-date').value,
+                time: document.getElementById('form-time').value || "시간 미정",
+                title: document.getElementById('form-title').value,
+                desc: document.getElementById('form-desc').value || "",
+                subwayRoute: document.getElementById('form-subway').value || "",
+                mapQuery: document.getElementById('form-title').value
+            };
+            if (!data.title) return alert("장소/일정명을 입력하세요.");
+            if (db) {
+                if (k) db.ref(`${basePath}/itinerary/${k}`).update(data);
+                else db.ref(`${basePath}/itinerary`).push(data);
+            }
+            closeItineraryModal();
+        }
+        function deleteItinerary() {
+            const k = document.getElementById('edit-key').value;
+            if (k && confirm("이 일정을 삭제하시겠습니까?") && db) {
+                db.ref(`${basePath}/itinerary/${k}`).remove();
+                closeItineraryModal();
+            }
         }
 
         function renderSpots(cat = '전체') {
@@ -1197,6 +1312,44 @@
                             </div>
                         `).join('')}
                     </div>
+                </div>
+            `).join('');
+        }
+
+        // Firebase 연동 체크리스트 로드
+        function loadPacking() {
+            if (!db) {
+                renderLocalPacking();
+                return;
+            }
+            db.ref(`${basePath}/packing`).on('value', snap => {
+                const val = snap.val();
+                if (!val) {
+                    defaultPack.forEach(p => db.ref(`${basePath}/packing`).push(p));
+                    return;
+                }
+                const items = Object.entries(val).map(([k, v]) => ({ ...v, key: k }));
+                const total = items.length;
+                const done = items.filter(i => i.done).length;
+                const pct = total ? Math.round((done / total) * 100) : 0;
+                document.getElementById('pack-progress-bar').style.width = `${pct}%`;
+                document.getElementById('pack-progress-text').innerText = `${pct}% (${done}/${total})`;
+
+                document.getElementById('pack-items').innerHTML = items.map(item => `
+                    <div onclick="db.ref('${basePath}/packing/${item.key}').update({done: ${!item.done}})" class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200/60 dark:border-slate-700 cursor-pointer active:scale-[0.99] transition-transform">
+                        <span class="text-base font-bold ${item.done ? 'line-through text-slate-400' : 'text-slate-900 dark:text-slate-100'}">${item.title}</span>
+                        <input type="checkbox" ${item.done ? 'checked' : ''} class="w-5 h-5 accent-amber-500 pointer-events-none">
+                    </div>
+                `).join('');
+            });
+        }
+
+        function renderLocalPacking() {
+            const list = defaultPack;
+            document.getElementById('pack-items').innerHTML = list.map((item, idx) => `
+                <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200/60 dark:border-slate-700">
+                    <span class="text-base font-bold text-slate-900 dark:text-slate-100">${item.title}</span>
+                    <input type="checkbox" class="w-5 h-5 accent-amber-500">
                 </div>
             `).join('');
         }
@@ -1283,7 +1436,7 @@
                             <span class="text-amber-600 font-black text-base">${item.amt.toLocaleString()}¥</span>
                         </div>`;
                 }).join('');
-                document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-xs text-slate-400">지출 내역이 없습니다.</div>';
+                document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-sm text-slate-400">지출 내역이 없습니다.</div>';
                 document.getElementById('total-expense').innerText = `${total.toLocaleString()} ¥`;
             }
         }
@@ -1352,9 +1505,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             fetchWeather();
             fetchExchangeRate();
-            renderItinerary();
+            loadItinerary();
             renderSpots();
             renderShopping();
+            loadPacking();
             renderPhrases();
             loadExpenses();
 
