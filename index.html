@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>후쿠오카 미식 투어 🇯🇵</title>
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { brand: { 50: '#fff1f2', 500: '#f43f5e', 600: '#e11d48', 900: '#881337' } } } }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK (상해 앱과 동일 엔진) -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; word-break: keep-all; user-select: none; letter-spacing: -0.03em; }
+        .tab-content { display: none; } .tab-content.active { display: block; animation: fadeIn 0.25s ease-out; }
+        .glass-header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #f1f5f9; }
+        .dark .glass-header { background: rgba(15, 23, 42, 0.95); border-bottom: 1px solid #1e293b; }
+        .bottom-nav { height: 62px; border-top: 1px solid #f1f5f9; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
+        .dark .bottom-nav { border-top: 1px solid #1e293b; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { display: none; }
+        input, select, textarea { font-size: 16px !important; border-radius: 14px !important; }
+        .card-grad { background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%); }
+        .dark .card-grad { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .category-chip { transition: all 0.2s; white-space: nowrap; border: 1px solid #e2e8f0; cursor: pointer; }
+        .dark .category-chip { border-color: #1e293b; }
+        .category-chip.active { background-color: #f43f5e !important; color: white !important; border-color: #f43f5e !important; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 pb-24 transition-colors duration-300 text-slate-900 dark:text-slate-100">
+
+    <header class="glass-header sticky top-0 z-50 px-4 py-3">
+        <div class="flex justify-between items-center">
+            <button onclick="window.open('https://search.naver.com/search.naver?query=후쿠오카+날씨', '_blank')" id="weather-display" class="bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 px-3.5 py-2 rounded-2xl text-[11px] font-black flex items-center shadow-sm border border-rose-100 dark:border-rose-900/50">
+                <i class="fas fa-spinner fa-spin mr-2"></i>날씨 확인 중...
+            </button>
+            <div class="flex items-center space-x-1.5">
+                <button onclick="openHotelCardSelector()" class="w-9 h-9 rounded-full bg-slate-900 text-white dark:bg-slate-800 flex items-center justify-center shadow-md active:scale-90 transition-transform text-xs">🏨</button>
+                <button onclick="openSOSModal()" class="w-9 h-9 rounded-full bg-red-500 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform"><span class="animate-pulse text-sm">🚨</span></button>
+                <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 shadow-sm border border-slate-200 dark:border-slate-700 ml-1"><i id="theme-icon" class="fas fa-moon text-sm"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <main class="p-4 max-w-lg mx-auto">
+        <!-- 1. 일정 탭 -->
+        <div id="schedule" class="tab-content active space-y-4">
+            <div class="bg-gradient-to-r from-rose-500 to-red-600 text-white p-5 rounded-[2rem] shadow-lg flex justify-between items-center">
+                <div>
+                    <span class="text-[10px] font-black tracking-widest uppercase bg-white/20 px-2.5 py-1 rounded-full">AIR SEOUL</span>
+                    <h2 class="text-2xl font-black mt-2 tracking-tight">후쿠오카 미식 투어</h2>
+                    <p class="text-xs font-semibold text-rose-100 mt-0.5">10.10(금) 14:25 ~ 10.13(월) 17:00</p>
+                </div>
+                <button onclick="openItineraryModal()" class="bg-white/20 text-white px-3 py-2 rounded-xl text-xs font-bold active:scale-95"><i class="fas fa-plus mr-1"></i>추가</button>
+            </div>
+
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-black">
+                <button onclick="filterDay('all')" class="day-chip active px-4 py-2 rounded-xl bg-rose-500 text-white shadow-sm" data-day="all">전체</button>
+                <button onclick="filterDay('10-10')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-10">Day 1 (10.10)</button>
+                <button onclick="filterDay('10-11')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-11">Day 2 (10.11)</button>
+                <button onclick="filterDay('10-12')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-12">Day 3 (10.12)</button>
+                <button onclick="filterDay('10-13')" class="day-chip px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-13">Day 4 (10.13)</button>
+            </div>
+
+            <div id="itinerary-list" class="space-y-4 pt-1">
+                <div class="text-center py-10 text-slate-400 font-bold"><i class="fas fa-spinner fa-spin mr-2"></i>일정 동기화 중...</div>
+            </div>
+        </div>
+
+        <!-- 2. 맛집/스팟 탭 -->
+        <div id="spot" class="tab-content space-y-4">
+            <div class="flex justify-between items-center px-1">
+                <h2 class="text-lg font-black uppercase tracking-tight text-rose-500 italic">Fukuoka Gourmet & Spots</h2>
+            </div>
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                <button onclick="filterSpots('전체')" class="category-chip active px-4 py-2 rounded-full text-xs font-black bg-white dark:bg-slate-900" data-cat="전체">전체</button>
+                <button onclick="filterSpots('식사')" class="category-chip px-4 py-2 rounded-full text-xs font-black bg-white dark:bg-slate-900" data-cat="식사">식사</button>
+                <button onclick="filterSpots('디저트')" class="category-chip px-4 py-2 rounded-full text-xs font-black bg-white dark:bg-slate-900" data-cat="디저트">디저트/베이커리</button>
+                <button onclick="filterSpots('숙소')" class="category-chip px-4 py-2 rounded-full text-xs font-black bg-white dark:bg-slate-900" data-cat="숙소">숙소</button>
+            </div>
+            <div id="spot-list" class="space-y-3"></div>
+        </div>
+
+        <!-- 3. 엔화 환율 계산기 & 실시간 가계부 -->
+        <div id="ledger" class="tab-content space-y-5">
+            <div class="bg-slate-900 text-white p-6 rounded-[2.5rem] shadow-xl relative overflow-hidden">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-[10px] font-black text-slate-400 tracking-widest uppercase">Live JPY Rate</span>
+                    <button onclick="fetchExchangeRate()" class="text-xs text-rose-400"><i class="fas fa-sync-alt"></i></button>
+                </div>
+                <h2 class="text-3xl font-black italic tracking-tighter" id="exchange-rate-display">100¥ = 계산 중...</h2>
+                <div class="space-y-3 relative z-10 mt-5">
+                    <div class="relative">
+                        <span class="absolute left-4 top-4 text-white/50 font-black text-sm">JPY (¥)</span>
+                        <input type="number" id="jpy-input" placeholder="엔화 입력" class="w-full p-4 pl-20 rounded-2xl bg-white/10 border border-white/10 text-white font-black outline-none text-2xl">
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="addJPY(500)" class="flex-1 bg-white/10 text-white py-2.5 rounded-xl font-black text-xs active:scale-95">+500¥</button>
+                        <button onclick="addJPY(1000)" class="flex-1 bg-white/10 text-white py-2.5 rounded-xl font-black text-xs active:scale-95">+1,000¥</button>
+                        <button onclick="addJPY(5000)" class="flex-1 bg-white/10 text-white py-2.5 rounded-xl font-black text-xs active:scale-95">+5,000¥</button>
+                        <button onclick="clearJPY()" class="w-12 bg-rose-500/50 text-white py-2.5 rounded-xl font-black text-xs active:scale-95"><i class="fas fa-undo"></i></button>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute left-4 top-4 text-white/70 font-black text-sm">KRW (₩)</span>
+                        <input type="number" id="krw-input" placeholder="원화 계산" class="w-full p-4 pl-20 rounded-2xl bg-rose-600 border-none text-white font-black outline-none text-2xl">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firebase 연동 가계부 -->
+            <div class="bg-white dark:bg-slate-900 p-5 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
+                <h3 class="font-black text-sm text-slate-500 uppercase tracking-widest mb-3">지출 기록</h3>
+                <div class="flex gap-2 mb-4">
+                    <input type="text" id="exp-desc" placeholder="항목 (예: 하가쿠레 우동)" class="flex-1 p-3 text-xs font-bold rounded-xl border dark:bg-slate-800 dark:border-slate-700">
+                    <input type="number" id="exp-amt" placeholder="¥" class="w-20 p-3 text-xs font-bold rounded-xl border text-center dark:bg-slate-800 dark:border-slate-700">
+                    <button onclick="addExpense()" class="px-4 bg-slate-900 dark:bg-rose-500 text-white text-xs font-black rounded-xl active:scale-95">저장</button>
+                </div>
+                <div id="expense-list" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                <div class="mt-4 pt-3 border-t border-dashed dark:border-slate-800 flex justify-between items-center text-xs font-black">
+                    <span class="text-slate-400 uppercase">Total Expense</span>
+                    <span id="total-expense" class="text-lg text-rose-500 font-black">0 ¥</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 일본어 회화/TTS 탭 -->
+        <div id="phrases" class="tab-content space-y-4">
+            <div class="bg-slate-900 text-white p-5 rounded-[2rem] shadow-lg flex justify-between items-center">
+                <div>
+                    <h3 class="font-black text-lg"><i class="fas fa-comments mr-2 text-rose-400"></i>식당/상점 필수 일본어</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">카드를 누르면 현지 발음(TTS)이 재생됩니다.</p>
+                </div>
+                <button onclick="window.open('https://papago.naver.com/?sk=ko&tk=ja', '_blank')" class="bg-white/10 text-xs px-3 py-2 rounded-xl font-bold">파파고 <i class="fas fa-external-link-alt ml-1"></i></button>
+            </div>
+            <div id="phrase-list" class="space-y-4 pb-6"></div>
+        </div>
+
+        <!-- 5. 준비물 체크리스트 탭 -->
+        <div id="packing" class="tab-content space-y-4">
+            <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="font-black text-base text-rose-500"><i class="fas fa-check-circle mr-2"></i>여행 체크리스트</h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">실시간 동기화 체크리스트</p>
+                    </div>
+                    <span id="pack-progress-text" class="text-xs font-black text-rose-500">0%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-4">
+                    <div id="pack-progress-bar" class="h-full bg-rose-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div id="pack-items" class="space-y-2.5"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 glass-header flex bottom-nav z-50 shadow-2xl">
+        <button onclick="showTab('schedule')" id="nav-schedule" class="tab-btn flex-1 flex flex-col items-center justify-center text-rose-500"><i class="fas fa-calendar-alt text-[20px] mb-1"></i><span class="text-[9px] font-black uppercase tracking-tighter">일정</span></button>
+        <button onclick="showTab('spot')" id="nav-spot" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400"><i class="fas fa-utensils text-[20px] mb-1"></i><span class="text-[9px] font-black uppercase tracking-tighter">맛집/스팟</span></button>
+        <button onclick="showTab('ledger')" id="nav-ledger" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400"><i class="fas fa-coins text-[20px] mb-1"></i><span class="text-[9px] font-black uppercase tracking-tighter">엔화 환율</span></button>
+        <button onclick="showTab('phrases')" id="nav-phrases" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400"><i class="fas fa-comment-dots text-[20px] mb-1"></i><span class="text-[9px] font-black uppercase tracking-tighter">회화</span></button>
+        <button onclick="showTab('packing')" id="nav-packing" class="tab-btn flex-1 flex flex-col items-center justify-center text-slate-400"><i class="fas fa-clipboard-check text-[20px] mb-1"></i><span class="text-[9px] font-black uppercase tracking-tighter">체크</span></button>
+    </nav>
+
+    <!-- 일정 추가/수정 모달 -->
+    <div id="itinerary-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-5 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-3">
+            <h3 class="font-black text-lg text-rose-500 text-center">일정 편집</h3>
+            <input type="hidden" id="edit-key">
+            <select id="form-date" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-black">
+                <option value="10-10">10월 10일 (금)</option>
+                <option value="10-11">10월 11일 (토)</option>
+                <option value="10-12">10월 12일 (일)</option>
+                <option value="10-13">10월 13일 (월)</option>
+            </select>
+            <input type="text" id="form-time" placeholder="시간 (예: 18:30)" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold">
+            <input type="text" id="form-title" placeholder="장소 / 일정명" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold">
+            <textarea id="form-desc" placeholder="상세 꿀팁 / 메모" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold h-20"></textarea>
+            <input type="text" id="form-map" placeholder="구글맵 검색어" class="w-full p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 font-bold">
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveItinerary()" class="flex-1 bg-slate-900 text-white dark:bg-rose-500 py-3.5 rounded-xl font-black">저장</button>
+                <button onclick="closeItineraryModal()" class="flex-1 bg-slate-200 py-3.5 rounded-xl font-black">닫기</button>
+            </div>
+            <button id="btn-del-itinerary" onclick="deleteItinerary()" class="w-full text-red-500 text-xs underline mt-1 hidden">삭제</button>
+        </div>
+    </div>
+
+    <!-- 택시 기사용 호텔 카드 선택 모달 -->
+    <div id="hotel-selector-modal" class="fixed inset-0 bg-black/70 z-[450] hidden flex items-center justify-center p-5 backdrop-blur-md" onclick="closeHotelCardSelector()">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-sm space-y-3" onclick="event.stopPropagation()">
+            <h3 class="font-black text-lg text-center mb-4 text-slate-800 dark:text-white">택시/길찾기용 호텔 선택</h3>
+            <button onclick="showHotelCard(1)" class="w-full text-left p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900">
+                <span class="text-[10px] font-black text-rose-500 uppercase">1박 (10/10)</span>
+                <p class="font-black text-slate-900 dark:text-white mt-0.5">비아인 하카타구치 에키마에</p>
+                <p class="text-xs text-slate-500 mt-1">ヴィアイン博多口駅前</p>
+            </button>
+            <button onclick="showHotelCard(2)" class="w-full text-left p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900">
+                <span class="text-[10px] font-black text-indigo-500 uppercase">2~3박 (10/11~13)</span>
+                <p class="font-black text-slate-900 dark:text-white mt-0.5">니시테츠 크룸 하카타 기온</p>
+                <p class="text-xs text-slate-500 mt-1">西鉄ホテル クルーム 博多祇園</p>
+            </button>
+            <button onclick="closeHotelCardSelector()" class="w-full py-3 bg-slate-100 dark:bg-slate-800 rounded-xl font-black text-xs text-slate-500">닫기</button>
+        </div>
+    </div>
+
+    <!-- 전체 화면 호텔 카드 -->
+    <div id="hotel-card" class="fixed inset-0 bg-white z-[500] hidden flex flex-col items-center justify-center p-8 text-center" onclick="this.classList.add('hidden')">
+        <p class="text-slate-500 font-bold text-lg mb-8">기사님, 여기로 가주세요<br><span class="text-sm text-slate-400">(運転手さん、ここまでお願いします)</span></p>
+        <h2 id="hotel-card-name" class="text-4xl font-black text-slate-950 mb-6 leading-tight"></h2>
+        <p id="hotel-card-addr" class="text-xl font-bold text-slate-700 leading-relaxed mb-6"></p>
+        <p id="hotel-card-tel" class="text-base font-semibold text-rose-600 bg-rose-50 px-4 py-2 rounded-xl mb-12"></p>
+        <div class="bg-slate-100 px-6 py-3 rounded-full font-black text-slate-400 animate-pulse text-xs">화면을 터치하면 닫힙니다</div>
+    </div>
+
+    <!-- SOS 모달 -->
+    <div id="sos-modal" class="fixed inset-0 bg-black/70 z-[400] hidden flex items-center justify-center p-5 backdrop-blur-md" onclick="closeSOSModal()">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-4 border-t-[8px] border-red-500" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-800">
+                <h3 class="font-black text-xl text-red-500 flex items-center"><i class="fas fa-exclamation-triangle mr-2"></i>일본 긴급 비상연락</h3>
+                <button onclick="closeSOSModal()" class="text-slate-400 text-2xl">&times;</button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs font-black">
+                <a href="tel:110" class="bg-red-50 text-red-600 p-4 rounded-2xl text-center border border-red-100">경찰 (110)</a>
+                <a href="tel:119" class="bg-orange-50 text-orange-600 p-4 rounded-2xl text-center border border-orange-100">구급/소방 (119)</a>
+                <a href="tel:+81-92-771-0461" class="col-span-2 bg-blue-50 text-blue-600 p-3.5 rounded-2xl text-center border border-blue-100">
+                    🇰🇷 주후쿠오카 대한민국 총영사관<br><span class="text-[10px] font-normal text-slate-500">+81-92-771-0461 (야간긴급 +81-90-1367-3638)</span>
+                </a>
+            </div>
+            <button onclick="closeSOSModal(); openHotelCardSelector();" class="w-full bg-slate-900 text-white dark:bg-rose-600 py-3.5 rounded-2xl font-black text-xs shadow-md">🚕 택시용 숙소 카드 보기</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Firebase 설정 & BasePath ---
+        const basePath = 'fukuoka_2026_oct'; // 후쿠오카 전용 경로 분리
+        const firebaseConfig = { databaseURL: "https://nhatrang-trip-default-rtdb.asia-southeast1.firebasedatabase.app" };
+        let db = null;
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch(e) { console.warn("Firebase 초기화 오류, 오프라인 모드 작동"); }
+
+        let jpyPerKrw = 9.15;
+        let itineraryData = [];
+
+        // 최적 동선 & 웨이팅 절감형 로컬 추천 초기 일정
+        const defaultItinerary = [
+            // Day 1 (10.10 금)
+            { date: "10-10", time: "14:25~16:00", title: "인천(ICN) → 후쿠오카(FUK)", desc: "에어서울 RS0727편 탑승\n16:00 정시 도착 예정, 입국 수속 및 세관 통과", mapQuery: "후쿠오카 공항 국제선" },
+            { date: "10-10", time: "16:40~17:20", title: "공항 → 비아인 하카타구치 체크인", desc: "공항선 지하철로 하카타역 이동 후 도보 3분\n'비아인 하카타구치 에키마에' 1박 체크인", mapQuery: "비아인 하카타구치 에키마에" },
+            { date: "10-10", time: "17:30~18:00", title: "디저트: 일 포르노 델 미뇽", desc: "하카타역 중앙 개찰구 앞 줄서서 사먹는 갓 구운 미니 크루아상(초코/고구마 강추)", mapQuery: "il FORNO del MIGNON Hakata" },
+            { date: "10-10", time: "18:30~20:00", title: "저녁: 함바그 요시 (텐진/다이묘)", desc: "키와미야의 2~3시간 웨이팅 대신 추천! 숯불에 구워 육즙 터지는 현지인 인기 함바그", mapQuery: "ハンバーグ よし 福岡" },
+            { date: "10-10", time: "20:30~22:00", title: "야식: 멘야 타이슨 (博多一双 출신)", desc: "이치란 본점의 인파 대신 진하고 거품 가득한 카푸치노 톤코츠 라멘의 진수를 맛보기", mapQuery: "麺屋タイソン 博多" },
+
+            // Day 2 (10.11 토)
+            { date: "10-11", time: "09:30~10:15", title: "숙소 이동 & 짐 보관 (니시테츠 크룸 기온)", desc: "비아인 체크아웃 후 '니시테츠 크룸 하카타 기온'으로 이동하여 짐 드롭", mapQuery: "西鉄ホテル クルーム 博多祇園" },
+            { date: "10-11", time: "10:30~11:30", title: "디저트: 빵스톡 (Pain Stock) 텐진점", desc: "명란 바게트와 시오빵의 성지! 하카타 강변 산책로와 함께 포장 필수", mapQuery: "pain stock tenjin" },
+            { date: "10-11", time: "12:00~13:30", title: "점심: 하가쿠레 우동 (葉隠うどん)", desc: "미슐랭 빕구르망 선정 로컬 우동! 쫄깃하고 투명한 면발과 바삭한 우엉튀김(고보텐)", mapQuery: "葉隠うどん 博多" },
+            { date: "10-11", time: "14:00~16:00", title: "텐진 다이묘거리 & 디저트: 신선산도", desc: "다이묘 골목 감성 쇼핑 후 우유 생크림과 생과일이 터질 듯 들어간 후르츠산도 맛보기", mapQuery: "新鮮サンド 福岡" },
+            { date: "10-11", time: "16:30~18:00", title: "기온 숙소 공식 체크인 & 온천 대욕장", desc: "니시테츠 크룸 기온 입실 후 호텔 내 천연온천 대욕장에서 여독 풀기", mapQuery: "西鉄ホテル クルーム 博多祇園" },
+            { date: "10-11", time: "18:30~20:30", title: "저녁: 야키니쿠 규센닌 (牛仙人)", desc: "예약 전쟁 니쿠이치 대체! 상위 등급 흑모와규 갈비와 우설을 가성비 높게 즐기는 로컬 명가", mapQuery: "焼肉 牛仙人 博多" },
+
+            // Day 3 (10.12 일)
+            { date: "10-12", time: "10:30~12:30", title: "점심: 요시즈카 우나기야 (장어덮밥)", desc: "1873년 창업한 150년 전통 장어구이 명가! 오픈 시간 전 번호표 발권 추천", mapQuery: "吉塚うなぎ屋" },
+            { date: "10-12", time: "13:00~14:30", title: "오호리 공원 & 디저트: 이몬네", desc: "오호리 호수 산책과 부드러운 고구마 몽블랑 & 수제 고구마 디저트", mapQuery: "いもんね 福岡" },
+            { date: "10-12", time: "15:00~17:30", title: "캐널시티 하카타 분수쇼 & 쇼핑", desc: "기온 숙소와 도보 5분 거리! 쇼핑몰 산책 및 기념품 구경", mapQuery: "캐널시티 하카타" },
+            { date: "10-12", time: "18:30~20:30", title: "저녁: 츠키지 스시센 하루요시점 (스시)", desc: "효탄스시의 기나긴 계단 웨이팅을 피해 쾌적하게 즐기는 현지 단골 스시 & 사시미 명가", mapQuery: "築地すし鮮 福岡総本店" },
+
+            // Day 4 (10.13 월)
+            { date: "10-13", time: "10:00~11:00", title: "기온 숙소 체크아웃 & 짐 보관", desc: "프론트에 짐을 맡기고 여유로운 마지막 날 오전 시작", mapQuery: "西鉄ホテル クルーム 博多祇園" },
+            { date: "10-13", time: "11:30~13:00", title: "브런치: 미야케 우동 (60년 전통 노포)", desc: "굵고 부드러운 정통 하카타면과 담백한 어묵(마루텐) 한 그릇 (500엔의 행복)", mapQuery: "みやけうどん 博多" },
+            { date: "10-13", time: "13:30~14:30", title: "짐 찾기 & 하카타역 마잉구 쇼핑", desc: "명란젓, 토리몬 만주 등 귀국 선물 쇼핑", mapQuery: "博多駅 マイング" },
+            { date: "10-13", time: "14:40~15:00", title: "공항 이동 (택시 약 2,000엔 권장)", desc: "짐이 많으므로 기온역 인근에서 국제선 터미널로 택시 직행 (15분 소요)", mapQuery: "후쿠오카 공항 국제선" },
+            { date: "10-13", time: "17:00~18:35", title: "후쿠오카(FUK) → 인천(ICN)", desc: "에어서울 RS0728편 귀국 비행기 탑승 (18:35 인천 도착)", mapQuery: "인천공항" }
+        ];
+
+        // 스팟 리스트
+        const spots = [
+            { cat: "숙소", nameKo: "비아인 하카타구치 에키마에", nameJp: "ヴィアイン博多口駅前", desc: "1박(10/10) 숙소. 하카타역 하카타구치 도보 3분", tel: "092-432-5489", addr: "福岡県福岡市博多区博多駅前2-17-11" },
+            { cat: "숙소", nameKo: "니시테츠 크룸 하카타 기온", nameJp: "西鉄ホテル クルーム 博多祇園", desc: "2~3박(10/11~13) 숙소. 기온역 6번출구 바로 앞, 천연온천 대욕장", tel: "092-235-5050", addr: "福岡県福岡市博多区祇園町6-30" },
+            { cat: "식사", nameKo: "우동 (하가쿠레 우동)", nameJp: "葉隠うどん", desc: "★로컬 강추★ 미슐랭 빕구르망. 투명하고 쫄깃한 면발과 바삭한 우엉튀김(고보텐)", tel: "092-431-1010", addr: "福岡県福岡市博多区博多駅南2-3-32" },
+            { cat: "식사", nameKo: "라멘 (멘야 타이슨)", nameJp: "麺屋タイ슨", desc: "★로컬 강추★ 이치란의 대기열 대신 거품 가득한 진한 톤코츠 라멘", tel: "092-411-0130", addr: "福岡県福岡市博多区博多駅前3-18-8" },
+            { cat: "식사", nameKo: "함바그 (함바그 요시)", nameJp: "ハンバーグ よし", desc: "★웨이팅 절감★ 키와미야 대체! 숯불 직화로 겉바속촉 육즙 가득한 함바그", tel: "", addr: "福岡県福岡市中央区大名" },
+            { cat: "식사", nameKo: "야키니쿠 (야키니쿠 규센닌)", nameJp: "焼肉 牛仙人", desc: "★로컬 강추★ 니쿠이치 대체! 상위 등급 흑모와규 특선과 우설 가성비 명가", tel: "092-409-7729", addr: "福岡県福岡市博多区博多駅前3-19-1" },
+            { cat: "식사", nameKo: "장어덮밥 (요시즈카 우나기야)", nameJp: "吉塚うなぎ屋", desc: "1873년 창업. 후쿠오카 부동의 1위 숯불 장어구이 명가 (오픈런 필수)", tel: "092-271-0700", addr: "福岡県福岡市博多区中洲2-8-27" },
+            { cat: "식사", nameKo: "스시 (츠키지 스시센 하루요시점)", nameJp: "築地すし鮮 福岡総本店", desc: "★로컬 강추★ 효탄스시 대체! 24시간 장인의 손맛과 신선한 제철 회초밥", tel: "092-737-3388", addr: "福岡県福岡市中央区春吉3-12-19" },
+            { cat: "디저트", nameKo: "신선산도 (Shin-Sen Sando)", nameJp: "新鮮サンド", desc: "달콤한 우유크림과 제철 과일이 가득한 텐진 다이묘 과일산도", tel: "", addr: "福岡県福岡市中央区大名" },
+            { cat: "디저트", nameKo: "이몬네 (Imonne)", nameJp: "いもんね", desc: "오호리공원 인근의 달콤한 고구마 몽블랑 & 수제 아이스크림 디저트", tel: "", addr: "福岡県福岡市中央区" },
+            { cat: "디저트", nameKo: "빵스톡 텐진점 (Pain Stock)", nameJp: "パンストック 天神店", desc: "명란 바게트 품절 대란! 강변 뷰와 함께 즐기는 후쿠오카 1위 베이커리", tel: "092-726-5550", addr: "福岡県福岡市中央区西中洲6-17" },
+            { cat: "디저트", nameKo: "일 포르노 델 미뇽", nameJp: "ミニヨン 博多駅店", desc: "하카타역 개찰구 앞 고소한 버터 냄새 가득한 갓 구운 미니 크루아상", tel: "092-412-3364", addr: "JR博多駅構内" }
+        ];
+
+        // 회화 데이터
+        const phrases = [
+            {
+                cat: "식당 주문 (Restaurant)",
+                items: [
+                    { ko: "저기요! (주문할 때)", jp: "すみません！", ro: "스미마센!" },
+                    { ko: "추천 메뉴는 무엇인가요?", jp: "おすすめは何ですか？", ro: "오스스메와 난데스카?" },
+                    { ko: "이거 하나 주세요", jp: "これを一つください", ro: "코레오 히토츠 쿠다사이" },
+                    { ko: "생맥주 한 잔 주세요", jp: "生ビール一つください", ro: "나마비-루 히토츠 쿠다사이" },
+                    { ko: "계산해 주세요", jp: "お会計お願いします", ro: "오카이케이 오네가이시마스" }
+                ]
+            },
+            {
+                cat: "교통 및 쇼핑 (Move & Shop)",
+                items: [
+                    { ko: "여기까지 가주세요 (택시)", jp: "ここまでお願いします", ro: "코코마데 오네가이시마스" },
+                    { ko: "트렁크 열어주세요", jp: "トランクを開けてください", ro: "토란쿠오 아케테 쿠다사이" },
+                    { ko: "면세 되나요?", jp: "免税できますか？", ro: "멘제이 데키마스카?" }
+                ]
+            }
+        ];
+
+        // 기본 체크리스트
+        const defaultPack = [
+            { title: "여권 (유효기간 확인)", done: false },
+            { title: "비짓재팬(Visit Japan Web) 등록 및 QR 캡처", done: false },
+            { title: "110V 변환 돼지코 플러그", done: false },
+            { title: "트래블로그/트래블월렛 카드 & 엔화 충전", done: false },
+            { title: "eSIM 또는 포켓와이파이", done: false }
+        ];
+
+        // --- 기능 로직 ---
+        async function fetchWeather() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=33.5904&longitude=130.4017&current_weather=true');
+                const data = await res.json(), cw = data.current_weather;
+                let desc = '맑음', icon = 'fa-sun';
+                if (cw.weathercode >= 1 && cw.weathercode <= 3) { desc = '구름'; icon = 'fa-cloud-sun'; }
+                else if (cw.weathercode >= 51) { desc = '비'; icon = 'fa-cloud-showers-heavy'; }
+                document.getElementById('weather-display').innerHTML = `<i class="fas ${icon} mr-1.5 text-rose-500"></i>후쿠오카 ${Math.round(cw.temperature)}°C / ${desc}`;
+            } catch(e) {}
+        }
+
+        async function fetchExchangeRate() {
+            try {
+                const res = await fetch('https://open.er-api.com/v6/latest/JPY');
+                const data = await res.json();
+                if (data?.rates?.KRW) {
+                    jpyPerKrw = data.rates.KRW;
+                    document.getElementById('exchange-rate-display').innerText = `100¥ = ${(jpyPerKrw * 100).toFixed(1)}₩`;
+                }
+            } catch(e) {
+                document.getElementById('exchange-rate-display').innerText = `100¥ ≈ 915₩`;
+            }
+        }
+
+        // Firebase 연동 일정 로드
+        function loadItinerary() {
+            if (!db) {
+                itineraryData = defaultItinerary;
+                renderItinerary();
+                return;
+            }
+            db.ref(`${basePath}/itinerary`).on('value', snap => {
+                const val = snap.val();
+                if (val) {
+                    itineraryData = Object.entries(val).map(([k, v]) => ({ ...v, key: k }));
+                    itineraryData.sort((a,b) => String(a.date).localeCompare(String(b.date)) || String(a.time).localeCompare(String(b.time)));
+                } else {
+                    defaultItinerary.forEach(i => db.ref(`${basePath}/itinerary`).push(i));
+                }
+                renderItinerary();
+            });
+        }
+
+        function renderItinerary(filter = 'all') {
+            const container = document.getElementById('itinerary-list');
+            const target = filter === 'all' ? itineraryData : itineraryData.filter(d => d.date === filter);
+            if (!target || target.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-slate-400 font-bold">등록된 일정이 없습니다.</div>';
+                return;
+            }
+            container.innerHTML = target.map(item => `
+                <div class="card-grad p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-md shadow-xs">${item.time || ''}</span>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="openGoogleMap('${item.mapQuery || item.title}')" class="text-slate-400 hover:text-rose-500 text-xs font-bold">
+                                <i class="fas fa-location-arrow mr-1"></i>지도
+                            </button>
+                            ${item.key ? `<button onclick="openItineraryModal('${item.key}')" class="text-slate-300 text-xs"><i class="fas fa-edit"></i></button>` : ''}
+                        </div>
+                    </div>
+                    <h4 class="font-black text-sm text-slate-900 dark:text-white">${item.title}</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 font-medium mt-1 whitespace-pre-line leading-relaxed">${item.desc || ''}</p>
+                </div>
+            `).join('');
+        }
+
+        function filterDay(day) {
+            document.querySelectorAll('.day-chip').forEach(c => {
+                const isActive = c.dataset.day === day;
+                c.classList.toggle('bg-rose-500', isActive);
+                c.classList.toggle('text-white', isActive);
+                c.classList.toggle('bg-white', !isActive);
+                c.classList.toggle('dark:bg-slate-900', !isActive);
+            });
+            renderItinerary(day);
+        }
+
+        function openItineraryModal(key = null) {
+            document.getElementById('edit-key').value = key || '';
+            document.getElementById('btn-del-itinerary').classList.toggle('hidden', !key);
+            document.getElementById('itinerary-modal').classList.remove('hidden');
+            if (key) {
+                const item = itineraryData.find(i => i.key === key);
+                if (item) {
+                    document.getElementById('form-date').value = item.date;
+                    document.getElementById('form-time').value = item.time;
+                    document.getElementById('form-title').value = item.title;
+                    document.getElementById('form-desc').value = item.desc;
+                    document.getElementById('form-map').value = item.mapQuery || '';
+                }
+            } else {
+                document.getElementById('form-title').value = '';
+                document.getElementById('form-desc').value = '';
+                document.getElementById('form-time').value = '';
+                document.getElementById('form-map').value = '';
+            }
+        }
+        function closeItineraryModal() { document.getElementById('itinerary-modal').classList.add('hidden'); }
+        function saveItinerary() {
+            const k = document.getElementById('edit-key').value;
+            const data = {
+                date: document.getElementById('form-date').value,
+                time: document.getElementById('form-time').value,
+                title: document.getElementById('form-title').value,
+                desc: document.getElementById('form-desc').value,
+                mapQuery: document.getElementById('form-map').value
+            };
+            if (!data.title) return alert("장소/일정명을 입력하세요.");
+            if (db) {
+                if (k) db.ref(`${basePath}/itinerary/${k}`).update(data);
+                else db.ref(`${basePath}/itinerary`).push(data);
+            }
+            closeItineraryModal();
+        }
+        function deleteItinerary() {
+            const k = document.getElementById('edit-key').value;
+            if (k && confirm("삭제하시겠습니까?") && db) {
+                db.ref(`${basePath}/itinerary/${k}`).remove();
+                closeItineraryModal();
+            }
+        }
+
+        function renderSpots(cat = '전체') {
+            const container = document.getElementById('spot-list');
+            const filtered = cat === '전체' ? spots : spots.filter(s => s.cat === cat);
+            container.innerHTML = filtered.map(s => `
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] font-black text-rose-500 bg-rose-50 dark:bg-rose-950/50 px-2 py-0.5 rounded-md">${s.cat}</span>
+                            ${s.tel ? `<a href="tel:${s.tel}" class="text-[11px] font-bold text-slate-400"><i class="fas fa-phone-alt mr-1"></i>${s.tel}</a>` : ''}
+                        </div>
+                        <h4 class="font-black text-base mt-1 text-slate-900 dark:text-white">${s.nameKo}</h4>
+                        <p class="text-xs text-slate-400 font-medium">${s.nameJp}</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">${s.desc}</p>
+                    </div>
+                    <div class="flex gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                        <button onclick="speakJapanese('${s.nameJp}')" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-300 text-xs font-bold active:scale-95"><i class="fas fa-volume-up mr-1"></i>발음</button>
+                        <button onclick="openGoogleMap('${s.nameJp}')" class="flex-1 py-2 bg-slate-900 dark:bg-rose-600 text-white rounded-xl text-xs font-black active:scale-95 shadow-sm"><i class="fas fa-map-marker-alt mr-1.5"></i>구글맵</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function filterSpots(cat) {
+            document.querySelectorAll('.category-chip').forEach(c => c.classList.toggle('active', c.dataset.cat === cat));
+            renderSpots(cat);
+        }
+
+        function renderPhrases() {
+            const container = document.getElementById('phrase-list');
+            container.innerHTML = phrases.map(grp => `
+                <div>
+                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-2 pl-1">${grp.cat}</h4>
+                    <div class="space-y-2">
+                        ${grp.items.map(p => `
+                            <div onclick="speakJapanese('${p.jp}')" class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex justify-between items-center active:scale-[0.98] transition-transform cursor-pointer">
+                                <div>
+                                    <p class="text-xs font-black text-slate-800 dark:text-white">${p.ko}</p>
+                                    <p class="text-sm font-black text-rose-500 mt-0.5">${p.jp}</p>
+                                    <p class="text-[10px] text-slate-400 font-semibold uppercase mt-0.5">${p.ro}</p>
+                                </div>
+                                <button class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-500 flex items-center justify-center text-sm"><i class="fas fa-volume-up"></i></button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Firebase 연동 가계부
+        function addExpense() {
+            const desc = document.getElementById('exp-desc').value.trim();
+            const amt = parseFloat(document.getElementById('exp-amt').value);
+            if (!desc || !amt) return alert("내역과 엔화 금액을 입력하세요.");
+            if (db) {
+                db.ref(`${basePath}/expenses`).push({ desc, amt, krw: Math.round(amt * jpyPerKrw) });
+                document.getElementById('exp-desc').value = '';
+                document.getElementById('exp-amt').value = '';
+            }
+        }
+        function loadExpenses() {
+            if (!db) return;
+            db.ref(`${basePath}/expenses`).on('value', snap => {
+                const data = snap.val() || {};
+                let total = 0;
+                const html = Object.entries(data).map(([k, v]) => {
+                    total += v.amt;
+                    return `
+                        <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl text-xs font-bold">
+                            <div>
+                                <span>${v.desc}</span>
+                                <span class="text-[10px] text-slate-400 ml-1.5">(${Math.round(v.amt * jpyPerKrw).toLocaleString()}원)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-rose-500 font-black">${v.amt.toLocaleString()}¥</span>
+                                <button onclick="db.ref('${basePath}/expenses/${k}').remove()" class="ml-2 text-slate-300 hover:text-red-500">&times;</button>
+                            </div>
+                        </div>`;
+                }).join('');
+                document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-xs text-slate-400">지출 내역이 없습니다.</div>';
+                document.getElementById('total-expense').innerText = `${total.toLocaleString()} ¥ (${Math.round(total * jpyPerKrw).toLocaleString()} ₩)`;
+            });
+        }
+
+        // Firebase 연동 체크리스트
+        function loadPacking() {
+            if (!db) return;
+            db.ref(`${basePath}/packing`).on('value', snap => {
+                const val = snap.val();
+                if (!val) {
+                    defaultPack.forEach(p => db.ref(`${basePath}/packing`).push(p));
+                    return;
+                }
+                const items = Object.entries(val).map(([k, v]) => ({ ...v, key: k }));
+                const total = items.length;
+                const done = items.filter(i => i.done).length;
+                const pct = total ? Math.round((done / total) * 100) : 0;
+                document.getElementById('pack-progress-bar').style.width = `${pct}%`;
+                document.getElementById('pack-progress-text').innerText = `${pct}% (${done}/${total})`;
+
+                document.getElementById('pack-items').innerHTML = items.map(item => `
+                    <div onclick="db.ref('${basePath}/packing/${item.key}').update({done: ${!item.done}})" class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700/50 cursor-pointer">
+                        <span class="text-xs font-bold ${item.done ? 'line-through text-slate-400' : 'text-slate-800 dark:text-slate-100'}">${item.title}</span>
+                        <input type="checkbox" ${item.done ? 'checked' : ''} class="w-4 h-4 accent-rose-500 pointer-events-none">
+                    </div>
+                `).join('');
+            });
+        }
+
+        // 환율 변환기 함수
+        function addJPY(amt) {
+            const el = document.getElementById('jpy-input');
+            el.value = (parseFloat(el.value) || 0) + amt;
+            calcFromJPY();
+        }
+        function clearJPY() { document.getElementById('jpy-input').value = ''; document.getElementById('krw-input').value = ''; }
+        function calcFromJPY() {
+            const v = parseFloat(document.getElementById('jpy-input').value) || 0;
+            document.getElementById('krw-input').value = v ? Math.round(v * jpyPerKrw) : '';
+        }
+        function calcFromKRW() {
+            const v = parseFloat(document.getElementById('krw-input').value) || 0;
+            document.getElementById('jpy-input').value = v ? Math.round(v / jpyPerKrw) : '';
+        }
+
+        // 공통 유틸
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('text-rose-500'); b.classList.add('text-slate-400'); });
+            const btn = document.getElementById('nav-' + id);
+            if (btn) { btn.classList.remove('text-slate-400'); btn.classList.add('text-rose-500'); }
+            window.scrollTo(0,0);
+        }
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.className = document.documentElement.classList.contains('dark') ? 'fas fa-sun text-yellow-400 text-sm' : 'fas fa-moon text-slate-500 text-sm';
+        }
+        function speakJapanese(text) {
+            try { const u = new SpeechSynthesisUtterance(text); u.lang = 'ja-JP'; u.rate = 0.85; window.speechSynthesis.speak(u); } catch(e){}
+        }
+        function openGoogleMap(query) {
+            window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
+        }
+
+        // 호텔 카드 관련
+        function openHotelCardSelector() { document.getElementById('hotel-selector-modal').classList.remove('hidden'); }
+        function closeHotelCardSelector() { document.getElementById('hotel-selector-modal').classList.add('hidden'); }
+        function showHotelCard(type) {
+            closeHotelCardSelector();
+            const n = document.getElementById('hotel-card-name'), a = document.getElementById('hotel-card-addr'), t = document.getElementById('hotel-card-tel');
+            if (type === 1) {
+                n.innerText = "ヴィアイン博多口駅前";
+                a.innerHTML = "福岡県福岡市博多区<br>博多駅前2-17-11";
+                t.innerText = "TEL: 092-432-5489";
+            } else {
+                n.innerText = "西鉄ホテル クルーム 博多祇園";
+                a.innerHTML = "福岡県福岡市博多区<br>祇園町6-30";
+                t.innerText = "TEL: 092-235-5050";
+            }
+            document.getElementById('hotel-card').classList.remove('hidden');
+        }
+
+        function openSOSModal() { document.getElementById('sos-modal').classList.remove('hidden'); }
+        function closeSOSModal() { document.getElementById('sos-modal').classList.add('hidden'); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchWeather();
+            fetchExchangeRate();
+            loadItinerary();
+            renderSpots();
+            renderPhrases();
+            loadPacking();
+            loadExpenses();
+
+            document.getElementById('jpy-input').addEventListener('input', calcFromJPY);
+            document.getElementById('krw-input').addEventListener('input', calcFromKRW);
+        });
+    </script>
+</body>
+</html>
