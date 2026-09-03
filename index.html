@@ -83,7 +83,7 @@
             <div id="itinerary-list" class="space-y-4 pt-1"></div>
         </div>
 
-        <!-- 2. 맛집 탭 (Gourmet) - 와이프 추천 리스트 100% 통합 -->
+        <!-- 2. 맛집 탭 (Gourmet) - 1티어 픽 탭 추가 -->
         <div id="spot" class="tab-content space-y-5">
             <div class="px-1">
                 <h2 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">후쿠오카 완벽 맛집 컬렉션</h2>
@@ -92,12 +92,13 @@
 
             <!-- 메뉴별 세부 필터 -->
             <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-sm font-bold">
-                <button onclick="filterSpots('전체')" class="category-chip active px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900 shadow-sm" data-cat="전체">전체보기</button>
+                <button onclick="filterSpots('가이드픽')" class="category-chip active px-4 py-2.5 rounded-full bg-amber-500 text-white shadow-md font-black" data-cat="가이드픽">👑 가이드 1티어 픽</button>
+                <button onclick="filterSpots('전체')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="전체">전체보기</button>
                 <button onclick="filterSpots('우동')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="우동">🍜 우동</button>
                 <button onclick="filterSpots('라멘')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="라멘">🍜 라멘</button>
                 <button onclick="filterSpots('함바그')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="함바그">🥩 함바그</button>
                 <button onclick="filterSpots('야키니쿠')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="야키니쿠">🔥 야키니쿠</button>
-                <button onclick="filterSpots('장어덮밥')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="장어덮밥">🍱 장어</button>
+                <button onclick="filterSpots('장어/명란덮밥')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="장어/명란덮밥">🍱 장어·명란</button>
                 <button onclick="filterSpots('스시')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="스시">🍣 스시</button>
                 <button onclick="filterSpots('카이센동')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="카이센동">🐟 카이센동</button>
                 <button onclick="filterSpots('이자카야/기타')" class="category-chip px-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900" data-cat="이자카야/기타">🍶 이자카야/기타</button>
@@ -464,8 +465,8 @@
             {
                 date: "10-11",
                 time: "12:45~13:45", 
-                title: "점심: 하가쿠레 우동 or 에비스야 우동", 
-                desc: "박물관 관람 후 달콤짭짤한 갈비우동이 유명한 에비스야 우동 또는 미슐랭 빕구르망 하가쿠레 우동에서 부드러운 우동 식사.", 
+                title: "점심: 에비스야 우동 (갈비우동) or 빵스톡", 
+                desc: "박물관 관람 후 달콤짭짤한 갈비우동이 최고인 에비스야 우동 또는 강변 테라스 빵스톡(Pain Stock)에서 맛있는 식사.", 
                 mapQuery: "えびすやうどん 博多",
                 subwayRoute: "🚶 리버레인 몰에서 나카스 방향 도보 8분",
                 transitOrigin: "후쿠오카 호빵맨 어린이 박물관",
@@ -497,12 +498,12 @@
             {
                 date: "10-11",
                 time: "18:15~20:00", 
-                title: "저녁: 야키니쿠 이리와 (いりわ) or 바쿠로", 
-                desc: "한국인 점주가 운영해 소통이 완벽한 니시나카스 와규 맛집 '이리와' 또는 룸이 완비된 목장 직영 '바쿠로'. 연기 걱정 없이 부드러운 갈비살 식사.", 
-                mapQuery: "焼肉 いりわ",
-                subwayRoute: "🚶 기온 호텔에서 니시나카스 방면 도보 8분 또는 택시 기본요금",
+                title: "저녁: 야키니쿠노 바쿠로 (룸완비) or 이리와", 
+                desc: "프라이빗 단독 룸이 완비된 목장 직영 와규 전문점 '바쿠로' 또는 한국인 점주가 운영하는 '이리와'. 연기 없이 아이와 쾌적한 와규 만찬.", 
+                mapQuery: "焼肉 BAKURO 博多店",
+                subwayRoute: "🚶 기온 호텔에서 캐널시티 방면 도보 5분",
                 transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
-                transitDest: "焼肉 いりわ",
+                transitDest: "焼肉 BAKURO 博多店",
                 nearbyHighlights: "하카타역 야경 분수대 산책"
             },
             {
@@ -574,13 +575,13 @@
             {
                 date: "10-13",
                 time: "11:00~12:30", 
-                title: "브런치: 미야케 우동 (노포) or 신신라멘", 
-                desc: "60년 전통 노포 미야케 우동(500엔) 또는 하카타역 데토스 신신라멘에서 고슬고슬한 볶음밥과 라멘 식사.", 
-                mapQuery: "みやけうどん 博多",
-                subwayRoute: "🚶 기온 호텔에서 고후쿠마치 방향 도보 6분 (450m)",
+                title: "브런치: 신신라멘 (하카타 데토스) or 미야케 우동", 
+                desc: "하카타역 데토스 신신라멘에서 고슬고슬한 볶음밥과 라멘 식사, 또는 60년 전통 노포 미야케 우동(500엔).", 
+                mapQuery: "博多らーめん ShinShin 博多デイトス店",
+                subwayRoute: "🟠 공항선 [기온역] → [하카타역] 1정거장 (2분)",
                 transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
-                transitDest: "みやけうどん 博多",
-                nearbyHighlights: "고후쿠마치 전통 골목"
+                transitDest: "하카타역 데토스",
+                nearbyHighlights: "데토스 라멘거리"
             },
             {
                 date: "10-13",
@@ -588,8 +589,8 @@
                 title: "하카타역 한큐백화점 5% 쿠폰 / 마잉구 쇼핑", 
                 desc: "한큐 1층 안내데스크에서 5% 할인쿠폰 수령! 미키하우스(유아 신발), 갸또러스크, 명란젓, 토리몬 만주 쇼핑.", 
                 mapQuery: "하카타 한큐 백화점",
-                subwayRoute: "🟠 공항선 [기온역] → [하카타역] 1정거장 (2분, 서쪽출구 방면 직결)",
-                transitOrigin: "みやけうどん 博多",
+                subwayRoute: "🚶 하카타역 서쪽출구 방면 직결",
+                transitOrigin: "하카타역 데토스",
                 transitDest: "하카타 한큐 백화점",
                 nearbyHighlights: "마잉구 명란젓 시식 코너, 한큐 백화점 지하 식품관"
             },
@@ -617,15 +618,17 @@
             }
         ];
 
-        // 30곳 이상의 완벽 맛집 데이터베이스 (와이프 리스트 전체 반영)
+        // 30곳 이상의 완벽 맛집 데이터베이스 (가이드 1티어 픽 태그 포함)
         const spots = [
             // 1. 우동 (Udon)
             { 
                 cat: "우동", 
+                isTopPick: true,
+                topRank: "👑 우동 1티어 픽",
                 nameKo: "에비스야 우동 (えびすやうどん)", 
                 nameJp: "えびすやうどん 博多", 
-                desc: "★와이프 픽·강력추천★ 전국 우동 대회 수상작! 달콤짭짤하게 볶은 소고기가 올라간 '갈비 우동'의 성지. 아이들이 가장 좋아하는 우동 1순위.", 
-                badge: "와이프추천·갈비우동", 
+                desc: "★가이드 1티어 픽★ 전국 우동 대회 준우승작! 달콤짭짤하게 볶은 소고기 고명이 듬뿍 올라간 '갈비 우동'의 성지. 아이들이 가장 좋아하는 우동 1순위.", 
+                badge: "1티어픽·갈비우동", 
                 addr: "캐널시티 근처 스미요시 방면 도보 5분",
                 adultMenu: "갈비 붓카케 우동 (온/냉 선택 가능), 유부초밥",
                 childMenu: "갈비 우동 (달콤한 소고기와 부드러운 면발을 덜어주면 밥투정 끝)",
@@ -635,8 +638,8 @@
                 cat: "우동", 
                 nameKo: "다이치노 우동 (하카타역 지하)", 
                 nameJp: "大地のうどん 博多駅地下店", 
-                desc: "★와이프 픽★ 그릇을 가득 덮는 원반형 바삭한 우엉튀김과 투명하고 쫄깃한 면발. 하카타역 지하 직결로 이동이 가장 편한 곳.", 
-                badge: "와이프추천·역세권", 
+                desc: "그릇을 가득 덮는 원반형 바삭한 우엉튀김과 투명하고 쫄깃한 면발. 하카타역 지하 직결로 이동이 가장 편한 곳.", 
+                badge: "역세권·바삭우엉", 
                 addr: "하카타역 아사히빌딩 지하 2층",
                 adultMenu: "고보텐(우엉튀김) 우동, 고기 우엉 우동",
                 childMenu: "따뜻한 기본 가케우동 + 새우튀김 단품",
@@ -646,8 +649,8 @@
                 cat: "우동", 
                 nameKo: "하카타 키아라 (うどん処 喜阿良)", 
                 nameJp: "うどん処 喜阿良", 
-                desc: "★와이프 픽·현지인 단골★ 깔끔하고 맑은 멸치·다시마 육수에 정갈한 튀김이 일품인 숨은 로컬 우동 맛집.", 
-                badge: "와이프추천·로컬", 
+                desc: "깔끔하고 맑은 멸치·다시마 육수에 정갈한 튀김이 일품인 숨은 로컬 우동 맛집.", 
+                badge: "현지인로컬", 
                 addr: "하카타역 인근 도보권",
                 adultMenu: "모둠 튀김 우동, 미역(와카메) 우동",
                 childMenu: "순한 온우동 + 계란 토핑",
@@ -658,7 +661,7 @@
                 nameKo: "하가쿠레 우동 (葉隠うどん)", 
                 nameJp: "葉隠うどん", 
                 desc: "미슐랭 빕구르망 선정 로컬 우동. 맑고 깊은 멸치 다시 육수와 투명하고 부드러운 하카타면.", 
-                badge: "로컬 1위", 
+                badge: "미슐랭빕구르망", 
                 addr: "하카타역 동쪽출구 도보 12분 (택시 3분)",
                 adultMenu: "고보텐(우엉튀김) 우동 + 니쿠(고기) 토핑 추가, 유부초밥",
                 childMenu: "에비텐(새우튀김) 우동 또는 기본 가케우동 (맑은 국물)",
@@ -679,10 +682,12 @@
             // 2. 라멘 (Ramen)
             { 
                 cat: "라멘", 
+                isTopPick: true,
+                topRank: "👑 라멘 1티어 픽",
                 nameKo: "신신라멘 하카타 데토스점", 
                 nameJp: "博多らーめん ShinShin", 
-                desc: "★와이프 픽·한국인 1위★ 돼지 뼈와 닭 육수를 블렌딩해 잡내가 전혀 없고 얇은 면발과 고슬고슬한 볶음밥이 일품.", 
-                badge: "와이프추천·성지", 
+                desc: "★가이드 1티어 픽★ 돼지 뼈와 닭 육수를 블렌딩해 잡내가 전혀 없고 얇은 면발과 고슬고슬한 볶음밥이 일품. 한국인 입맛에 가장 완벽한 밸런스.", 
+                badge: "1티어픽·호불호제로", 
                 addr: "하카타역 2층 하카타멘카이도",
                 adultMenu: "신신 아지타마(맛달걀) 라멘, 한입 교자",
                 childMenu: "하카타 볶음밥(야키메시) - 고소하고 담백해 아이들에게 인기 폭발!",
@@ -692,8 +697,8 @@
                 cat: "라멘", 
                 nameKo: "잇푸도 총본점 (一風堂 大名本店)", 
                 nameJp: "一風堂 大名本店", 
-                desc: "★와이프 픽★ 전 세계로 뻗어나간 하카타 톤코츠의 글로벌 대표 주자. 본점만의 깊고 깔끔한 국물.", 
-                badge: "와이프추천·본점", 
+                desc: "전 세계로 뻗어나간 하카타 톤코츠의 글로벌 대표 주자. 본점만의 깊고 깔끔한 국물.", 
+                badge: "다이묘본점", 
                 addr: "텐진 다이묘 거리 도보 6분",
                 adultMenu: "시로마루 모토아지 (기본 담백 돈코츠), 아카마루 신아지",
                 childMenu: "시로마루 라멘 (순한 맛) + 미니 밥",
@@ -703,8 +708,8 @@
                 cat: "라멘", 
                 nameKo: "이치란 본사 총본점 (나카스)", 
                 nameJp: "一蘭 本社総本店", 
-                desc: "★와이프 픽★ 나카스 강변 웅장한 빌딩 전체가 이치란! 전 세계 관광객의 필수 인증샷 성지.", 
-                badge: "와이프추천·랜드마크", 
+                desc: "나카스 강변 웅장한 빌딩 전체가 이치란! 전 세계 관광객의 필수 인증샷 성지.", 
+                badge: "인증샷성지", 
                 addr: "나카스카와바타역 2번 출구 바로 앞",
                 adultMenu: "천연 톤코츠 라멘 (비법소스 3~4배 추천)",
                 childMenu: "어린이 라멘 (이치란 공식 앱 설치 시 미취학 아동용 키즈 라멘 무료 제공!)",
@@ -722,37 +727,15 @@
                 childTip: "아이용 식기와 포크를 제공하며, 차슈가 부드러워 밥 위에 얹어 비벼주면 잘 먹습니다."
             },
 
-            // 3. 함바그 (Hamburg)
-            { 
-                cat: "함바그", 
-                nameKo: "키와미야 함바그 하카타점", 
-                nameJp: "極味や 博多店", 
-                desc: "★와이프 픽★ 돌판에 직접 구워먹는 원조 함바그 성지. 맛은 뛰어나나 대기 2시간 및 기름 튐 주의.", 
-                badge: "와이프추천·원조성지", 
-                addr: "하카타 버스터미널 1층",
-                adultMenu: "키와미야 함바그 M사이즈 + 달걀 소스 세트",
-                childMenu: "단품 쌀밥 + 소프트아이스크림 세트",
-                childTip: "기름이 사방으로 많이 튀므로 38개월 유아는 돌판에서 먼 안쪽 자리에 앉히세요."
-            },
-            { 
-                cat: "함바그", 
-                nameKo: "함바그 요시 (텐진 다이묘)", 
-                nameJp: "ハンバーグ よし", 
-                desc: "숯불에 직접 구워 육즙이 가득하며 좌석 간격이 넓고 유모차 진입이 수월한 쾌적한 함바그 명가.", 
-                badge: "웨이팅적음·쾌적", 
-                addr: "텐진역 2번 출구 도보 5분",
-                adultMenu: "숯불 소고기 함바그 정식 (3개 코스), 흑후추 소스",
-                childMenu: "완벌 구이 함바그 + 쌀밥 + 달걀말이 (소스 없이 소금간만 살짝 주면 아주 잘 먹음)",
-                childTip: "뜨거운 스톤 없이 직원이 완벽히 구워서 서빙해주므로 아이 화상 위험이 없어 안심!"
-            },
-
-            // 4. 야키니쿠 (Yakiniku)
+            // 3. 야키니쿠 (Yakiniku)
             { 
                 cat: "야키니쿠", 
+                isTopPick: true,
+                topRank: "👑 야키니쿠 1티어 픽",
                 nameKo: "야키니쿠노 바쿠로 (BAKURO 하카타)", 
                 nameJp: "焼肉 BAKURO 博多店", 
-                desc: "★와이프 픽·강력추천★ 목장 직영 흑모와규 전문점. 고기 질이 극상이며 프라이빗 룸이 완비되어 유모차 동반 가족에게 최고!", 
-                badge: "와이프추천·룸완비", 
+                desc: "★가이드 1티어 픽★ 목장 직영 A5 흑모와규 전문점. 입에서 살살 녹는 극상의 육질과 완벽한 프라이빗 룸 구비로 유아 동반에 가장 안전하고 쾌적.", 
+                badge: "1티어픽·단독룸완비", 
                 addr: "캐널시티 근처 기온 방면 도보 5분",
                 adultMenu: "바쿠로 특선 와규 플래터, 우설 소금구이, 안심 스테이크",
                 childMenu: "부드러운 와규 안심구이 + 쌀밥 + 계란국",
@@ -762,8 +745,8 @@
                 cat: "야키니쿠", 
                 nameKo: "야키니쿠 이리와 (焼肉 いりわ)", 
                 nameJp: "焼肉 いりわ", 
-                desc: "★와이프 픽·한국인 사장님★ 가고시마산 A4~A5 흑모와규 전문점. 완벽한 한국어 소통 & 찌개 등 사이드 훌륭.", 
-                badge: "와이프추천·한국어소통", 
+                desc: "가고시마산 A4~A5 흑모와규 전문점. 한국인 점주로 완벽한 한국어 소통 & 찌개 등 사이드 훌륭.", 
+                badge: "한국어소통·나카스", 
                 addr: "나카스카와바타역 1번 출구 도보 7분 (델타웨스트 2층)",
                 adultMenu: "가고시마산 흑모와규 특선 5종 모둠, 파전, 순두부찌개",
                 childMenu: "양념 없는 갈비살 웰던 구이 + 쌀밥 + 계란국",
@@ -773,7 +756,7 @@
                 cat: "야키니쿠", 
                 nameKo: "야키니쿠 규센닌 (牛仙人)", 
                 nameJp: "焼肉 牛仙人", 
-                desc: "니쿠이치 대체 추천! 최상급 흑모와규를 합리적인 가격에 즐기며 환기 시설이 훌륭함.", 
+                desc: "니쿠이치 대체 추천! 최상급 흑모와규를 합리적인 가격에 즐기며 하향식 배기로 연기 없음.", 
                 badge: "로컬강추·쾌적", 
                 addr: "하카타역 서쪽출구 도보 7분",
                 adultMenu: "특선 우설(규탄), A5 흑모와규 꽃갈비, 시원한 나마비루",
@@ -781,20 +764,35 @@
                 childTip: "테이블마다 강력한 하향식 환풍기가 있어 연기가 아이 얼굴로 가지 않습니다."
             },
 
-            // 5. 장어덮밥 (Unagi)
+            // 4. 장어 & 명란 덮밥 (Unagi & Mentaiko)
             { 
-                cat: "장어덮밥", 
-                nameKo: "요시즈카 우나기야", 
+                cat: "장어/명란덮밥", 
+                isTopPick: true,
+                topRank: "👑 장어덮밥 1티어 픽",
+                nameKo: "요시즈카 우나기야 (장어덮밥)", 
                 nameJp: "吉塚うなぎ屋", 
-                desc: "★와이프 픽★ 1873년 창업 150년 전통의 후쿠오카 독보적 1위 숯불 장어구이 명가.", 
-                badge: "와이프추천·전통명가", 
+                desc: "★가이드 1티어 픽★ 1873년 창업 150년 전통의 후쿠오카 독보적 1위 숯불 장어구이 명가. 겉바속촉 숯불 풍미와 달콤한 타레 소스.", 
+                badge: "1티어픽·150년전통", 
                 addr: "나카스카와바타역 5번 출구 도보 5분",
                 adultMenu: "우나쥬(장어와 밥이 따로 나오는 고급 정식) 4~5조각",
                 childMenu: "달콤짭짤한 타레 소스를 비빈 쌀밥 + 부드러운 장어 속살 + 맑은 국",
                 childTip: "가시를 꼼꼼히 발라내어 부드러운 장어 살을 밥 위에 얹어주면 아이가 밥 한 공기 뚝딱 비웁니다."
             },
             { 
-                cat: "장어덮밥", 
+                cat: "장어/명란덮밥", 
+                isTopPick: true,
+                topRank: "👑 명란덮밥 1티어 픽",
+                nameKo: "원조 하카타 멘타이쥬 (명란덮밥)", 
+                nameJp: "元祖博多めんたい重", 
+                desc: "★가이드 1티어 픽★ 일본 최초의 명란젓 요리 전문점. 다시마로 정성스레 감싼 고급 명란을 특제 소스와 함께 비벼 먹는 명품 덮밥.", 
+                badge: "1티어픽·명란원조", 
+                addr: "텐진 중앙공원 하레노가든 인근 (나카스카와바타역 도보 5분)",
+                adultMenu: "멘타이쥬(명란덮밥), 멘타이코 츠케멘",
+                childMenu: "맑은 국물 + 쌀밥 + 온천계란",
+                childTip: "명란은 아이에게 매울 수 있으므로 부모님이 즐기시고, 아이에게는 고소한 계란밥을 챙겨주세요."
+            },
+            { 
+                cat: "장어/명란덮밥", 
                 nameKo: "우나기도코로 시게마츠 (うなぎ処 重松)", 
                 nameJp: "うなぎ処 重松", 
                 desc: "요시즈카의 긴 대기열을 피할 수 있는 로컬 장어 명가. 겉바속촉 숯불 풍미 극상.", 
@@ -805,13 +803,26 @@
                 childTip: "기온 숙소(니시테츠 크룸)와 매우 가까워 여유롭고 쾌적하게 식사할 수 있습니다."
             },
 
-            // 6. 스시 (Sushi)
+            // 5. 스시 (Sushi)
+            { 
+                cat: "스시", 
+                isTopPick: true,
+                topRank: "👑 스시 1티어 픽",
+                nameKo: "츠키지 스시센 하루요시점", 
+                nameJp: "築地すし鮮 福岡総本店", 
+                desc: "★가이드 1티어 픽★ 효탄스시의 계단 대기 탈피! 24시간 장인이 쥐어주는 자연산 제철 초밥과 넓고 쾌적한 패밀리 테이블석 완비.", 
+                badge: "1티어픽·유모차환영", 
+                addr: "나카스카와바타역 1번 출구 도보 6분",
+                adultMenu: "특선 모둠초밥 12피스, 계절 사시미, 참치 뱃살(도로)",
+                childMenu: "계란초밥(다마고), 유부초밥, 새우초밥, 찐새우 단품",
+                childTip: "주문 시 '사비누키(와사비 빼주세요)'를 요청하면 아이도 안심하고 초밥을 즐길 수 있습니다."
+            },
             { 
                 cat: "스시", 
                 nameKo: "스시사카바 사시스 (텐진/하카타)", 
                 nameJp: "すし酒場 さしす", 
-                desc: "★와이프 픽★ 참다랑어 김말이(도로테카마키) 비주얼 폭발! 가성비 최고 인기 스시 주점.", 
-                badge: "와이프추천·SNS인기", 
+                desc: "참다랑어 김말이(도로테카마키) 비주얼 폭발! 가성비 최고 인기 스시 주점.", 
+                badge: "SNS인기·가성비", 
                 addr: "텐진 지하상가 또는 하카타역 마잉구 지하",
                 adultMenu: "참치 뱃살 김말이(도로테카마키), 연어알 마끼, 새우 육회",
                 childMenu: "익힌 새우초밥, 유부초밥, 계란초밥, 감자튀김",
@@ -819,23 +830,23 @@
             },
             { 
                 cat: "스시", 
-                nameKo: "츠키지 스시센 하루요시점", 
-                nameJp: "築地すし鮮 福岡総本店", 
-                desc: "효탄스시의 계단 대기 대신 추천! 24시간 장인이 쥐어주는 자연산 제철 초밥과 넓은 테이블석.", 
-                badge: "웨이팅적음·유모차환영", 
-                addr: "나카스카와바타역 1번 출구 도보 6분",
-                adultMenu: "특선 모둠초밥 12피스, 계절 사시미, 참치 뱃살(도로)",
-                childMenu: "계란초밥(다마고), 유부초밥, 새우초밥, 찐새우 단품",
-                childTip: "주문 시 '사비누키(와사비 빼주세요)'를 요청하면 아이도 안심하고 초밥을 즐길 수 있습니다."
+                nameKo: "효탄스시 본점 (텐진)", 
+                nameJp: "ひょうたん寿司", 
+                desc: "가성비와 신선도로 유명한 텐진 최고의 인기 초밥집.", 
+                badge: "유명성지", 
+                addr: "텐진역 솔라리아 플라자 건너편 도보 2분",
+                adultMenu: "주방장 특선 초밥 세트, 게살 크림 고로케",
+                childMenu: "다마고(달걀) 초밥, 게살 크림 고로케 (바삭하고 달콤)",
+                childTip: "2층 좁은 계단 대기가 길어 유모차를 접고 안고 기다려야 하니 참고하세요."
             },
 
-            // 7. 카이센동 (Seafood Rice Bowl) - 신설 카테고리
+            // 6. 카이센동 (Seafood Rice Bowl)
             { 
                 cat: "카이센동", 
                 nameKo: "우오타츠 카이센동 키스이마루 (하카타)", 
                 nameJp: "魚辰 喜水丸", 
-                desc: "★와이프 픽★ 신선한 회가 탑처럼 쌓여 나오는 유명 카이센동 맛집. 아침 일찍 식사 가능!", 
-                badge: "와이프추천·해산물덮밥", 
+                desc: "신선한 회가 탑처럼 쌓여 나오는 유명 카이센동 맛집. 아침 일찍부터 든든한 식사 가능!", 
+                badge: "푸짐한해산물", 
                 addr: "하카타역 지하 이치반가이 식당가",
                 adultMenu: "키스이마루 명물 극상 카이센동, 참깨 고등어(고마사바)",
                 childMenu: "생선구이 정식 (고등어구이/연어구이) + 맑은 국 + 쌀밥",
@@ -845,21 +856,21 @@
                 cat: "카이센동", 
                 nameKo: "하카타 쿠로다한 (博多 黒田藩)", 
                 nameJp: "博多 黒田藩", 
-                desc: "★와이프 픽★ 현지 직장인들이 줄 서서 먹는 가성비 해산물 요리 및 카이센동 전문점.", 
-                badge: "와이프추천·가성비로컬", 
+                desc: "현지 직장인들이 줄 서서 먹는 가성비 해산물 요리 및 카이센동 전문점.", 
+                badge: "가성비로컬", 
                 addr: "하카타역 치쿠시구치 도보 5분",
                 adultMenu: "특선 해산물 덮밥 정식, 도미 덮밥",
                 childMenu: "단품 흰쌀밥 + 계란말이 + 튀김 세트",
                 childTip: "점심시간 12:00~13:00를 살짝 피해 11:30에 방문하면 웨이팅 없이 편안히 식사할 수 있습니다."
             },
 
-            // 8. 이자카야 / 기타 (Izakaya & Etc) - 신설 카테고리
+            // 7. 이자카야 / 기타 (Izakaya & Etc)
             { 
                 cat: "이자카야/기타", 
                 nameKo: "하카타 토메테바 (とめ手羽)", 
                 nameJp: "名物とめ手羽 博多駅전店", 
-                desc: "★와이프 픽★ 바삭하고 짭조름한 일본 전국 대회 금상 수상 '닭날개 튀김(테바사키)' 전문점.", 
-                badge: "와이프추천·닭날개명물", 
+                desc: "바삭하고 짭조름한 일본 전국 대회 금상 수상 '닭날개 튀김(테바사키)' 전문점.", 
+                badge: "닭날개명물", 
                 addr: "하카타역 하카타구치 도보 3분",
                 adultMenu: "명물 토메테바(소금구이/매운맛), 모츠나베",
                 childMenu: "소금기 덜한 닭날개 살 발라주기 + 오니기리 주먹밥",
@@ -869,15 +880,15 @@
                 cat: "이자카야/기타", 
                 nameKo: "하카타 무사시 (博多 むさし)", 
                 nameJp: "博多 むさし", 
-                desc: "★와이프 픽★ 활오징어 회와 모츠나베, 꼬치구이를 한자리에서 모두 즐길 수 있는 정통 하카타 요리 주점.", 
-                badge: "와이프추천·하카타요리", 
+                desc: "활오징어 회와 모츠나베, 꼬치구이를 한자리에서 모두 즐길 수 있는 정통 하카타 요리 주점.", 
+                badge: "활오징어명가", 
                 addr: "하카타역 도보 5분",
                 adultMenu: "활오징어 생선회(이카노이케즈쿠리), 하카타 모츠나베",
                 childMenu: "계란말이, 닭꼬치 소금구이, 야키오니기리(구운 주먹밥)",
                 childTip: "살아 움직이는 투명한 오징어 회를 아이가 신기하게 구경하며, 닭꼬치 소금구이가 맛있습니다."
             },
 
-            // 9. 디저트 & 베이커리 (Dessert)
+            // 8. 디저트 & 베이커리 (Dessert)
             { 
                 cat: "디저트", 
                 nameKo: "빵스톡 텐진점 (Pain Stock)", 
@@ -921,17 +932,6 @@
                 adultMenu: "초코 크루아상, 플레인 크루아상 (100g 단위 주문)",
                 childMenu: "고구마 크루아상 (겉은 달콤 속은 고구마 앙금 가득)",
                 childTip: "한입 크기라 38개월 아이 손에 쥐어주면 부스러기도 덜 흘리고 매우 잘 먹습니다."
-            },
-            { 
-                cat: "디저트", 
-                nameKo: "하카타 아마오우 이치고야 (딸기 디저트)", 
-                nameJp: "伊都きんぐ 博多駅店", 
-                desc: "후쿠오카 특산품 아마오우 딸기로 만든 딸기 모찌(다이후쿠)와 딸기 도라야키 명가.", 
-                badge: "딸기명물", 
-                addr: "하카타역 데토스 1층",
-                adultMenu: "아마오우 딸기 모찌, 딸기 스무디",
-                childMenu: "부드러운 딸기 크림 도라야키",
-                childTip: "새콤달콤한 생딸기가 통째로 들어가 아이들이 정말 좋아하는 고급 디저트입니다."
             }
         ];
 
@@ -1141,7 +1141,6 @@
             window.open(url, '_blank');
         }
 
-        // Firebase 연동 일정 로드
         function loadItinerary() {
             if (!db) {
                 itineraryData = defaultItinerary;
@@ -1254,14 +1253,23 @@
             }
         }
 
-        function renderSpots(cat = '전체') {
+        function renderSpots(cat = '가이드픽') {
             const container = document.getElementById('spot-list');
-            const filtered = cat === '전체' ? spots : spots.filter(s => s.cat === cat);
+            let filtered = spots;
+            if (cat === '가이드픽') {
+                filtered = spots.filter(s => s.isTopPick);
+            } else if (cat !== '전체') {
+                filtered = spots.filter(s => s.cat === cat);
+            }
+
             container.innerHTML = filtered.map(s => `
-                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3.5">
+                <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3.5 ${s.isTopPick ? 'ring-2 ring-amber-500/80' : ''}">
                     <div class="flex justify-between items-start">
-                        <span class="text-sm font-black text-amber-800 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 rounded-xl">${s.badge}</span>
-                        <span class="text-sm font-bold text-slate-400">${s.addr}</span>
+                        <div class="flex items-center space-x-2">
+                            ${s.topRank ? `<span class="text-xs font-black bg-gradient-to-r from-amber-500 to-amber-600 text-white px-3 py-1 rounded-xl shadow-xs">${s.topRank}</span>` : ''}
+                            <span class="text-xs font-black text-amber-800 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-1 rounded-xl">${s.badge}</span>
+                        </div>
+                        <span class="text-xs font-bold text-slate-400">${s.addr}</span>
                     </div>
                     <div>
                         <h4 class="font-black text-2xl text-slate-900 dark:text-white leading-tight">${s.nameKo}</h4>
@@ -1512,7 +1520,7 @@
             fetchWeather();
             fetchExchangeRate();
             loadItinerary();
-            renderSpots();
+            renderSpots('가이드픽'); // 기본 노출을 1티어 픽으로 설정
             renderShopping();
             loadPacking();
             renderPhrases();
