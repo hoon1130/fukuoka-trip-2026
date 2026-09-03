@@ -39,48 +39,41 @@
 <body class="bg-slate-100 dark:bg-slate-950 pb-32 transition-colors duration-300 text-slate-900 dark:text-slate-100">
 
     <!-- Header -->
-    <header class="glass-header sticky top-0 z-50 px-4 py-3.5">
+    <header class="glass-header sticky top-0 z-50 px-3 py-3">
         <div class="flex justify-between items-center max-w-lg mx-auto">
-            <button onclick="window.open('https://search.naver.com/search.naver?query=후쿠오카+날씨', '_blank')" id="weather-display" class="bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 px-3.5 py-2.5 rounded-2xl text-sm font-extrabold flex items-center shadow-sm border border-amber-200 dark:border-amber-900/50">
-                <i class="fas fa-spinner fa-spin mr-2"></i>날씨 확인 중...
+            <button onclick="window.open('https://search.naver.com/search.naver?query=후쿠오카+날씨', '_blank')" id="weather-display" class="bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 px-3 py-2 rounded-2xl text-xs font-extrabold flex items-center shadow-sm border border-amber-200 dark:border-amber-900/50">
+                <i class="fas fa-spinner fa-spin mr-1.5"></i>날씨 확인 중...
             </button>
-            <div class="flex items-center space-x-2">
-                <button onclick="openSubwayModal()" class="px-3.5 py-2.5 rounded-2xl bg-orange-500 text-white text-sm font-black shadow-md active:scale-95 transition-transform flex items-center">
-                    <i class="fas fa-subway mr-1.5"></i>노선도
+            <div class="flex items-center space-x-1.5">
+                <button onclick="openBabyModal()" class="px-2.5 py-2 rounded-2xl bg-emerald-600 text-white text-xs font-black shadow-md active:scale-95 transition-transform flex items-center">
+                    👶 베이비룸
                 </button>
-                <button onclick="openHotelCardSelector()" class="px-3.5 py-2.5 rounded-2xl bg-slate-900 text-white dark:bg-slate-800 text-sm font-bold shadow-md active:scale-95 transition-transform">
+                <button onclick="openSubwayModal()" class="px-2.5 py-2 rounded-2xl bg-orange-500 text-white text-xs font-black shadow-md active:scale-95 transition-transform flex items-center">
+                    <i class="fas fa-subway mr-1"></i>노선도
+                </button>
+                <button onclick="openHotelCardSelector()" class="px-2.5 py-2 rounded-2xl bg-slate-900 text-white dark:bg-slate-800 text-xs font-bold shadow-md active:scale-95 transition-transform">
                     🏨 숙소
                 </button>
-                <button onclick="openSOSModal()" class="w-11 h-11 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform">
-                    <span class="animate-pulse text-lg">🚨</span>
+                <button onclick="openSOSModal()" class="w-9 h-9 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform">
+                    <span class="animate-pulse text-base">🚨</span>
                 </button>
-                <button onclick="toggleTheme()" class="w-11 h-11 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 shadow-sm border border-slate-200 dark:border-slate-700">
-                    <i id="theme-icon" class="fas fa-moon text-base"></i>
+                <button onclick="toggleTheme()" class="w-9 h-9 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-500 shadow-sm border border-slate-200 dark:border-slate-700">
+                    <i id="theme-icon" class="fas fa-moon text-sm"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <main class="p-4 max-w-lg mx-auto space-y-6">
-        <!-- 1. 일정 탭 (Schedule) -->
-        <div id="schedule" class="tab-content active space-y-5">
-            <div class="bg-gradient-to-br from-amber-600 to-amber-700 text-white p-6 rounded-[2.2rem] shadow-lg">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <span class="text-xs font-black tracking-wider uppercase bg-white/20 px-3 py-1 rounded-full">38개월 유아 동반 맞춤 투어</span>
-                        <h2 class="text-2xl font-black mt-2.5 tracking-tight">후쿠오카 3박 4일 일정</h2>
-                        <p class="text-base font-medium text-amber-100 mt-1">10.10(금) RS0727 ~ 10.13(월) RS0728</p>
-                    </div>
-                </div>
-            </div>
-
+        <!-- 1. 일정 탭 (Schedule) - 공간 차치 배너 삭제 완료 -->
+        <div id="schedule" class="tab-content active space-y-4">
             <!-- 날짜 필터 -->
             <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-base font-black">
-                <button onclick="filterDay('all')" class="day-chip active px-4 py-3 rounded-2xl bg-amber-500 text-white shadow-sm" data-day="all">전체</button>
-                <button onclick="filterDay('10-10')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-10">1일차</button>
-                <button onclick="filterDay('10-11')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-11">2일차</button>
-                <button onclick="filterDay('10-12')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-12">3일차</button>
-                <button onclick="filterDay('10-13')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-13">4일차</button>
+                <button onclick="filterDay('all')" class="day-chip active px-4 py-3 rounded-2xl bg-amber-500 text-white shadow-sm" data-day="all">전체 일정</button>
+                <button onclick="filterDay('10-10')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-10">1일차(10.10)</button>
+                <button onclick="filterDay('10-11')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-11">2일차(10.11)</button>
+                <button onclick="filterDay('10-12')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-12">3일차(10.12)</button>
+                <button onclick="filterDay('10-13')" class="day-chip px-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" data-day="10-13">4일차(10.13)</button>
             </div>
 
             <div id="itinerary-list" class="space-y-4 pt-1"></div>
@@ -186,6 +179,40 @@
         </button>
     </nav>
 
+    <!-- 베이비룸(수유실/기저귀교환대) 안내 모달 -->
+    <div id="baby-modal" class="fixed inset-0 bg-black/80 z-[420] hidden flex items-center justify-center p-4 backdrop-blur-md" onclick="closeBabyModal()">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-4 max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-800">
+                <div>
+                    <h3 class="font-black text-2xl text-slate-900 dark:text-white flex items-center">
+                        👶 베이비룸 & 수유실 안내
+                    </h3>
+                    <p class="text-sm text-slate-500 mt-1">38개월 기저귀 교환대 & 유아 휴게실 위치</p>
+                </div>
+                <button onclick="closeBabyModal()" class="text-slate-400 text-3xl">&times;</button>
+            </div>
+            
+            <div class="space-y-3 text-sm">
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-900 space-y-1">
+                    <p class="font-black text-emerald-800 dark:text-emerald-300 text-base">🏢 하카타 한큐 백화점 7층</p>
+                    <p class="text-slate-600 dark:text-slate-300 font-medium">아동복 코너 안쪽 위치. 온수기, 전자레인지, 개인 수유실, 기저귀 교환대 완비.</p>
+                </div>
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-900 space-y-1">
+                    <p class="font-black text-emerald-800 dark:text-emerald-300 text-base">🛍️ 텐진 솔라리아 플라자 4층</p>
+                    <p class="text-slate-600 dark:text-slate-300 font-medium">다이묘 쇼핑 중 급할 때 최고. 쾌적한 기저귀 교환대 및 가족 화장실.</p>
+                </div>
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-900 space-y-1">
+                    <p class="font-black text-emerald-800 dark:text-emerald-300 text-base">🎪 캐널시티 하카타 B1F / 3F</p>
+                    <p class="text-slate-600 dark:text-slate-300 font-medium">동구리공화국 인근 및 3층 중앙. 유모차 동선이 매우 넓고 편리합니다.</p>
+                </div>
+            </div>
+
+            <button onclick="openGoogleMap('후쿠오카 수유실')" class="w-full py-4 bg-emerald-600 text-white rounded-xl text-sm font-black shadow-md flex items-center justify-center">
+                <i class="fas fa-map-marked-alt mr-2"></i>주변 수유실 구글맵 검색
+            </button>
+        </div>
+    </div>
+
     <!-- 지하철 노선도 모달 -->
     <div id="subway-modal" class="fixed inset-0 bg-black/80 z-[400] hidden flex items-center justify-center p-4 backdrop-blur-md" onclick="closeSubwayModal()">
         <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-4 max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
@@ -212,7 +239,7 @@
                     <ul class="list-disc pl-5 space-y-1.5 text-slate-600 dark:text-slate-300">
                         <li><strong>신용카드 직접 태그</strong>: 한국 컨택리스 카드(트래블로그, 트래블월렛, 비자/마스터)로 개찰구 바로 터치 탑승 가능!</li>
                         <li><strong>유아 요금 면제</strong>: 38개월 영유아는 보호자 동반 시 지하철 요금이 전액 무료입니다.</li>
-                        <li><strong>다이렉트 길찾기</strong>: 각 일정 카드 하단의 주황색 경로를 누르면 출발지에서 목적지까지 지하철 길찾기가 바로 열립니다.</li>
+                        <li><strong>🛗 EV 전용 출구</strong>: 하카타역 서쪽 출구, 기온역 6번 출구는 엘리베이터가 있어 유모차 진입이 수월합니다.</li>
                     </ul>
                 </div>
             </div>
@@ -253,7 +280,7 @@
         <div class="bg-slate-100 px-8 py-3.5 rounded-full font-black text-slate-500 animate-pulse text-sm">화면을 터치하면 닫힙니다</div>
     </div>
 
-    <!-- SOS 모달 -->
+    <!-- SOS 모달 (긴급연락망 + 일본 택시 즉시 호출 버튼 탑재) -->
     <div id="sos-modal" class="fixed inset-0 bg-black/70 z-[400] hidden flex items-center justify-center p-5 backdrop-blur-md" onclick="closeSOSModal()">
         <div class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] w-full max-w-md space-y-4 border-t-[8px] border-rose-500" onclick="event.stopPropagation()">
             <div class="flex justify-between items-center border-b pb-3 dark:border-slate-800">
@@ -263,11 +290,25 @@
             <div class="grid grid-cols-2 gap-2 text-sm font-black">
                 <a href="tel:110" class="bg-rose-50 text-rose-600 p-4 rounded-2xl text-center border border-rose-100">경찰 (110)</a>
                 <a href="tel:119" class="bg-amber-50 text-amber-700 p-4 rounded-2xl text-center border border-amber-100">구급/소방 (119)</a>
-                <a href="tel:+81-92-771-0461" class="col-span-2 bg-blue-50 text-blue-600 p-4 rounded-2xl text-center border border-blue-100">
+                <a href="tel:+81-92-771-0461" class="col-span-2 bg-blue-50 text-blue-600 p-3.5 rounded-2xl text-center border border-blue-100">
                     🇰🇷 주후쿠오카 대한민국 총영사관<br><span class="text-xs font-normal text-slate-500">+81-92-771-0461 (야간긴급 +81-90-1367-3638)</span>
                 </a>
             </div>
-            <button onclick="closeSOSModal(); openHotelCardSelector();" class="w-full bg-slate-900 text-white dark:bg-amber-600 py-4 rounded-2xl font-black text-sm">🚕 택시용 숙소 카드 보기</button>
+
+            <!-- 일본 택시 앱 바로 호출 -->
+            <div class="pt-2 border-t dark:border-slate-800 space-y-2">
+                <p class="text-xs font-black text-slate-500">아이 낮잠/우천 시 택시 즉시 호출</p>
+                <div class="flex gap-2">
+                    <button onclick="window.location.href='uber://'" class="flex-1 py-3.5 bg-black text-white rounded-2xl font-black text-sm flex items-center justify-center shadow-md">
+                        <i class="fab fa-uber mr-2 text-lg"></i>Uber 호출
+                    </button>
+                    <button onclick="window.location.href='https://go.mo-t.com/'" class="flex-1 py-3.5 bg-blue-600 text-white rounded-2xl font-black text-sm flex items-center justify-center shadow-md">
+                        🚕 일본 GO 택시
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="closeSOSModal(); openHotelCardSelector();" class="w-full bg-slate-900 text-white dark:bg-amber-600 py-4 rounded-2xl font-black text-sm">🏨 택시용 숙소 카드 보기</button>
         </div>
     </div>
 
@@ -314,7 +355,7 @@
                         title: "하카타 아뮤플라자: 단톤(DANTON) 직영점 & 미뇽", 
                         desc: "★단톤 1차 공략★ 아뮤플라자 4층 단톤 공식 단독 매장(DANTON FUKUOKA)에서 경량패딩, 모자, 키즈 의류 쇼핑! 1층 중앙 통로에서 '일 포르노 델 미뇽' 미니 크루아상(플레인/고구마) 갓 구운 간식 테이크아웃.", 
                         mapQuery: "DANTON FUKUOKA アミュプラザ博多",
-                        subwayRoute: "🟠 공항선 [하카타역] 서쪽출구(하카타구치) 직결 도보 1분",
+                        subwayRoute: "🟠 공항선 [하카타역] 서쪽출구(하카타구치) 🛗EV 직결 도보 1분",
                         transitOrigin: "비아인 하카타구치 에키마에",
                         transitDest: "아뮤플라자 하카타",
                         nearbyHighlights: "아뮤플라자 8층 포켓몬센터(아이 환호!), 9~10층 식당가"
@@ -324,7 +365,7 @@
                         title: "저녁: 함바그 요시 (텐진) or 규센닌", 
                         desc: "💡가이드 팁: 키와미야는 2시간 넘는 계단 대기와 기름 튐으로 영유아 동반 시 위험합니다. 직원이 안전하게 구워주며 유모차 진입이 편한 '함바그 요시'나 부드러운 와규집 추천!", 
                         mapQuery: "ハンバーグ よし 福岡",
-                        subwayRoute: "🟠 공항선 [하카타역] → [텐진역] 2번 출구 도보 5분 (클릭 시 길찾기)",
+                        subwayRoute: "🟠 공항선 [하카타역] → [텐진역] 2번 출구(🛗EV 솔라리아연결) 도보 5분",
                         transitOrigin: "하카타역",
                         transitDest: "ハンバーグ よし 福岡",
                         nearbyHighlights: "텐진 지하상가(Bake 치즈타르트), 다이묘 소프트크림"
@@ -351,7 +392,7 @@
                         title: "체크아웃 & 2박 숙소(기온) 짐 보관", 
                         desc: "비아인 체크아웃 후 '니시테츠 크룸 하카타 기온'으로 이동하여 짐 드롭. 기온역 6번출구 바로 앞입니다.", 
                         mapQuery: "西鉄ホテル クルーム 博多祇園",
-                        subwayRoute: "🟠 공항선 [하카타역] → [기온역] 6번 출구 앞 도보 1분 (클릭 시 길찾기)",
+                        subwayRoute: "🟠 공항선 [하카타역] → [기온역] 6번 출구 🛗EV 앞 도보 1분",
                         transitOrigin: "비아인 하카타구치 에키마에",
                         transitDest: "니시테츠 호텔 크룸 하카타 기온",
                         nearbyHighlights: "기온역 앞 도초지(동장사 대불), 조텐지 정원"
@@ -361,7 +402,7 @@
                         title: "나카스 수변: 빵스톡 (Pain Stock) 텐진점", 
                         desc: "명란바게트와 아이용 시오빵 구입. 하레노가든 강변 잔디 데크에서 아이와 사진 찍고 빵 먹으며 여유 즐기기.", 
                         mapQuery: "pain stock tenjin",
-                        subwayRoute: "🟠 공항선 [기온역] → [나카스카와바타역] 5번 출구 도보 5분 (클릭 시 길찾기)",
+                        subwayRoute: "🟠 공항선 [기온역] → [나카스카와바타역] 5번 출구 도보 5분",
                         transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
                         transitDest: "pain stock tenjin",
                         nearbyHighlights: "하레노가든 강변 산책로, 아크로스 후쿠오카 계단식 스텝가든"
@@ -381,7 +422,7 @@
                         title: "텐진 솔라리아 비샵(Bshop) & 다이묘 패션 거리", 
                         desc: "★단톤 2차 공략★ 솔라리아 플라자 3층 Bshop(비샵) & 빔즈(BEAMS)에서 단톤 아우터 집중 비교! 다이묘 골목에서 휴먼메이드, 포터 스탠드, 슈프림 쇼핑. (다이묘 카페에서 휴식)", 
                         mapQuery: "솔라리아 플라자 비샵",
-                        subwayRoute: "🟠 공항선 [텐진역] 2번 출구 솔라리아 플라자 직결 (클릭 시 길찾기)",
+                        subwayRoute: "🟠 공항선 [텐진역] 2번 출구 🛗EV 솔라리아 플라자 직결",
                         transitOrigin: "葉隠うどん 博多",
                         transitDest: "솔라리아 플라자",
                         nearbyHighlights: "이와타야 백화점, 무인양품 텐진 다이묘점(대형 키즈존 완비)"
@@ -391,7 +432,7 @@
                         title: "기온 호텔 입실 & 아이 낮잠/온천 휴식", 
                         desc: "무리한 연속 일정 대신 호텔 체크인 후 1시간 휴식. 니시테츠 크룸 1층 천연온천 대욕장 이용으로 가족 체력 재충전.", 
                         mapQuery: "西鉄ホテル クルーム 博多祇園",
-                        subwayRoute: "🟠 공항선 [텐진역] → [기온역] 직통 복귀 (2정거장, 4분 / 클릭 시 길찾기)",
+                        subwayRoute: "🟠 공항선 [텐진역] → [기온역] 직통 복귀 (2정거장, 4분)",
                         transitOrigin: "텐진역",
                         transitDest: "니시테츠 호텔 크룸 하카타 기온",
                         nearbyHighlights: "호텔 1층 세븐일레븐(일본 아이스크림)"
@@ -418,7 +459,7 @@
                         title: "점심: 요시즈카 우나기야 (장어덮밥)", 
                         desc: "150년 전통 장어구이 명가. 10:30 오픈 15분 전 미리 도착해 번호표를 뽑으세요. 타레 소스 비빈 밥과 부드러운 장어 속살.", 
                         mapQuery: "吉塚うなぎ屋",
-                        subwayRoute: "🚶 기온 호텔에서 나카스 강변 방향 도보 7분 (500m / 클릭 시 길찾기)",
+                        subwayRoute: "🚶 기온 호텔에서 나카스 강변 방향 도보 7분 (500m)",
                         transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
                         transitDest: "吉塚うなぎ屋",
                         nearbyHighlights: "나카스 강변 다리(가족 사진 명당), 돈키호테 나카스점"
@@ -428,7 +469,7 @@
                         title: "오호리 공원 백조 보트 ↔ 롯폰마츠: 신선산도 & 이몬네", 
                         desc: "★동선 완벽 최적화★ 오호리 공원에서 아이와 백조 페달보트 탑승 후, 남쪽 산책로를 통해 롯폰마츠 구역으로 이동! 신선한 우유 생크림과 과일이 터질 듯한 '신선산도'와 달콤한 고구마 디저트 '이몬네'를 한 번에 정복!", 
                         mapQuery: "新鮮サンド 六本松",
-                        subwayRoute: "🟠 공항선 [나카스카와바타역] → [오호리공원역] 3번 출구 (클릭 시 길찾기)",
+                        subwayRoute: "🟠 공항선 [오호리공원역] 3번 출구 🛗EV → 롯폰마츠 도보 또는 택시 700엔",
                         transitOrigin: "吉塚うなぎ屋",
                         transitDest: "오호리 공원",
                         nearbyHighlights: "오호리공원 스타벅스, 롯폰마츠 츠타야 서점(스타벅스 결합 대형 문화공간)"
@@ -438,7 +479,7 @@
                         title: "[선택] 후쿠오카 타워 & 모모치 해변 (팀랩 포레스트)", 
                         desc: "💡바다 & 실내 미디어아트 코스: 오호리 대신 바다를 보고 싶다면 추천! 타워 전망대 및 바로 옆 페이페이돔의 '팀랩 포레스트(빛의 동물 터치 미디어아트)'까지 완벽한 유아 코스.", 
                         mapQuery: "후쿠오카 타워",
-                        subwayRoute: "🚌 오호리/롯폰마츠에서 버스 W1/302번 탑승 (20분 / 클릭 시 길찾기)",
+                        subwayRoute: "🚌 오호리/롯폰마츠에서 버스 W1/302번 탑승 (20분) or 택시 1,800엔",
                         transitOrigin: "오호리 공원",
                         transitDest: "후쿠오카 타워",
                         nearbyHighlights: "모모치 해변 마리존, 마크이즈 모모치 쇼핑몰(초대형 유아휴게실)"
@@ -448,7 +489,7 @@
                         title: "캐널시티 하카타 분수쇼 & 캐릭터 쇼핑", 
                         desc: "정시마다 열리는 음악 분수쇼 관람! 지하 1층 동구리공화국(토토로샵)과 산리오 갤러리 필수 코스.", 
                         mapQuery: "캐널시티 하카타",
-                        subwayRoute: "🚶 기온 숙소에서 남쪽 방향 도보 5분 (400m / 클릭 시 길찾기)",
+                        subwayRoute: "🚶 기온 숙소에서 남쪽 방향 도보 5분 (400m, 유모차 평지)",
                         transitOrigin: "오호리 공원",
                         transitDest: "캐널시티 하카타",
                         nearbyHighlights: "캐널시티 B1F 반다이 남코 가챠샵, 라멘 스타디움"
@@ -458,7 +499,7 @@
                         title: "저녁: 츠키지 스시센 하루요시점", 
                         desc: "효탄스시의 계단 대기 대신, 테이블석이 넓어 유모차 반입이 편하고 신선한 자연산 모둠초밥 명가. (와사비 뺀 계란·새우초밥)", 
                         mapQuery: "築地すし鮮 福岡総本店",
-                        subwayRoute: "🚶 캐널시티에서 다리 건너 도보 5분 (하루요시 방면 / 클릭 시 길찾기)",
+                        subwayRoute: "🚶 캐널시티에서 다리 건너 도보 5분 (하루요시 방면)",
                         transitOrigin: "캐널시티 하카타",
                         transitDest: "築地すし鮮 福岡総本店",
                         nearbyHighlights: "하루요시 골목 감성 이자카야 거리"
@@ -485,7 +526,7 @@
                         title: "브런치: 미야케 우동 (노포)", 
                         desc: "60년 전통 노포. 굵고 부드러운 면발과 둥근 어묵. 500엔으로 누리는 일본 현지의 정겨운 맛.", 
                         mapQuery: "みやけうどん 博多",
-                        subwayRoute: "🚶 기온 호텔에서 고후쿠마치 방향 도보 6분 (450m / 클릭 시 길찾기)",
+                        subwayRoute: "🚶 기온 호텔에서 고후쿠마치 방향 도보 6분 (450m)",
                         transitOrigin: "니시테츠 호텔 크룸 하카타 기온",
                         transitDest: "みやけうどん 博多",
                         nearbyHighlights: "고후쿠마치 전통 골목"
@@ -495,7 +536,7 @@
                         title: "하카타역 한큐백화점 5% 쿠폰 / 마잉구 쇼핑", 
                         desc: "한큐 1층 안내데스크에서 5% 할인쿠폰 수령! 미키하우스(유아 신발), 갸또러스크, 명란젓, 토리몬 만주 쇼핑.", 
                         mapQuery: "하카타 한큐 백화점",
-                        subwayRoute: "🟠 공항선 [기온역] → [하카타역] 1정거장 (2분 / 클릭 시 길찾기)",
+                        subwayRoute: "🟠 공항선 [기온역] → [하카타역] 1정거장 (2분, 서쪽출구 방면 직결)",
                         transitOrigin: "みやけうどん 博多",
                         transitDest: "하카타 한큐 백화점",
                         nearbyHighlights: "마잉구 명란젓 시식 코너, 한큐 백화점 지하 식품관"
@@ -749,20 +790,20 @@
                 ]
             },
             {
-                place: "드럭스토어 & 돈키호테 필수 육아/상비약",
-                desc: "5,500엔 이상 구입 시 10% 면세 즉시 적용",
+                place: "편의점 유아 비상식량 & 드럭스토어",
+                desc: "아이가 밥투정할 때 바로 먹일 수 있는 편의점 꿀템",
                 items: [
                     { 
-                        name: "무히베이비(호빵맨 모기물린데 연고/패치)", 
-                        desc: "아이 피부에 자극 없는 무에탄올 성분 연고와 가려움 방지 캐릭터 패치." 
+                        name: "메이지 오이시이 우유 & 시오무스비", 
+                        desc: "비린 맛 전혀 없는 빨간색 팩 메이지 우유 + 간이 심심하게 된 소금 주먹밥(김 없는 쌀밥)." 
                     },
                     { 
-                        name: "호빵맨 감기시럽 (딸기맛) & 열냉각시트", 
-                        desc: "아이가 거부감 없이 맛있게 먹는 비상 감기약 시럽과 이마에 붙이는 쿨패치." 
+                        name: "다시마끼(일본식 계란말이 바) & 바나나", 
+                        desc: "로손/세븐일레븐 냉장 코너의 부드럽고 달콤한 계란말이 꼬치바와 델몬트 낱개 바나나." 
                     },
                     { 
-                        name: "오타이산 소화제 & 샤론파스", 
-                        desc: "미식 여행 중 과식했을 때 먹는 천연 한방 소화제 및 하루 1만보 피로를 풀어주는 파스." 
+                        name: "무히베이비 & 호빵맨 감기시럽", 
+                        desc: "아이 모기물린 데 바르는 저자극 크림과 비상용 딸기맛 감기시럽." 
                     }
                 ]
             }
@@ -1042,7 +1083,7 @@
                             <span class="text-amber-600 font-black text-base">${item.amt.toLocaleString()}¥</span>
                         </div>`;
                 }).join('');
-                document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-sm text-slate-400">지출 내역이 없습니다.</div>';
+                document.getElementById('expense-list').innerHTML = html || '<div class="text-center py-4 text-xs text-slate-400">지출 내역이 없습니다.</div>';
                 document.getElementById('total-expense').innerText = `${total.toLocaleString()} ¥`;
             }
         }
@@ -1084,6 +1125,9 @@
 
         function openSubwayModal() { document.getElementById('subway-modal').classList.remove('hidden'); }
         function closeSubwayModal() { document.getElementById('subway-modal').classList.add('hidden'); }
+
+        function openBabyModal() { document.getElementById('baby-modal').classList.remove('hidden'); }
+        function closeBabyModal() { document.getElementById('baby-modal').classList.add('hidden'); }
 
         function openHotelCardSelector() { document.getElementById('hotel-selector-modal').classList.remove('hidden'); }
         function closeHotelCardSelector() { document.getElementById('hotel-selector-modal').classList.add('hidden'); }
